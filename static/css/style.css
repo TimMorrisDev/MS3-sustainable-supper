@@ -43,3 +43,22 @@
 .tm-sage-text {
     color: #C3C890;
 }
+
+.slider {
+    position: relative;
+}
+
+.slider-heading {
+    position: absolute;
+    top: 1rem;
+    z-index: 997;
+}
+
+.slider-row {
+    position: absolute;
+    bottom: 0px;
+    border: 1px solid black;
+    height: 50px;
+    width: 100%;
+    z-index: 997;
+}
