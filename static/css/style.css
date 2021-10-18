@@ -48,6 +48,11 @@
     position: relative;
 }
 
+.slider img {
+    max-width: 100%;
+    height: auto;
+}
+
 .slider-heading {
     position: absolute;
     top: 1rem;
@@ -61,4 +66,8 @@
     height: 50px;
     width: 100%;
     z-index: 997;
+}
+
+.btn:hover{
+    background-color: #499129;
 }
