@@ -1,0 +1,45 @@
+.text-shadow {
+    text-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+}
+
+/* colour palette generated from landscape photo */
+
+.tm-dark-green-bg {
+    background-color: #254C1C;
+}
+
+.tm-dark-green-text {
+    color: #254C1C;
+}
+
+.tm-mid-green-bg {
+    background-color: #499129;
+}
+
+.tm-mid-green-text {
+    color: #499129;
+}
+
+.tm-light-green-bg {
+    background-color: #8F9F71;
+}
+
+.tm-light-green-text {
+    color: #8F9F71;
+}
+
+.tm-brown-bg {
+    background-color: #A07245;
+}
+
+.tm-brown-text {
+    color: #A07245;
+}
+
+.tm-sage-bg {
+    background-color: #C3C890;
+}
+
+.tm-sage-text {
+    color: #C3C890;
+}
