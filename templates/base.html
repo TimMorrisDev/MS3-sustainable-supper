@@ -28,7 +28,7 @@
                     <li><a href="{{ url_for('get_recipes') }}">Search/Browse</a></li>
                     <li><a href="#">Profile</a></li>
                     <li><a href="#">Log In</a></li>
-                    <li><a href="#">Register</a></li>
+                    <li><a href="{{ url_for('register') }}">Register</a></li>
                     <li><a href="#">Log Out</a></li>
 
                     <!-- {% if session.user %}
@@ -52,7 +52,7 @@
             <li><a href="{{ url_for('get_recipes') }}">Search/Browse</a></li>
             <li><a href="#">Profile</a></li>
             <li><a href="#">Log In</a></li>
-            <li><a href="#">Register</a></li>
+            <li><a href="{{ url_for('register') }}">Register</a></li>
             <li><a href="#å">Log Out</a></li>
 
             <!-- {% if session.user %}
