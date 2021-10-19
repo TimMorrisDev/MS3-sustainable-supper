@@ -26,24 +26,18 @@
                 <ul class="right hide-on-med-and-down">
                     <li><a href="{{ url_for('index') }}">Home</a></li>
                     <li><a href="{{ url_for('get_recipes') }}">Search/Browse</a></li>
+                    <!-- check if user is logged in -->
                     {% if session.user %}
-                    <li><a href="#">Profile</a></li>
+                    <li><a href="{{ url_for('profile', username=session['user']) }}">Profile</a></li>
                     <li><a href="{{ url_for('logout') }}">Log Out</a></li>
                     {% else %}
                     <li><a href="{{ url_for('login') }}">Log In</a></li>
                     <li><a href="{{ url_for('register') }}">Register</a></li>
                     {% endif %}
+                    <!-- check if user has admin status -->
                     {% if session.admin %}
                     <li><a href="{{ url_for('admin') }}">Admin Land</a></li>
                     {% endif %}
-
-                    <!-- {% if session.user %}
-                    <li><a href="{{ url_for('profile', username=session['user']) }}">Profile</a></li>
-                    {% else %}
-                    {% endif %}
-                    {% if session.user|lower == "admin"|lower %}
-                    <li><a href="#">Manage Categories</a></li>
-                    {% endif %} -->
 
                 </ul>
             </div>
@@ -56,24 +50,18 @@
             </li>
             <li><a href="{{ url_for('index') }}">Home</a></li>
             <li><a href="{{ url_for('get_recipes') }}">Search/Browse</a></li>
+            <!-- check if user is logged in -->
             {% if session.user %}
-            <li><a href="#">Profile</a></li>
+            <li><a href="{{ url_for('profile', username=session['user']) }}">Profile</a></li>
             <li><a href="{{ url_for('logout') }}">Log Out</a></li>
             {% else %}
             <li><a href="{{ url_for('login') }}">Log In</a></li>
             <li><a href="{{ url_for('register') }}">Register</a></li>
             {% endif %}
+            <!-- check if user has admin status -->
             {% if session.admin %}
             <li><a href="{{ url_for('admin') }}">Admin Land</a></li>
             {% endif %}
-
-            <!-- {% if session.user %}
-                    <li><a href="{{ url_for('profile', username=session['user']) }}">Profile</a></li>
-                    {% else %}
-                    {% endif %}
-                    {% if session.user|lower == "admin"|lower %}
-                    <li><a href="#">Manage Categories</a></li>
-                    {% endif %} -->
 
         </ul>
     </header>
