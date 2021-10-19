@@ -47,6 +47,7 @@ def register():
             "email": request.form.get("email").lower(),
             "user_recipes": [],
             "saved_recipes": [],
+            "admin": False,
         }
         mongo.db.users.insert_one(register)
 
@@ -70,6 +71,8 @@ def login():
             if check_password_hash(
                     existing_user["password"], request.form.get("password")):
                 session["user"] = request.form.get("username").lower()
+                session["admin"] = mongo.db.users.find_one(
+                    {"username": session["user"]})["admin"]
                 flash("Welcome, {}".format(request.form.get("username")))
                 return redirect(url_for("profile", username=session["user"]))
             else:
@@ -102,6 +105,11 @@ def logout():
     flash("You have been logged out")
     session.pop("user")
     return redirect(url_for("login"))
+
+
+@app.route("/admin")
+def admin():
+    return render_template('admin.html')
 
 
 if __name__ == "__main__":
