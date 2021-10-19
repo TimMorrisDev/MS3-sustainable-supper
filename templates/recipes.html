@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1 class="center-align">Recipe page here</h1>
+
+{% for recipe in recipes %}
+
+<h2>{{ recipe.recipe_name }}</h2><br>
+
+{% endfor %}
+
+{% endblock %}
