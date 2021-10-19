@@ -24,8 +24,8 @@ def index():
     return render_template('index.html')
 
 
-@app.route("/get_recipes")
-def get_recipes():
+@app.route("/recipes")
+def recipes():
     recipes = list(mongo.db.recipes.find())
     return render_template("recipes.html", recipes=recipes)
 
@@ -105,6 +105,21 @@ def logout():
     flash("You have been logged out")
     session.pop("user")
     return redirect(url_for("login"))
+
+
+@app.route("/add_recipe", methods=['GET', 'POST'])
+def add_recipe():
+    if request.method == "POST":
+        recipe = {
+            "recipe_name": request.form.get("recipe_name"),
+            "recipe_summary": request.form.get("recipe_summary"),
+            "uploaded_by": session["user"]
+        }
+        mongo.db.recipes.insert_one(recipe)
+        flash("Task Successfully Added")
+        return redirect(url_for("recipes"))
+
+    return render_template("add_recipe.html")
 
 
 @app.route("/admin")
