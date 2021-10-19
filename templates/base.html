@@ -27,7 +27,7 @@
                     <li><a href="{{ url_for('index') }}">Home</a></li>
                     <li><a href="{{ url_for('get_recipes') }}">Search/Browse</a></li>
                     <li><a href="#">Profile</a></li>
-                    <li><a href="#">Log In</a></li>
+                    <li><a href="{{ url_for('login') }}">Log In</a></li>
                     <li><a href="{{ url_for('register') }}">Register</a></li>
                     <li><a href="#">Log Out</a></li>
 
@@ -51,7 +51,7 @@
             <li><a href="{{ url_for('index') }}">Home</a></li>
             <li><a href="{{ url_for('get_recipes') }}">Search/Browse</a></li>
             <li><a href="#">Profile</a></li>
-            <li><a href="#">Log In</a></li>
+            <li><a href="{{ url_for('login') }}">Log In</a></li>
             <li><a href="{{ url_for('register') }}">Register</a></li>
             <li><a href="#å">Log Out</a></li>
 
@@ -65,6 +65,20 @@
 
         </ul>
     </header>
+
+    <section>
+        <!-- flash messages -->
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="row flashes">
+            <h4 class="light-blue lighten-4 center-align">{{ message }}</h4>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith%}
+
+    </section>
 
     <main class="container">
         {% block content%}
