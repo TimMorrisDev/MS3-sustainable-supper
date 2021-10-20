@@ -79,3 +79,22 @@ body {
 .btn:hover{
     background-color: #499129;
 }
+
+.card.horizontal.small {
+    height: 200px;
+}
+
+.card.horizontal .card-image {
+    max-width: 30%;
+}
+
+.card-image img {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    object-fit: cover;
+}
+
+.recipe-thumbnail {
+    height: 20vh;
+}

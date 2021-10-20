@@ -6,7 +6,22 @@
 
 {% for recipe in recipes %}
 
-<h2>{{ recipe.recipe_name }}</h2><br>
+<div class="card horizontal small col s12 m7">
+    <div class="card-image">
+        <img src="{{ recipe.image }}">
+    </div>
+    <div class="card-stacked">
+        <div class="card-content">
+            <strong>{{ recipe.recipe_name }}</strong><br>
+            <small class="hide-on-small-only">{{ recipe.recipe_summary }}</small><br><br>
+            <strong>Prep time:</strong> {{ recipe.prep_time }}mins <br>
+            <strong>Cook time:</strong> {{ recipe.cook_time }}mins
+        </div>
+        <div class="card-action center-align">
+            <a class="waves-effect waves-light btn tm-dark-green-bg">View Details</a>
+        </div>
+    </div>
+</div>
 
 {% endfor %}
 
