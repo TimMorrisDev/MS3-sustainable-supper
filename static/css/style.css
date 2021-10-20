@@ -81,7 +81,11 @@ body {
 }
 
 .card.horizontal.small {
-    height: 200px;
+    height: 130px;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 0;
+    /* width: fit-content; */
 }
 
 .card.horizontal .card-image {
