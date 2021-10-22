@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col s12 m10 offset-m1 l8 offset-l2">
+        <div class="card recipe-details-card r10">
+            <!-- <div class="card-image">
+                <img src="{{ recipe.image }}">
+                <span class="card-title tm-dark-green-bg opacity-90 text"><strong>{{ recipe.recipe_name }}</strong><br>
+                    <small class="text-italic">'{{ recipe.recipe_summary }}'</small>
+                </span>
+            </div> -->
+            <div class="card-content white-text text-shaddow black-border r10"
+                style="background: url({{ recipe.image }}) no-repeat; background-size: cover;">
+
+                <span class="card-title tm-dark-green-bg opacity-90 black-border r10"><strong>{{ recipe.recipe_name
+                        }}</strong><br>
+                    <small class="text-italic">'{{ recipe.recipe_summary }}'</small>
+                </span>
+
+                <div class="tm-dark-green-bg opacity-90 black-border r10">
+                    <h5 class="center-align">Ingredients</h5>
+                    <ul class="center-align">
+                        {% for ingredient in recipe.ingredients %}
+
+                        <li><strong>{{ ingredient.item.title() }}:</strong> {{ ingredient.quantity }}</li>
+
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="center-align">
+                    <a href="{{ url_for('recipe_method', recipe_id=recipe._id) }}"
+                        class="waves-effect waves-light btn-large tm-dark-green-bg r10 black-border">Method</a>
+                </div>
+            </div>
+            <!-- <div class="card-action">
+                <a href="{{ url_for('recipe_method', recipe_id=recipe._id) }}"
+                    class="waves-effect waves-light btn tm-dark-green-bg">Method</a>
+            </div> -->
+        </div>
+    </div>
+</div>
+
+
+
+<!-- <div class="row">
+    <div class="card horizontal small col s12 m8 offset-m2 l6 offset-l3">
+        <div class="card-image">
+            <img src="{{ recipe.image }}">
+        </div>
+        <div class="card-stacked">
+            <div class="card-content">
+                <div class="row">
+                    <div class="col">
+                        <strong>{{ recipe.recipe_name }}</strong><br>
+                        <small class="hide">{{ recipe.recipe_summary }}</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s6">
+                        <strong>Prep:</strong> {{ recipe.prep_time }}min<br>
+                        <strong>Cook:</strong> {{ recipe.cook_time }}min
+                    </div>
+                    <div class="col s6">
+                        <a href="{{ url_for('recipe_method', recipe_id=recipe._id) }}"
+                            class="waves-effect waves-light btn tm-dark-green-bg">Method</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div> -->
+
+{% endblock %}
