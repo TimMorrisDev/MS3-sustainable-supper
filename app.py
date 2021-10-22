@@ -97,8 +97,10 @@ def profile(username):
     # grab the session user's username from db
     username = mongo.db.users.find_one(
         {"username": session["user"]})["username"]
+    # grab the recipes from the db
+    recipes = list(mongo.db.recipes.find())
     if session["user"]:
-        return render_template("profile.html", username=username)
+        return render_template("profile.html", username=username, recipes=recipes)
 
     return redirect(url_for("login"))
 
@@ -121,8 +123,8 @@ def add_recipe():
             "uploaded_by": session["user"]
         }
         mongo.db.recipes.insert_one(recipe)
-        flash("Task Successfully Added")
-        return redirect(url_for("recipes"))
+        flash("Recipe Successfully Added")
+        return redirect(url_for("profile"))
 
     return render_template("add_recipe.html")
 
