@@ -74,7 +74,7 @@ def login():
                 session["admin"] = mongo.db.users.find_one(
                     {"username": session["user"]})["admin"]
                 # session["userId"] = mongo.db.users.find_one(
-                #     {"username": session["user"]})
+                #     {"username": session["user"]}[str(ObjectId())])
                 # session["userId"] = ObjectId(mongo.db.users.find_one(
                 #     {"username": session["user"]})["_id"])
                 flash("Welcome, {}".format(request.form.get("username")))
@@ -114,6 +114,11 @@ def logout():
     return redirect(url_for("login"))
 
 
+@app.route("/admin")
+def admin():
+    return render_template('admin.html')
+
+
 @app.route("/add_recipe", methods=['GET', 'POST'])
 def add_recipe():
     if request.method == "POST":
@@ -129,9 +134,16 @@ def add_recipe():
     return render_template("add_recipe.html")
 
 
-@app.route("/admin")
-def admin():
-    return render_template('admin.html')
+@app.route("/recipe_ingredients/<recipe_id>", methods=["GET", "POST"])
+def recipe_ingredients(recipe_id):
+    recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
+    return render_template("recipe_ingredients.html", recipe=recipe)
+
+
+@app.route("/recipe_method/<recipe_id>", methods=["GET", "POST"])
+def recipe_method(recipe_id):
+    recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
+    return render_template("recipe_method.html", recipe=recipe)
 
 
 if __name__ == "__main__":

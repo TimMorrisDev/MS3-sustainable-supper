@@ -30,7 +30,8 @@
                         <strong>Cook:</strong> {{ recipe.cook_time }}min
                     </div>
                     <div class="col s6">
-                        <a class="waves-effect waves-light btn tm-dark-green-bg">View Details</a>
+                        <a href="{{ url_for('recipe_ingredients', recipe_id=recipe._id) }}"
+                            class="waves-effect waves-light btn tm-dark-green-bg">View Details</a>
                     </div>
                 </div>
             </div>

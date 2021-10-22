@@ -102,3 +102,27 @@ body {
 .recipe-thumbnail {
     height: 20vh;
 }
+
+.card.recipe-details-card .card-image {
+max-height: 20%;
+}
+
+/* .card.recipe-details-card .card-title {
+    border: solid 2px black;
+} */
+
+.black-border {
+    border: solid 2px black;
+}
+
+.text-italic {
+    font-style: italic;
+}
+
+.opacity-90 {
+    opacity: 90%;
+}
+
+.r10 {
+    border-radius: 10px !important;
+}
