@@ -73,6 +73,10 @@ def login():
                 session["user"] = request.form.get("username").lower()
                 session["admin"] = mongo.db.users.find_one(
                     {"username": session["user"]})["admin"]
+                # session["userId"] = mongo.db.users.find_one(
+                #     {"username": session["user"]})
+                # session["userId"] = ObjectId(mongo.db.users.find_one(
+                #     {"username": session["user"]})["_id"])
                 flash("Welcome, {}".format(request.form.get("username")))
                 return redirect(url_for("profile", username=session["user"]))
             else:
@@ -104,6 +108,7 @@ def logout():
     # remove user from session cookies
     flash("You have been logged out")
     session.pop("user")
+    session.pop("admin")
     return redirect(url_for("login"))
 
 
