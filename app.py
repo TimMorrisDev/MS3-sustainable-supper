@@ -119,6 +119,17 @@ def admin():
     return render_template('admin.html')
 
 
+ingredients = []
+
+
+@app.route("/add_ingredient", methods=['GET', 'POST'])
+def add_ingredient():
+    new_ingredient = {"item": request.form.get("item"), "quantity": request.form.get("quantity")}  
+    ingredients.append(new_ingredient)
+    print(ingredients)
+    return render_template("add_recipe.html")
+
+
 @app.route("/add_recipe", methods=['GET', 'POST'])
 def add_recipe():
     if request.method == "POST":
@@ -130,7 +141,7 @@ def add_recipe():
         mongo.db.recipes.insert_one(recipe)
         flash("Recipe Successfully Added")
         return redirect(url_for("profile"))
-
+    ingredients = []
     return render_template("add_recipe.html")
 
 
@@ -144,6 +155,13 @@ def recipe_ingredients(recipe_id):
 def recipe_method(recipe_id):
     recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
     return render_template("recipe_method.html", recipe=recipe)
+
+
+def print_test():
+    print('Hello, World!')
+
+
+print_test()
 
 
 if __name__ == "__main__":
