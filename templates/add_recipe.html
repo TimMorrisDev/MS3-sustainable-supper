@@ -39,52 +39,74 @@
             </div>
         </div>
         <!-- ingredients -->
-        <div class="row">
-            <div class="input-field col s6 m5">
+        <div class="row ingredient-row valign-wrapper">
+
+            <div class="input-field col s8">
                 <i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i>
-                <input id="item" name="item" minlength="1" maxlength="50" type="text" class="validate"
-                    pattern="^[a-zA-Z]$" placeholder="eg: Onion" required>
-                <label for="item">Ingredient</label>
+
+                <input id="ingredients" name="ingredients" type="text" class="validate" required>
+                <label for="ingredients">Add Ingredient Here</label>
             </div>
-            <div class="input-field col s6 m5">
-                <!-- <i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i> -->
-                <input id="quantity" name="quantity" minlength="1" maxlength="50" type="text" class="validate"
-                    pattern="[a-zA-Z0-9]" placeholder="eg: 2, finely sliced" required>
-                <label for="quantity">Quantity</label>
-            </div>
-            <div class="col s12 m2">
-                <a href="{{ url_for('add_ingredient') }}" action="POST"
-                    class="waves-effect waves-light btn tm-dark-green-bg">Add
-                    Ingredient</a>
+            <div class="col s4">
+                <button type="button" id="remove-ingredient" class="waves-effect waves-light btn red">Remove</button>
             </div>
         </div>
-        <div class="row">
+
+        <div class="row" id="add-ingredient-row">
             <div class="col s12">
-                <ul class="center-align">
-
-                    <li><strong></strong></li>
-
-                </ul>
+                <button type="button" id="add-ingredient" class="waves-effect waves-light btn tm-dark-green-bg">Add
+                    Another
+                    Ingredient</button>
             </div>
-
         </div>
+
+
+        <!-- <div class="input-field col s6 m5">
+                <textarea id="quantity" name="quantity" minlength="1" maxlength="50" type="text" class="validate"
+                    pattern="[a-zA-Z0-9]" placeholder="eg: 2, finely sliced" required></textarea>
+                <label for="quantity">Quantity</label>
+            </div> -->
+
         <!-- method -->
-        <div class="row">
-            <div class="input-field col s12">
-                <i class="fas fa-align-left prefix light-blue-text text-darken-4"></i>
-                <textarea id="method" name="method" class="materialize-textarea validate" placeholder="Add method step"
-                    required></textarea>
-                <label for="method">Method</label>
+        <div class="row method-row valign-wrapper">
+
+            <div class="input-field col s8">
+                <i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i>
+
+                <textarea id="method" name="method" type="text" class="validate" required></textarea>
+                <label for="method">Add Step Here</label>
+            </div>
+            <div class="col s4">
+                <button type="button" id="remove-step" class="waves-effect waves-light btn red">Remove</button>
             </div>
         </div>
-        <!-- submit -->
-        <div class="row">
-            <div class="col s12 center-align">
-                <button type="submit" class="btn-large light-blue darken-1 text-shaddow">Add Recipe <i
-                        class="fas fa-plus-square right"></i></button>
+
+        <div class="row" id="add-step-row">
+            <div class="col s12">
+                <button type="button" id="add-step" class="waves-effect waves-light btn tm-dark-green-bg">Add Another
+                    Step</button>
             </div>
         </div>
-    </form>
+
+</div>
+<div class="row">
+    <div class="col s12">
+        <ul class="center-align">
+
+            <li><strong></strong></li>
+
+        </ul>
+    </div>
+
+</div>
+<!-- submit -->
+<div class="row">
+    <div class="col s12 center-align">
+        <button type="submit" class="btn btn-large tm-dark-green-bg text-shaddow">Add Recipe <i
+                class="fas fa-plus-square right"></i></button>
+    </div>
+</div>
+</form>
 </div>
 
 {% endblock %}

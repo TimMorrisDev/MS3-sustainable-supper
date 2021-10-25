@@ -122,12 +122,13 @@ def admin():
 ingredients = []
 
 
-@app.route("/add_ingredient", methods=['GET', 'POST'])
-def add_ingredient():
-    new_ingredient = {"item": request.form.get("item"), "quantity": request.form.get("quantity")}  
-    ingredients.append(new_ingredient)
-    print(ingredients)
-    return render_template("add_recipe.html")
+# @app.route("/add_ingredient", methods=['GET', 'POST'])
+# def add_ingredient():
+#     items = request.form.get("item").readlines()
+#     quantities = request.form.get("quantity")
+#     print(items)
+#     print(quantities)
+#     return render_template("add_recipe.html")
 
 
 @app.route("/add_recipe", methods=['GET', 'POST'])
@@ -136,12 +137,15 @@ def add_recipe():
         recipe = {
             "recipe_name": request.form.get("recipe_name"),
             "recipe_summary": request.form.get("recipe_summary"),
+            "prep_time": request.form.get("prep_time"),
+            "cook_time": request.form.get("cook_time"),
+            "ingredients": request.form.getlist("ingredients"),
+            "method": request.form.getlist("method"),
             "uploaded_by": session["user"]
         }
         mongo.db.recipes.insert_one(recipe)
         flash("Recipe Successfully Added")
-        return redirect(url_for("profile"))
-    ingredients = []
+        return redirect(url_for("profile", username=session["user"]))
     return render_template("add_recipe.html")
 
 
