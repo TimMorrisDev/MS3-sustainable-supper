@@ -1,8 +1,12 @@
 {% extends "base.html" %}
+
 {% block content %}
 
-<h3 class="light-blue-text text-darken-4 center-align">Add Recipe</h3>
-<form class="col s12" method="POST" action="{{ url_for('add_recipe') }}">
+<h1>Edit</h1>
+
+<h3 class="light-blue-text text-darken-4 center-align">Edit Recipe</h3>
+
+<form class="col s12" method="POST" action="{{ url_for('edit_recipe', recipe_id=recipe._id) }}">
     <div class="row card-panel grey lighten-5">
 
         <!-- recipe name -->
@@ -10,14 +14,14 @@
             <div class="input-field col s12 m6">
                 <i class="fas fa-pencil-alt prefix light-blue-text text-darken-4"></i>
                 <input id="recipe_name" name="recipe_name" minlength="1" maxlength="200" type="text" class="validate"
-                    required>
+                    value="{{ recipe.recipe_name }}" required>
                 <label for="recipe_name">Recipe Name</label>
             </div>
             <!-- recipe chef -->
             <div class="input-field col s12 m6">
                 <i class="fas fa-pencil-alt prefix light-blue-text text-darken-4"></i>
                 <input id="recipe_chef" name="recipe_chef" minlength="1" maxlength="50" type="text" class="validate"
-                    required>
+                    value="{{ recipe.recipe_chef }}" required>
                 <label for="recipe_chef">Recipe Chef</label>
             </div>
         </div>
@@ -26,7 +30,7 @@
             <div class="input-field col s12">
                 <i class="fas fa-pencil-alt prefix light-blue-text text-darken-4"></i>
                 <input id="recipe_image" name="recipe_image" minlength="1" maxlength="200" type="text" class="validate"
-                    placeholder="Please provide URL for recipe image" required>
+                    placeholder="Please provide URL for recipe image" value="{{ recipe.recipe_image }}" required>
                 <label for="recipe_image">Recipe Image</label>
             </div>
         </div>
@@ -35,7 +39,8 @@
             <div class="input-field col s12">
                 <i class="fas fa-align-left prefix light-blue-text text-darken-4"></i>
                 <textarea id="recipe_summary" name="recipe_summary" minlength="1" maxlength="50"
-                    class="materialize-textarea validate" placeholder="max 50 characters" required></textarea>
+                    class="materialize-textarea validate" placeholder="max 50 characters"
+                    required>{{ recipe.recipe_summary }}</textarea>
                 <label for="recipe_summary">Recipe Summary</label>
             </div>
         </div>
@@ -45,31 +50,34 @@
             <div class="input-field col s12 m6">
                 <i class="far fa-clock prefix light-blue-text text-darken-4"></i>
                 <input id="prep_time" name="prep_time" minlength="1" maxlength="20" type="text" class="validate"
-                    pattern="[0-9]" placeholder="Input numbers only" required>
+                    placeholder="Input numbers only" value="{{ recipe.prep_time }}" required>
                 <label for="prep_time">Prep Time (mins) - Input numbers only</label>
             </div>
             <div class="input-field col s12 m6">
                 <i class="far fa-clock prefix light-blue-text text-darken-4"></i>
                 <input id="cook_time" name="cook_time" minlength="1" maxlength="20" type="text" class="validate"
-                    pattern="[0-9]" placeholder="Input numbers only" required>
+                    placeholder="Input numbers only" value="{{ recipe.cook_time }}" required>
                 <label for="cook_time">Cook Time (mins)</label>
             </div>
         </div>
         <!-- ingredients -->
         <!-- <h5>Ingredients</h5> -->
+
+        {% for ingredient in recipe.ingredients %}
         <div class="row ingredient-row valign-wrapper">
 
             <div class="input-field col s8">
                 <i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i>
 
                 <input id="ingredients" name="ingredients" type="text" class="validate"
-                    placeholder="Add Ingredient Here" required>
+                    placeholder="Add Ingredient Here" value="{{ ingredient }}" required>
                 <label for="ingredients">Ingredients</label>
             </div>
             <div class="col s4">
                 <button type="button" id="remove-ingredient" class="waves-effect waves-light btn red">Remove</button>
             </div>
         </div>
+        {% endfor %}
 
         <div class="row" id="add-ingredient-row">
             <div class="col s12">
@@ -89,20 +97,20 @@
 
         <!-- method -->
         <!-- <h5>Method</h5> -->
+        {% for step in recipe.method %}
         <div class="row method-row valign-wrapper">
-
             <div class="input-field col s8">
                 <i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i>
 
                 <textarea id="method" name="method" type="text" class="validate" placeholder="Add Step Here"
-                    required></textarea>
+                    required>{{ step }}</textarea>
                 <label for="method">Method</label>
             </div>
             <div class="col s4">
                 <button type="button" id="remove-step" class="waves-effect waves-light btn red">Remove</button>
             </div>
         </div>
-
+        {% endfor %}
         <div class="row" id="add-step-row">
             <div class="col s12">
                 <button type="button" id="add-step" class="waves-effect waves-light btn tm-dark-green-bg">Add Another
@@ -116,13 +124,21 @@
             <h5>Dietary Info</h5>
             <div class="col s12">
                 <label for="vegetarian">
+                    {% if recipe.vegetarian %}
+                    <input type="checkbox" checked="checked" name="vegetarian" id="vegetarian" />
+                    {% else %}
                     <input type="checkbox" name="vegetarian" id="vegetarian" />
+                    {% endif %}
                     <span>Vegetarian</span>
                 </label>
             </div>
             <div class="col s12">
                 <label for="vegan">
+                    {% if recipe.vegan %}
+                    <input type="checkbox" checked="checked" name="vegan" id="vegan" />
+                    {% else %}
                     <input type="checkbox" name="vegan" id="vegan" />
+                    {% endif %}
                     <span>Vegan</span>
                 </label>
             </div>

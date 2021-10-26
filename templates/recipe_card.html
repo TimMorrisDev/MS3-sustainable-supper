@@ -1,7 +1,7 @@
 <div class="row">
     <div class="card horizontal small col s12">
         <div class="card-image">
-            <img src="{{ recipe.image }}">
+            <img src="{{ recipe.recipe_image }}">
         </div>
         <div class="card-stacked">
             <div class="card-content">
@@ -22,7 +22,8 @@
                     </div>
                     {% if recipe.uploaded_by|lower == session.user|lower %}
                     <div class="col s2">
-                        <a href="" class="waves-effect waves-light btn tm-brown-bg">Edit</a>
+                        <a href="{{ url_for('edit_recipe', recipe_id=recipe._id) }}"
+                            class="waves-effect waves-light btn tm-brown-bg">Edit</a>
                     </div>
                     {% endif %}
                 </div>

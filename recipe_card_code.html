@@ -63,3 +63,13 @@
                 </div>
             </div>
         </div> -->
+
+
+
+<ul class="center-align">
+    {% for ingredient in recipe.ingredients %}
+
+    <li><strong>{{ ingredient.item.title() }}:</strong> {{ ingredient.quantity }}</li>
+
+    {% endfor %}
+</ul>
