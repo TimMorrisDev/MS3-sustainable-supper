@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="card horizontal small col s12 m8 offset-m2 l6 offset-l3">
+    <div class="card horizontal small col s12">
         <div class="card-image">
             <img src="{{ recipe.image }}">
         </div>
@@ -16,10 +16,15 @@
                         <strong>Prep:</strong> {{ recipe.prep_time }}min<br>
                         <strong>Cook:</strong> {{ recipe.cook_time }}min
                     </div>
-                    <div class="col s6">
+                    <div class="col s4">
                         <a href="{{ url_for('recipe_ingredients', recipe_id=recipe._id) }}"
-                            class="waves-effect waves-light btn tm-dark-green-bg">View Details</a>
+                            class="waves-effect waves-light btn tm-dark-green-bg">View</a>
                     </div>
+                    {% if recipe.uploaded_by|lower == session.user|lower %}
+                    <div class="col s2">
+                        <a href="" class="waves-effect waves-light btn tm-brown-bg">Edit</a>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
             <!-- <div class="card-action center-align">

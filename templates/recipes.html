@@ -9,12 +9,14 @@
     </div>
 </div> -->
 
+<div class="row">
+    <div class="col s12 m8 offset-m2 l6 offset-l3">
 
-{% for recipe in recipes %}
+        {% for recipe in recipes %}
 
-{% include "recipe_card.html" %}
+        {% include "recipe_card.html" %}
 
-<!-- <div class="row">
+        <!-- <div class="row">
     <div class="card horizontal small col s12 m8 offset-m2 l6 offset-l3">
         <div class="card-image">
             <img src="{{ recipe.image }}">
@@ -43,6 +45,9 @@
     </div>
 </div> -->
 
-{% endfor %}
+        {% endfor %}
+
+    </div>
+</div>
 
 {% endblock %}
