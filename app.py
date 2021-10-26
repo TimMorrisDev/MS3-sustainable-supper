@@ -100,7 +100,8 @@ def profile(username):
     # grab the recipes from the db
     recipes = list(mongo.db.recipes.find())
     if session["user"]:
-        return render_template("profile.html", username=username, recipes=recipes)
+        return render_template(
+            "profile.html", username=username, recipes=recipes)
 
     return redirect(url_for("login"))
 
@@ -185,6 +186,17 @@ def delete_recipe(recipe_id):
     mongo.db.recipes.remove({"_id": ObjectId(recipe_id)})
     flash("Recipe Successfully Deleted")
     return redirect(url_for("profile", username=session["user"]))
+
+
+@app.route("/add_to_favourite/<recipe_id>")
+def add_to_favourite(recipe_id):
+    recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
+    if session["user"] in recipe["user_favourite"]:
+        print("already fav")
+    else:
+        mongo.db.recipes.update({"_id": ObjectId(
+            recipe_id)}, {"$push": {"user_favourite": session["user"]}})
+    return render_template("recipe_ingredients.html", recipe=recipe)
 
 
 @app.route("/recipe_ingredients/<recipe_id>", methods=["GET", "POST"])

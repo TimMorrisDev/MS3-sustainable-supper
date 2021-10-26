@@ -37,7 +37,10 @@
             <div class="card-action center-align">
                 <a href="{{ url_for('recipe_method', recipe_id=recipe._id) }}"
                     class="waves-effect waves-light btn tm-dark-green-bg">Method</a>
+                <a href="{{ url_for('add_to_favourite', recipe_id=recipe._id) }}"
+                    class="waves-effect waves-light btn tm-dark-green-bg">Add to favourites</a>
             </div>
+
         </div>
     </div>
 </div>
