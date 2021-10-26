@@ -180,10 +180,21 @@ def edit_recipe(recipe_id):
     return render_template("edit_recipe.html", recipe=recipe)
 
 
+@app.route("/delete_recipe/<recipe_id>")
+def delete_recipe(recipe_id):
+    mongo.db.recipes.remove({"_id": ObjectId(recipe_id)})
+    flash("Recipe Successfully Deleted")
+    return redirect(url_for("profile", username=session["user"]))
+
+
 @app.route("/recipe_ingredients/<recipe_id>", methods=["GET", "POST"])
 def recipe_ingredients(recipe_id):
-    recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
-    return render_template("recipe_ingredients.html", recipe=recipe)
+    if "user" in session:
+        recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
+        return render_template("recipe_ingredients.html", recipe=recipe)
+    else:
+        flash("Please login or register to view recipe")
+        return redirect(url_for("recipes"))
 
 
 @app.route("/recipe_method/<recipe_id>", methods=["GET", "POST"])
