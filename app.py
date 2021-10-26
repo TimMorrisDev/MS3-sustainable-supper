@@ -199,8 +199,12 @@ def recipe_ingredients(recipe_id):
 
 @app.route("/recipe_method/<recipe_id>", methods=["GET", "POST"])
 def recipe_method(recipe_id):
-    recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
-    return render_template("recipe_method.html", recipe=recipe)
+    if "user" in session:
+        recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
+        return render_template("recipe_method.html", recipe=recipe)
+    else:
+        flash("Please login or register to view recipe")
+        return redirect(url_for("recipes"))
 
 
 def print_test():
