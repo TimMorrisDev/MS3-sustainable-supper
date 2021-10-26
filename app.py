@@ -147,7 +147,7 @@ def add_recipe():
             "vegan": request.form.get("vegan"),
             "uploaded_by": session["user"],
             "recipe_made_count": 0,
-            "user_favourite":[]
+            "user_favourite": []
         }
         mongo.db.recipes.insert_one(recipe)
         flash("Recipe Successfully Added")
