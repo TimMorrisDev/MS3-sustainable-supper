@@ -136,12 +136,18 @@ def add_recipe():
     if request.method == "POST":
         recipe = {
             "recipe_name": request.form.get("recipe_name"),
+            "recipe_chef": request.form.get("recipe_chef"),
+            "recipe_image": request.form.get("recipe_image"),
             "recipe_summary": request.form.get("recipe_summary"),
             "prep_time": request.form.get("prep_time"),
             "cook_time": request.form.get("cook_time"),
             "ingredients": request.form.getlist("ingredients"),
             "method": request.form.getlist("method"),
-            "uploaded_by": session["user"]
+            "vegetarian": request.form.get("vegetarian"),
+            "vegan": request.form.get("vegan"),
+            "uploaded_by": session["user"],
+            "recipe_made_count": 0,
+            "user_favourite":[]
         }
         mongo.db.recipes.insert_one(recipe)
         flash("Recipe Successfully Added")
