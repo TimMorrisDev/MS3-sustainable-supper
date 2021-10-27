@@ -31,6 +31,19 @@
         {% endfor %}
 
     </div>
+
+    <div class="col s6">
+        <h2 class="center-align">Favourite Recipes</h2>
+        {% for recipe in recipes %}
+        {% if session.user|lower in recipe.user_favourite %}
+
+        {% include "recipe_card.html" %}
+
+        {% endif %}
+
+        {% endfor %}
+
+    </div>
 </div>
 
 {% endblock %}

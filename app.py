@@ -5,7 +5,6 @@ from flask import (
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
-# from werkzeug.security import generate_password_hash, check_password_hash
 if os.path.exists("env.py"):
     import env
 
@@ -73,10 +72,6 @@ def login():
                 session["user"] = request.form.get("username").lower()
                 session["admin"] = mongo.db.users.find_one(
                     {"username": session["user"]})["admin"]
-                #session["userId"] = mongo.db.users.find_one(
-                #    {"username": session["user"]}[ObjectId("_id")])
-                # session["userId"] = ObjectId(mongo.db.users.find_one(
-                #     {"username": session["user"]})["_id"])
                 flash("Welcome, {}".format(request.form.get("username")))
                 return redirect(url_for("profile", username=session["user"]))
             else:
@@ -194,9 +189,13 @@ def recipe_favourite(recipe_id):
     if session["user"] in recipe["user_favourite"]:
         mongo.db.recipes.update({"_id": ObjectId(
             recipe_id)}, {"$pull": {"user_favourite": session["user"]}})
+        mongo.db.users.update({"username": session["user"]}, {
+            "$pull": {"favourite_recipes": recipe["_id"]}})
     else:
         mongo.db.recipes.update({"_id": ObjectId(
             recipe_id)}, {"$push": {"user_favourite": session["user"]}})
+        mongo.db.users.update({"username": session["user"]}, {
+            "$push": {"favourite_recipes": recipe["_id"]}})
     return redirect(url_for("recipe_ingredients", recipe_id=recipe["_id"]))
 
 
