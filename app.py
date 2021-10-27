@@ -73,8 +73,8 @@ def login():
                 session["user"] = request.form.get("username").lower()
                 session["admin"] = mongo.db.users.find_one(
                     {"username": session["user"]})["admin"]
-                # session["userId"] = mongo.db.users.find_one(
-                #     {"username": session["user"]}[str(ObjectId())])
+                #session["userId"] = mongo.db.users.find_one(
+                #    {"username": session["user"]}[ObjectId("_id")])
                 # session["userId"] = ObjectId(mongo.db.users.find_one(
                 #     {"username": session["user"]})["_id"])
                 flash("Welcome, {}".format(request.form.get("username")))
@@ -188,15 +188,16 @@ def delete_recipe(recipe_id):
     return redirect(url_for("profile", username=session["user"]))
 
 
-@app.route("/add_to_favourite/<recipe_id>")
-def add_to_favourite(recipe_id):
+@app.route("/recipe_favourite/<recipe_id>")
+def recipe_favourite(recipe_id):
     recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
     if session["user"] in recipe["user_favourite"]:
-        print("already fav")
+        mongo.db.recipes.update({"_id": ObjectId(
+            recipe_id)}, {"$pull": {"user_favourite": session["user"]}})
     else:
         mongo.db.recipes.update({"_id": ObjectId(
             recipe_id)}, {"$push": {"user_favourite": session["user"]}})
-    return render_template("recipe_ingredients.html", recipe=recipe)
+    return redirect(url_for("recipe_ingredients", recipe_id=recipe["_id"]))
 
 
 @app.route("/recipe_ingredients/<recipe_id>", methods=["GET", "POST"])
