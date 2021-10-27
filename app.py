@@ -207,7 +207,7 @@ def recipe_ingredients(recipe_id):
         return render_template("recipe_ingredients.html", recipe=recipe)
     else:
         flash("Please login or register to view recipe")
-        return redirect(url_for("recipes"))
+        return redirect(url_for("login"))
 
 
 @app.route("/recipe_method/<recipe_id>", methods=["GET", "POST"])
@@ -217,7 +217,7 @@ def recipe_method(recipe_id):
         return render_template("recipe_method.html", recipe=recipe)
     else:
         flash("Please login or register to view recipe")
-        return redirect(url_for("recipes"))
+        return redirect(url_for("login"))
 
 
 def print_test():
