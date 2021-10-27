@@ -48,6 +48,19 @@
     </div>
 </div>
 
+<div class="row">
+    <h1 class="center-align">Top 3 recipes</h1>
+    <div class="col s12 m8 offset-m2 l6 offset-l3">
+
+        {% for recipe in top_recipes %}
+
+        {% include "recipe_card.html" %}
+
+        {% endfor %}
+
+    </div>
+</div>
+
 
 <!-- <div class="carousel carousel-slider center">
     <div class="carousel-fixed-item center">

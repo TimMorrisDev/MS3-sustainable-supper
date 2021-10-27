@@ -20,7 +20,8 @@ mongo = PyMongo(app)
 
 @app.route("/")
 def index():
-    return render_template('index.html')
+    top_recipes = mongo.db.recipes.find().sort("user_favourite")[:3]
+    return render_template('index.html', top_recipes=top_recipes)
 
 
 @app.route("/recipes")
