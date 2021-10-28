@@ -89,13 +89,11 @@ body {
 }
 
 .card.horizontal .card-image {
-    max-width: 30%;
+    width: 30%;
 }
 
-.card-image img {
-    height: 100%;
+.card.horizontal.small .card-image img {
     width: 100%;
-    overflow: hidden;
     object-fit: cover;
 }
 
