@@ -4,6 +4,7 @@ from flask import (
     redirect, request, session, url_for)
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
+import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 if os.path.exists("env.py"):
     import env
@@ -175,7 +176,7 @@ def edit_recipe(recipe_id):
             ingredient["preparation"] = p
             ingredient_copy = ingredient.copy()
             ingredients.append(ingredient_copy)
-        
+
         update = {
             "recipe_name": request.form.get("recipe_name"),
             "recipe_chef": request.form.get("recipe_chef"),
@@ -238,6 +239,16 @@ def recipe_method(recipe_id):
     else:
         flash("Please login or register to view recipe")
         return redirect(url_for("login"))
+
+
+@app.route("/recipe_made/<recipe_id>", methods=["GET", "POST"])
+def recipe_made(recipe_id):
+    recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
+    stamp = datetime.datetime.utcnow()
+    mongo.db.recipes.update({"_id": ObjectId(
+            recipe_id)}, {"$push": {"recipe_made_count": {
+                "user": session["user"], "time": stamp}}})
+    return redirect(url_for("recipe_ingredients", recipe_id=recipe["_id"]))
 
 
 def print_test():
