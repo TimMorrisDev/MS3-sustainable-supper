@@ -31,7 +31,7 @@
             </div>
             <div class="card-action center-align">
                 <a href="{{ url_for('recipe_ingredients', recipe_id=recipe._id) }}"
-                    class="waves-effect waves-light btn-large tm-dark-green-bg">Ingredients</a>
+                    class="waves-effect waves-light btn tm-dark-green-bg">Ingredients</a>
                 {% if session.user in recipe.user_favourite %}
                 <a href="{{ url_for('recipe_favourite', recipe_id=recipe._id) }}"
                     class="waves-effect waves-light btn tm-brown-bg">Remove from favourites</a>

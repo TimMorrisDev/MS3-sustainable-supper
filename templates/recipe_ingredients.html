@@ -24,7 +24,7 @@
                 <ul class="center-align">
                     {% for ingredient in recipe.ingredients %}
 
-                    <li><strong>{{ ingredient }}</strong></li>
+                    <li><strong>{{ ingredient.item.title() }}</strong>, {{ ingredient.preparation }}</li>
 
                     {% endfor %}
                 </ul>
