@@ -245,9 +245,13 @@ def recipe_method(recipe_id):
 def recipe_made(recipe_id):
     recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
     stamp = datetime.datetime.utcnow()
-    mongo.db.recipes.update({"_id": ObjectId(
-            recipe_id)}, {"$push": {"recipe_made_count": {
-                "user": session["user"], "time": stamp}}})
+    recipe_made_count = recipe["recipe_made_count"]
+    if session["user"] in recipe_made_count["user"].values() and recipe_made_count["time"] > stamp - 24*60*60 * 1000:
+        mongo.db.recipes.update({"_id": ObjectId(
+                recipe_id)}, {"$push": {"recipe_made_count": {
+                    "user": session["user"], "time": stamp}}})
+    else:
+        print("too soon")
     return redirect(url_for("recipe_ingredients", recipe_id=recipe["_id"]))
 
 
