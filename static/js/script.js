@@ -8,7 +8,7 @@ $(document).ready(function () {
     });
 
     $('#add-ingredient').on('click', function () {
-        $('<div class="row ingredient-row valign-wrapper"><div class="input-field col s8"><i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i><input id="ingredients" name="ingredients" type="text" class="validate" required><label for="ingredients">Add Ingredient Here</label></div><div class="col s4"><button type="button" id="remove-ingredient" class="waves-effect waves-light btn red">Remove</button></div></div>').insertBefore('#add-ingredient-row');
+        $('<div class="row ingredient-row valign-wrapper"><div class="input-field col s2"><i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i><input id="ingredients" name="ingredients" type="text" class="validate"placeholder="Add Ingredient Here" required><label for="ingredients">Ingredients</label></div><div class="input-field col s2"><input id="quantity" name="quantity" type="text" class="validate" placeholder="Add Quantity Here"required><label for="quantity">Quantities</label></div><div class="input-field col s5"><input id="ingredient-prep" name="ingredient-prep" type="text" class="validate"placeholder="Preparation instructions" required><label for="ingredient-prep">Preparation instructions</label></div><div class="col s3"><button type="button" id="remove-ingredient" class="waves-effect waves-light btn red">Remove</button></div></div>').insertBefore('#add-ingredient-row');
     });
 
     $('#remove-ingredient').on('click', function () {

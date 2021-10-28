@@ -131,6 +131,18 @@ ingredients = []
 @app.route("/add_recipe", methods=['GET', 'POST'])
 def add_recipe():
     if request.method == "POST":
+        ingredient_list = request.form.getlist("ingredients")
+        quantity_list = request.form.getlist("quantity")
+        preparation_list = request.form.getlist("ingredient-prep")
+        ingredients = []
+        ingredient = {"item": "", "quantity": "", "preparation": ""}
+        for i, x, p in zip(ingredient_list, quantity_list, preparation_list):
+            ingredient["item"] = i
+            ingredient["quantity"] = x
+            ingredient["preparation"] = p
+            ingredient_copy = ingredient.copy()
+            ingredients.append(ingredient_copy)
+
         recipe = {
             "recipe_name": request.form.get("recipe_name"),
             "recipe_chef": request.form.get("recipe_chef"),
@@ -138,12 +150,12 @@ def add_recipe():
             "recipe_summary": request.form.get("recipe_summary"),
             "prep_time": request.form.get("prep_time"),
             "cook_time": request.form.get("cook_time"),
-            "ingredients": request.form.getlist("ingredients"),
+            "ingredients": ingredients,
             "method": request.form.getlist("method"),
             "vegetarian": request.form.get("vegetarian"),
             "vegan": request.form.get("vegan"),
             "uploaded_by": session["user"],
-            "recipe_made_count": 0,
+            "recipe_made_count": [],
             "user_favourite": []
         }
         mongo.db.recipes.insert_one(recipe)
@@ -167,8 +179,6 @@ def edit_recipe(recipe_id):
             "vegetarian": request.form.get("vegetarian"),
             "vegan": request.form.get("vegan"),
             "uploaded_by": session["user"],
-            "recipe_made_count": 0,
-            "user_favourite": []
         }
         mongo.db.recipes.update({"_id": ObjectId(recipe_id)}, update)
         flash("Recipe Successfully Updated")
