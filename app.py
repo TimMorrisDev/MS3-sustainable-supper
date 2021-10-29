@@ -2,7 +2,7 @@ import os
 from flask import (
     Flask, flash, render_template,
     redirect, request, session, url_for)
-from flask_pymongo import PyMongo
+from flask_pymongo import PyMongo, pymongo
 from bson.objectid import ObjectId
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -21,8 +21,10 @@ mongo = PyMongo(app)
 
 @app.route("/")
 def index():
-    top_recipes = mongo.db.recipes.find().sort("user_favourite")[:3]
-    return render_template('index.html', top_recipes=top_recipes)
+    top_recipes = mongo.db.recipes.find().sort("user_favourite", pymongo.DESCENDING)[:3]
+    most_made = mongo.db.recipes.find().sort("recipe_made_count", pymongo.DESCENDING)[:3]
+    return render_template(
+        'index.html', top_recipes=top_recipes, most_made=most_made)
 
 
 @app.route("/recipes")
@@ -254,7 +256,10 @@ def recipe_made(recipe_id):
                 recipe_id)}, {"$push": {"recipe_made_count": {
                     "user": session["user"], "time": now}}})
     else:
-        flash("Sorry, you already recorded making this today")
+        #flash("Sorry, you already recorded making this today")
+        mongo.db.recipes.update({"_id": ObjectId(
+                recipe_id)}, {"$push": {"recipe_made_count": {
+                    "user": session["user"], "time": now}}})
     return redirect(url_for("recipe_ingredients", recipe_id=recipe["_id"]))
 
 

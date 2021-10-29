@@ -49,10 +49,22 @@
 </div>
 
 <div class="row">
-    <h1 class="center-align">Top 3 recipes</h1>
+    <h2 class="center-align">Community Favourites</h2>
     <div class="col s12 m8 offset-m2 l6 offset-l3">
 
         {% for recipe in top_recipes %}
+
+        {% include "recipe_card.html" %}
+
+        {% endfor %}
+
+    </div>
+</div>
+<div class="row">
+    <h2 class="center-align">Most Made</h2>
+    <div class="col s12 m8 offset-m2 l6 offset-l3">
+
+        {% for recipe in most_made %}
 
         {% include "recipe_card.html" %}
 
