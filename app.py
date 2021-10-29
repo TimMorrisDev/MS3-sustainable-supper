@@ -21,10 +21,19 @@ mongo = PyMongo(app)
 
 @app.route("/")
 def index():
-    top_recipes = mongo.db.recipes.find().sort("user_favourite", pymongo.DESCENDING)[:3]
-    most_made = mongo.db.recipes.find().sort("recipe_made_count", pymongo.DESCENDING)[:3]
+    top_recipes = mongo.db.recipes.find().sort(
+        "user_favourite", pymongo.DESCENDING)[:3]
+    most_made = mongo.db.recipes.find().sort(
+        "recipe_made_count", pymongo.DESCENDING)[:3]
     return render_template(
         'index.html', top_recipes=top_recipes, most_made=most_made)
+
+
+@app.route("/search", methods=["GET", "POST"])
+def search():
+    query = request.form.get("query")
+    recipes = list(mongo.db.recipes.find({"$text": {"$search": query}}))
+    return render_template("recipes.html", recipes=recipes)
 
 
 @app.route("/recipes")
@@ -250,7 +259,8 @@ def recipe_made(recipe_id):
     delta = timedelta(days=1)
     past = now-delta
     recipe_made_count = recipe["recipe_made_count"]
-    recipe_made_users = [u.items() for u in recipe_made_count if u["user"] == session["user"] and u["time"] > past]
+    recipe_made_users = [u.items() for u in recipe_made_count if u[
+        "user"] == session["user"] and u["time"] > past]
     if not recipe_made_users:
         mongo.db.recipes.update({"_id": ObjectId(
                 recipe_id)}, {"$push": {"recipe_made_count": {
