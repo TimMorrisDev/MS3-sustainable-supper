@@ -4,7 +4,7 @@ from flask import (
     redirect, request, session, url_for)
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
-import datetime
+from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 if os.path.exists("env.py"):
     import env
@@ -244,14 +244,17 @@ def recipe_method(recipe_id):
 @app.route("/recipe_made/<recipe_id>", methods=["GET", "POST"])
 def recipe_made(recipe_id):
     recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
-    stamp = datetime.datetime.utcnow()
+    now = datetime.now()
+    delta = timedelta(days=1)
+    past = now-delta
     recipe_made_count = recipe["recipe_made_count"]
-    if session["user"] in recipe_made_count["user"].values() and recipe_made_count["time"] > stamp - 24*60*60 * 1000:
+    recipe_made_users = [u.items() for u in recipe_made_count if u["user"] == session["user"] and u["time"] > past]
+    if not recipe_made_users:
         mongo.db.recipes.update({"_id": ObjectId(
                 recipe_id)}, {"$push": {"recipe_made_count": {
-                    "user": session["user"], "time": stamp}}})
+                    "user": session["user"], "time": now}}})
     else:
-        print("too soon")
+        flash("Sorry, you already recorded making this today")
     return redirect(url_for("recipe_ingredients", recipe_id=recipe["_id"]))
 
 
