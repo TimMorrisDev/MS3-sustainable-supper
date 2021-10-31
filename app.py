@@ -38,8 +38,12 @@ def search():
 
 @app.route("/recipes")
 def recipes():
-    recipes = list(mongo.db.recipes.find())
-    return render_template("recipes.html", recipes=recipes)
+    if "user" in session:
+        recipes = list(mongo.db.recipes.find())
+        return render_template("recipes.html", recipes=recipes)
+    else:
+        flash("Please login or register to view recipes")
+        return redirect(url_for("login"))
 
 
 @app.route("/register", methods=["GET", "POST"])

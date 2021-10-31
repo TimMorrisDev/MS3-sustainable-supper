@@ -69,11 +69,12 @@ body {
 
 .slider-row {
     position: absolute;
-    bottom: 0px;
-    border: 1px solid black;
+    bottom: 80px;
+    /* border: 1px solid black; */
     height: 50px;
     width: 100%;
     z-index: 997;
+    padding-left: 15px;
 }
 
 .btn:hover{
@@ -121,6 +122,26 @@ max-height: 20%;
     opacity: 90%;
 }
 
+.opacity-80 {
+    opacity: 80%;
+}
+
 .r10 {
     border-radius: 10px !important;
+}
+
+.landing-title {
+    border: 1px solid black;
+    padding: 5px;
+    text-shadow: 5px 5px 8px black;
+    box-shadow: 5px 5px 8px black;
+    margin-left: 5px;
+}
+
+.landing-summary {
+    border: 1px solid black;
+    padding: 5px;
+    text-shadow: 5px 5px 8px black;
+    box-shadow: 5px 5px 8px black;
+    margin-left: 5px;
 }
