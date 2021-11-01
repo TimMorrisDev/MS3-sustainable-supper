@@ -3,69 +3,29 @@
 
 <div class="row">
     <div class="col s12 m8 offset-m2">
-        <div class="card-panel">
-            <h3 class="center-align light-blue-text text-darken-4">
-                {{ username }}'s Profile
-            </h3>
-        </div>
+
+        <h2 class="center-align white-text text-shadow">
+            {{ username }}'s Profile
+        </h2>
+
     </div>
 </div>
 <div class="row">
-    <div class="col s12 center-align">
+    <div class="col s12 m6 center-align">
         <a href="{{ url_for('add_recipe') }}" action="POST" class="waves-effect waves-light btn tm-dark-green-bg">Add
             Recipe</a>
     </div>
-    <div class="col s12 center-align">
-        <a class="waves-effect waves-light btn tm-dark-green-bg modal-trigger" href="#user_ingredients_modal">Update
+    <div class="col s12 m6 center-align">
+        <a class="waves-effect waves-light btn tm-dark-green-bg modal-trigger" href="#user_ingredients_modal"
+            href="{{ url_for('user_ingredients', username=session['user']) }}">Update
             your
             ingredients</a>
     </div>
 </div>
 
-<!-- Modal Structure -->
-<div id="user_ingredients_modal" class="modal">
-    <div class="modal-content">
-        <div id="user-ingredient-row-parent">
-            <div class="row user-ingredient-row valign-wrapper">
-
-                <div class="input-field col s8">
-
-                    <i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i>
-                    <input id="user-ingredients" name="user-ingredients" type="text" class="validate"
-                        placeholder="Add Ingredient Here" required>
-                    <label for="user-ingredients">Ingredients</label>
-
-                </div>
-
-                <div class="col s3">
-                    <button type="button" id="remove-user-ingredient"
-                        class="waves-effect waves-light btn red">Remove</button>
-                </div>
-            </div>
-
-            <div class="row" id="add-user-ingredient-row">
-                <div class="col s12">
-                    <button type="button" id="add-user-ingredient"
-                        class="waves-effect waves-light btn tm-dark-green-bg">Add
-                        Another
-                        Ingredient</button>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <div class="modal-footer">
-        <div class="center-align">
-            <a href="{{ url_for('user_ingredients') }}"
-                class="waves-effect waves-light btn btn-large tm-dark-green-bg">Update</a>
-        </div>
-
-    </div>
-</div>
-
 <div class="row">
     <div class="col s6">
-        <h2 class="center-align">Your Recipes</h2>
+        <h3 class="center-align">Uploaded Recipes</h3>
         {% for recipe in recipes %}
         {% if recipe.uploaded_by|lower == session.user|lower %}
 
@@ -78,7 +38,7 @@
     </div>
 
     <div class="col s6">
-        <h2 class="center-align">Favourite Recipes</h2>
+        <h3 class="center-align">Favourite Recipes</h3>
         {% for recipe in recipes %}
         {% if session.user|lower in recipe.user_favourite %}
 
@@ -90,5 +50,78 @@
 
     </div>
 </div>
+
+
+<!-- Modal Structure -->
+<div id="user_ingredients_modal" class="modal">
+    <div class="modal-content">
+        <form class="col s12" method="POST" action="{{ url_for('user_ingredients', username=session['user']) }}">
+            <div id="user-ingredient-row-parent">
+
+                {% if user_ingredients != [] %}
+
+                {% for ingredient in user_ingredients %}
+
+                <div class="row user-ingredient-row valign-wrapper">
+
+                    <div class="input-field col s8">
+
+                        <i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i>
+                        <input id="user-ingredients" name="user-ingredients" type="text" class="validate"
+                            placeholder="Add Ingredient Here" value="{{ ingredient }}" required>
+                        <label for="user-ingredients">Ingredients</label>
+
+                    </div>
+
+                    <div class="col s3">
+                        <button type="button" id="remove-user-ingredient"
+                            class="waves-effect waves-light btn red">Remove</button>
+                    </div>
+                </div>
+
+                {% endfor %}
+
+                {% else %}
+
+                <div class="row user-ingredient-row valign-wrapper">
+
+                    <div class="input-field col s8">
+
+                        <i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i>
+                        <input id="user-ingredients" name="user-ingredients" type="text" class="validate"
+                            placeholder="Add Ingredient Here" required>
+                        <label for="user-ingredients">Ingredients</label>
+
+                    </div>
+
+                    <div class="col s3">
+                        <button type="button" id="remove-user-ingredient"
+                            class="waves-effect waves-light btn red">Remove</button>
+                    </div>
+                </div>
+
+                {% endif %}
+
+                <div class="row" id="add-user-ingredient-row">
+                    <div class="col s12">
+                        <button type="button" id="add-user-ingredient"
+                            class="waves-effect waves-light btn tm-brown-bg">Add
+                            Another
+                            Ingredient</button>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+    <div class="modal-footer">
+        <div class="center-align">
+            <button type="submit" class="waves-effect waves-light btn btn-large tm-dark-green-bg">Update</a>
+        </div>
+
+    </div>
+    </form>
+</div>
+
+
 
 {% endblock %}

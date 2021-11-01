@@ -109,11 +109,13 @@ def profile(username):
     # grab the session user's username from db
     username = mongo.db.users.find_one(
         {"username": session["user"]})["username"]
+    user_ingredients = mongo.db.users.find_one(
+        {"username": session["user"]})["user_ingredients"]
     # grab the recipes from the db
     recipes = list(mongo.db.recipes.find())
     if session["user"]:
         return render_template(
-            "profile.html", username=username, recipes=recipes)
+            "profile.html", username=username, recipes=recipes, user_ingredients=user_ingredients)
 
     return redirect(url_for("login"))
 
@@ -127,9 +129,14 @@ def logout():
     return redirect(url_for("login"))
 
 
-@app.route("/user_ingredients", methods=["GET", "POST"])
-def user_ingredients():
-    return render_template("user_ingredients.html")
+@app.route("/user_ingredients/<username>", methods=["GET", "POST"])
+def user_ingredients(username):
+    if request.method == "POST":
+        ingredients = request.form.getlist("user-ingredients")
+        mongo.db.users.update({"username": username}, {
+            "$set": {"user_ingredients": ingredients}})
+        return redirect(url_for("profile", username=username))
+    return redirect(url_for("profile", username=username))
 
 
 @app.route("/admin")
