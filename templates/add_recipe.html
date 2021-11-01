@@ -57,33 +57,36 @@
         </div>
         <!-- ingredients -->
         <!-- <h5>Ingredients</h5> -->
-        <div class="row ingredient-row valign-wrapper">
+        <div id="ingredient-row-parent">
+            <div class="row ingredient-row valign-wrapper">
 
-            <div class="input-field col s2">
+                <div class="input-field col s2">
 
-                <i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i>
-                <input id="ingredients" name="ingredients" type="text" class="validate"
-                    placeholder="Add Ingredient Here" required>
-                <label for="ingredients">Ingredients</label>
+                    <i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i>
+                    <input id="ingredients" name="ingredients" type="text" class="validate"
+                        placeholder="Add Ingredient Here" required>
+                    <label for="ingredients">Ingredients</label>
 
+                </div>
+                <div class="input-field col s2">
+
+                    <input id="ingredient-prep" name="ingredient-prep" type="text" class="validate"
+                        placeholder="Preparation instructions">
+                    <label for="ingredient-prep">Preparation instructions</label>
+
+                </div>
+                <div class="col s3">
+                    <button type="button" id="remove-ingredient"
+                        class="waves-effect waves-light btn red">Remove</button>
+                </div>
             </div>
-            <div class="input-field col s2">
 
-                <input id="ingredient-prep" name="ingredient-prep" type="text" class="validate"
-                    placeholder="Preparation instructions">
-                <label for="ingredient-prep">Preparation instructions</label>
-
-            </div>
-            <div class="col s3">
-                <button type="button" id="remove-ingredient" class="waves-effect waves-light btn red">Remove</button>
-            </div>
-        </div>
-
-        <div class="row" id="add-ingredient-row">
-            <div class="col s12">
-                <button type="button" id="add-ingredient" class="waves-effect waves-light btn tm-dark-green-bg">Add
-                    Another
-                    Ingredient</button>
+            <div class="row" id="add-ingredient-row">
+                <div class="col s12">
+                    <button type="button" id="add-ingredient" class="waves-effect waves-light btn tm-dark-green-bg">Add
+                        Another
+                        Ingredient</button>
+                </div>
             </div>
         </div>
 
@@ -97,24 +100,27 @@
 
         <!-- method -->
         <!-- <h5>Method</h5> -->
-        <div class="row method-row valign-wrapper">
+        <div id="method-row-parent">
+            <div class="row method-row valign-wrapper">
 
-            <div class="input-field col s8">
-                <i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i>
+                <div class="input-field col s8">
+                    <i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i>
 
-                <textarea id="method" name="method" type="text" class="validate" placeholder="Add Step Here"
-                    required></textarea>
-                <label for="method">Method</label>
+                    <textarea id="method" name="method" type="text" class="validate" placeholder="Add Step Here"
+                        required></textarea>
+                    <label for="method">Method</label>
+                </div>
+                <div class="col s4">
+                    <button type="button" id="remove-step" class="waves-effect waves-light btn red">Remove</button>
+                </div>
             </div>
-            <div class="col s4">
-                <button type="button" id="remove-step" class="waves-effect waves-light btn red">Remove</button>
-            </div>
-        </div>
 
-        <div class="row" id="add-step-row">
-            <div class="col s12">
-                <button type="button" id="add-step" class="waves-effect waves-light btn tm-dark-green-bg">Add Another
-                    Step</button>
+            <div class="row" id="add-step-row">
+                <div class="col s12">
+                    <button type="button" id="add-step" class="waves-effect waves-light btn tm-dark-green-bg">Add
+                        Another
+                        Step</button>
+                </div>
             </div>
         </div>
 
@@ -147,6 +153,7 @@
         </div>
     </div>
 </form>
+
 
 
 {% endblock %}

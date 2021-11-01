@@ -61,37 +61,40 @@
         <!-- ingredients -->
         <!-- <h5>Ingredients</h5> -->
 
-        {% for ingredient in recipe.ingredients %}
-        <div class="row ingredient-row valign-wrapper">
+        <div id="ingredient-row-parent">
 
-            <div class="input-field col s2">
-                <i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i>
-                <input id="ingredients" name="ingredients" type="text" class="validate"
-                    placeholder="Add Ingredient Here" value="{{ ingredient.item }}" required>
-                <label for="ingredients">Ingredients</label>
+            {% for ingredient in recipe.ingredients %}
+            <div class="row ingredient-row valign-wrapper">
+
+                <div class="input-field col s2">
+                    <i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i>
+                    <input id="ingredients" name="ingredients" type="text" class="validate"
+                        placeholder="Add Ingredient Here" value="{{ ingredient.item }}" required>
+                    <label for="ingredients">Ingredients</label>
+                </div>
+
+                <div class="input-field col s5">
+
+                    <input id="ingredient-prep" name="ingredient-prep" type="text" class="validate"
+                        placeholder="Preparation instructions" value="{{ ingredient.preparation }}">
+                    <label for="ingredient-prep">Preparation instructions</label>
+                </div>
+                <div class="col s3">
+                    <button type="button" id="remove-ingredient"
+                        class="waves-effect waves-light btn red">Remove</button>
+                </div>
             </div>
 
-            <div class="input-field col s5">
+            {% endfor %}
 
-                <input id="ingredient-prep" name="ingredient-prep" type="text" class="validate"
-                    placeholder="Preparation instructions" value="{{ ingredient.preparation }}">
-                <label for="ingredient-prep">Preparation instructions</label>
-            </div>
-            <div class="col s3">
-                <button type="button" id="remove-ingredient" class="waves-effect waves-light btn red">Remove</button>
+            <div class="row" id="add-ingredient-row">
+                <div class="col s12">
+                    <button type="button" id="add-ingredient" class="waves-effect waves-light btn tm-dark-green-bg">Add
+                        Another
+                        Ingredient</button>
+                </div>
             </div>
         </div>
-
-        {% endfor %}
-
-        <div class="row" id="add-ingredient-row">
-            <div class="col s12">
-                <button type="button" id="add-ingredient" class="waves-effect waves-light btn tm-dark-green-bg">Add
-                    Another
-                    Ingredient</button>
-            </div>
-        </div>
-
 
         <!-- <div class="input-field col s6 m5">
                 <textarea id="quantity" name="quantity" minlength="1" maxlength="50" type="text" class="validate"
@@ -102,24 +105,28 @@
 
         <!-- method -->
         <!-- <h5>Method</h5> -->
-        {% for step in recipe.method %}
-        <div class="row method-row valign-wrapper">
-            <div class="input-field col s8">
-                <i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i>
+        <div id="method-row-parent">
 
-                <textarea id="method" name="method" type="text" class="validate" placeholder="Add Step Here"
-                    required>{{ step }}</textarea>
-                <label for="method">Method</label>
+            {% for step in recipe.method %}
+            <div class="row method-row valign-wrapper">
+                <div class="input-field col s8">
+                    <i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i>
+
+                    <textarea id="method" name="method" type="text" class="validate" placeholder="Add Step Here"
+                        required>{{ step }}</textarea>
+                    <label for="method">Method</label>
+                </div>
+                <div class="col s4">
+                    <button type="button" id="remove-step" class="waves-effect waves-light btn red">Remove</button>
+                </div>
             </div>
-            <div class="col s4">
-                <button type="button" id="remove-step" class="waves-effect waves-light btn red">Remove</button>
-            </div>
-        </div>
-        {% endfor %}
-        <div class="row" id="add-step-row">
-            <div class="col s12">
-                <button type="button" id="add-step" class="waves-effect waves-light btn tm-dark-green-bg">Add Another
-                    Step</button>
+            {% endfor %}
+            <div class="row" id="add-step-row">
+                <div class="col s12">
+                    <button type="button" id="add-step" class="waves-effect waves-light btn tm-dark-green-bg">Add
+                        Another
+                        Step</button>
+                </div>
             </div>
         </div>
 

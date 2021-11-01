@@ -127,12 +127,14 @@ def logout():
     return redirect(url_for("login"))
 
 
+@app.route("/user_ingredients", methods=["GET", "POST"])
+def user_ingredients():
+    return render_template("user_ingredients.html")
+
+
 @app.route("/admin")
 def admin():
     return render_template('admin.html')
-
-
-ingredients = []
 
 
 # @app.route("/add_ingredient", methods=['GET', 'POST'])
