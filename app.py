@@ -131,26 +131,24 @@ def logout():
 
 @app.route("/user_ingredients/<username>", methods=["GET", "POST"])
 def user_ingredients(username):
+    user_ingredients = mongo.db.users.find_one(
+        {"username": session["user"]})["user_ingredients"]
+    return render_template("user_ingredients.html", username=username, user_ingredients=user_ingredients)
+
+
+@app.route("/update_ingredients/<username>", methods=["GET", "POST"])
+def update_ingredients(username):
     if request.method == "POST":
         ingredients = request.form.getlist("user-ingredients")
         mongo.db.users.update({"username": username}, {
             "$set": {"user_ingredients": ingredients}})
-        return redirect(url_for("profile", username=username))
-    return redirect(url_for("profile", username=username))
+        return redirect(url_for("user_ingredients", username=username))
+    return redirect(url_for("user_ingredients", username=username))
 
 
 @app.route("/admin")
 def admin():
     return render_template('admin.html')
-
-
-# @app.route("/add_ingredient", methods=['GET', 'POST'])
-# def add_ingredient():
-#     items = request.form.get("item").readlines()
-#     quantities = request.form.get("quantity")
-#     print(items)
-#     print(quantities)
-#     return render_template("add_recipe.html")
 
 
 @app.route("/add_recipe", methods=['GET', 'POST'])
