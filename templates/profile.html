@@ -32,36 +32,39 @@
                         class="waves-effect waves-light btn tm-dark-green-bg">Add</a></h3>
             </div>
         </div>
-        <ul class="tabs">
-            <li class="tab col s6"><a class="active" href="#favourite_recipes_tab">Favourites</a></li>
-            <li class="tab col s6"><a href="#uploaded_recipes_tab">Uploaded</a></li>
-        </ul>
+        <div class="row">
+            <div class="col s12">
+                <ul class="tabs">
+                    <li class="tab col s6"><a class="active" href="#favourite_recipes_tab">Favourites</a></li>
+                    <li class="tab col s6"><a href="#uploaded_recipes_tab">Uploaded</a></li>
+                </ul>
 
-        <div id="favourite_recipes_tab" class="col s12">
+            </div>
+            <div id="favourite_recipes_tab" class="col s12">
+                {% for recipe in recipes %}
+                {% if username|lower in recipe.user_favourite %}
 
-            {% for recipe in recipes %}
-            {% if session.user|lower in recipe.user_favourite %}
+                {% include "recipe_card.html" %}
 
-            {% include "recipe_card.html" %}
+                {% endif %}
 
-            {% endif %}
+                {% endfor %}
 
-            {% endfor %}
+            </div>
+
+            <div id="uploaded_recipes_tab" class="col s12">
+
+                {% for recipe in recipes %}
+                {% if recipe.uploaded_by|lower == username|lower %}
+
+                {% include "recipe_card.html" %}
+
+                {% endif %}
+
+                {% endfor %}
+            </div>
+
         </div>
-
-        <div id="uploaded_recipes_tab" class="col s12">
-
-            {% for recipe in recipes %}
-            {% if recipe.uploaded_by|lower == session.user|lower %}
-
-            {% include "recipe_card.html" %}
-
-            {% endif %}
-
-            {% endfor %}
-        </div>
-
-
 
 
     </div>

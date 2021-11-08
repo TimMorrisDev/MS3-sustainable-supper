@@ -22,9 +22,9 @@ mongo = PyMongo(app)
 @app.route("/")
 def index():
     top_recipes = mongo.db.recipes.find().sort(
-        "user_favourite", pymongo.DESCENDING)[:3]
+        "user_favourite", pymongo.DESCENDING).limit(3)
     most_made = mongo.db.recipes.find().sort(
-        "recipe_made_count", pymongo.DESCENDING)[:3]
+        "recipe_made_count", pymongo.DESCENDING).limit(3)
     return render_template(
         'index.html', top_recipes=top_recipes, most_made=most_made)
 
@@ -62,8 +62,10 @@ def register():
             "password": generate_password_hash(request.form.get("password")),
             "email": request.form.get("email").lower(),
             "user_recipes": [],
-            "saved_recipes": [],
+            "favourite_recipes": [],
             "admin": False,
+            "user_ingredients": []
+
         }
         mongo.db.users.insert_one(register)
 
@@ -87,8 +89,8 @@ def login():
             if check_password_hash(
                     existing_user["password"], request.form.get("password")):
                 session["user"] = request.form.get("username").lower()
-                session["admin"] = mongo.db.users.find_one(
-                    {"username": session["user"]})["admin"]
+                # session["admin"] = mongo.db.users.find_one(
+                #     {"username": session["user"]})["admin"]
                 flash("Welcome, {}".format(request.form.get("username")))
                 return redirect(url_for("profile", username=session["user"]))
             else:
@@ -111,11 +113,13 @@ def profile(username):
         {"username": session["user"]})["username"]
     user_ingredients = mongo.db.users.find_one(
         {"username": session["user"]})["user_ingredients"]
+    favourite_recipes = mongo.db.users.find_one(
+        {"username": session["user"]})["favourite_recipes"]
     # grab the recipes from the db
     recipes = list(mongo.db.recipes.find())
     if session["user"]:
         return render_template(
-            "profile.html", username=username, recipes=recipes, user_ingredients=user_ingredients)
+            "profile.html", username=username, recipes=recipes, user_ingredients=user_ingredients, favourite_recipes=favourite_recipes)
 
     return redirect(url_for("login"))
 
@@ -127,6 +131,18 @@ def logout():
     session.pop("user")
     session.pop("admin")
     return redirect(url_for("login"))
+
+
+# @app.route("/delete_user/<username>")
+# def delete_user(username):
+#     user = mongo.db.users.find_one(
+#         {"username": username})
+#     mongo.db.user.remove(user)
+#     # remove user from session cookies
+#     flash("You have been logged out")
+#     session.pop("user")
+#     session.pop("admin")
+#     return redirect(url_for("login"))
 
 
 @app.route("/user_ingredients/<username>", methods=["GET", "POST"])
