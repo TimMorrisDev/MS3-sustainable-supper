@@ -2,34 +2,28 @@
 {% block content %}
 
 <div class="row">
-    <div class="col s12 m8 offset-m2">
+    <div class="col s12 m8 offset-m2 center-align">
 
-        <h2 class="center-align">
+        <h2>
             {{ username|title }}'s Profile
         </h2>
-
+        <div class="row">
+            <div class="col s12 center-align">
+                <a href="{{ url_for('delete_user', username=session['user']) }}" action="POST"
+                    class="waves-effect waves-light btn red center-align">Delete User Profile <i
+                        class="fas fa-minus-square right"></i></a>
+            </div>
+        </div>
     </div>
 </div>
-<!-- <div class="row">
-    <div class="col s12 m6 center-align">
-        <a href="{{ url_for('add_recipe') }}" action="POST" class="waves-effect waves-light btn tm-dark-green-bg">Add
-            Recipe</a>
-    </div>
-    <div class="col s12 m6 center-align">
-        <a class="waves-effect waves-light btn tm-dark-green-bg modal-trigger"
-            href="{{ url_for('user_ingredients', username=session['user']) }}">View your pantry</a>
-        <a class="waves-effect waves-light btn tm-dark-green-bg modal-trigger" href="#user_ingredients_modal">Update
-            your
-            ingredients</a>
-    </div>
-</div> -->
 
 <div class="row">
     <div class="col s12 xl6">
         <div class="row">
             <div class="col s12">
                 <h3 class="center-align">Your Recipes <a href="{{ url_for('add_recipe') }}" action="POST"
-                        class="waves-effect waves-light btn tm-dark-green-bg">Add</a></h3>
+                        class="waves-effect waves-light btn tm-dark-green-bg">Add <i
+                            class="fas fa-plus-square right"></i></a></h3>
             </div>
         </div>
         <div class="row">
@@ -75,7 +69,7 @@
                 <span>
                     <h3 class="center-align">Pantry <a
                             class="waves-effect waves-light btn tm-dark-green-bg modal-trigger"
-                            href="#user_ingredients_modal">Update</a></h3>
+                            href="#user_ingredients_modal">Update <i class="fas fa-plus-square right"></i></a></h3>
                 </span>
             </div>
         </div>
@@ -129,7 +123,7 @@
 
                     <div class="input-field col s8">
 
-                        <i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i>
+                        <i class="fas fa-list-ul prefix tm-brown-text"></i>
                         <input id="user-ingredients" name="user-ingredients" type="text" class="validate"
                             placeholder="Add Ingredient Here" value="{{ ingredient }}" required>
                         <label for="user-ingredients">Ingredients</label>

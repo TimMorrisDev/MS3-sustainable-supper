@@ -20,6 +20,7 @@ mongo = PyMongo(app)
 
 
 @app.route("/")
+@app.route("/index")
 def index():
     top_recipes = mongo.db.recipes.find().sort(
         "user_favourite", pymongo.DESCENDING).limit(3)
@@ -89,8 +90,8 @@ def login():
             if check_password_hash(
                     existing_user["password"], request.form.get("password")):
                 session["user"] = request.form.get("username").lower()
-                # session["admin"] = mongo.db.users.find_one(
-                #     {"username": session["user"]})["admin"]
+                session["admin"] = mongo.db.users.find_one(
+                    {"username": session["user"]})["admin"]
                 flash("Welcome, {}".format(request.form.get("username")))
                 return redirect(url_for("profile", username=session["user"]))
             else:
@@ -133,16 +134,18 @@ def logout():
     return redirect(url_for("login"))
 
 
-# @app.route("/delete_user/<username>")
-# def delete_user(username):
-#     user = mongo.db.users.find_one(
-#         {"username": username})
-#     mongo.db.user.remove(user)
-#     # remove user from session cookies
-#     flash("You have been logged out")
-#     session.pop("user")
-#     session.pop("admin")
-#     return redirect(url_for("login"))
+@app.route("/delete_user/<username>")
+def delete_user(username):
+    user = mongo.db.users.find_one(
+        {"username": username})
+    # remove user from session cookies
+   
+    session.pop("user")
+    if session["admin"]:
+        session.pop("admin")
+    mongo.db.users.remove(user)
+    flash("User profile deleted")
+    return redirect(url_for("index"))
 
 
 @app.route("/user_ingredients/<username>", methods=["GET", "POST"])

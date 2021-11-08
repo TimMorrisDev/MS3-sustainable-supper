@@ -84,7 +84,8 @@ body {
     margin: 5px;
 }
 
-.btn:hover{
+.btn:hover,
+.btn-large:hover{
     background-color: #499129;
 }
 
@@ -198,6 +199,10 @@ max-height: 20%;
 
 .recipe-column h2 {
     margin-top: 0px;
+}
+
+form i::after{
+    color: #499129 !important;
 }
 
 /* media queries */
