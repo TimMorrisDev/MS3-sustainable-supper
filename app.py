@@ -277,10 +277,10 @@ def recipe_made(recipe_id):
                 recipe_id)}, {"$push": {"recipe_made_count": {
                     "user": session["user"], "time": now}}})
     else:
-        #flash("Sorry, you already recorded making this today")
-        mongo.db.recipes.update({"_id": ObjectId(
-                recipe_id)}, {"$push": {"recipe_made_count": {
-                    "user": session["user"], "time": now}}})
+        flash("Sorry, you already recorded making this today")
+        # mongo.db.recipes.update({"_id": ObjectId(
+        #         recipe_id)}, {"$push": {"recipe_made_count": {
+        #             "user": session["user"], "time": now}}})
     return redirect(url_for("recipe_ingredients", recipe_id=recipe["_id"]))
 
 

@@ -5,32 +5,33 @@
         </div>
         <div class="card-stacked">
             <div class="card-content">
-                <div class="row">
-                    <div class="col">
+                <div class="row recipe-card-row">
+                    <div class="col s12">
                         <strong>{{ recipe.recipe_name }}</strong><br>
                         <small class="hide">{{ recipe.recipe_summary }}</small>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col s6">
-                        <strong>Prep:</strong> {{ recipe.prep_time }}min<br>
-                        <strong>Cook:</strong> {{ recipe.cook_time }}min
+                    <div class="col s7 m5">
+                        <span><strong>Prep:</strong> {{ recipe.prep_time }}min</span><br>
+                        <span><strong>Cook:</strong> {{ recipe.cook_time }}min</span>
                     </div>
-                    <div class="col s4">
+
+
+
+                    <div class="col s5 m7 center-align">
                         <a href="{{ url_for('recipe_ingredients', recipe_id=recipe._id) }}"
                             class="waves-effect waves-light btn tm-dark-green-bg">View</a>
-                    </div>
-                    {% if recipe.uploaded_by|lower == session.user|lower %}
-                    <div class="col s2">
+
+                        {% if recipe.uploaded_by|lower == session.user|lower %}
+
                         <a href="{{ url_for('edit_recipe', recipe_id=recipe._id) }}"
                             class="waves-effect waves-light btn tm-brown-bg">Edit</a>
                     </div>
-                    {% endif %}
                 </div>
+                {% endif %}
+
             </div>
-            <!-- <div class="card-action center-align">
-            <a class="waves-effect waves-light btn tm-dark-green-bg">View Details</a>
-        </div> -->
         </div>
     </div>
 </div>

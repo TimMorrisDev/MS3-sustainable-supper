@@ -26,7 +26,7 @@
                     <a href="#" data-target="mobile-demo" class="sidenav-trigger right"><i class="fas fa-bars"></i></a>
                     <ul class="right hide-on-med-and-down">
                         <li><a href="{{ url_for('index') }}">Home</a></li>
-                        <li><a href="{{ url_for('recipes') }}">Search/Browse</a></li>
+                        <li><a href="{{ url_for('recipes') }}">Recipes</a></li>
                         <!-- check if user is logged in -->
                         {% if session.user %}
                         <li><a href="{{ url_for('profile', username=session['user']) }}">Profile</a></li>
@@ -50,7 +50,7 @@
                 <h4 class="center-align">SSC</h4>
             </li>
             <li><a href="{{ url_for('index') }}">Home</a></li>
-            <li><a href="{{ url_for('recipes') }}">Search/Browse</a></li>
+            <li><a href="{{ url_for('recipes') }}">Recipes</a></li>
             <!-- check if user is logged in -->
             {% if session.user %}
             <li><a href="{{ url_for('profile', username=session['user']) }}">Profile</a></li>
@@ -74,7 +74,7 @@
         {% if messages %}
         {% for message in messages %}
         <div class="row flashes">
-            <h4 class="light-blue lighten-4 center-align">{{ message }}</h4>
+            <h4 class="tm-brown-bg white-text center-align text-shadow">{{ message }}</h4>
         </div>
         {% endfor %}
         {% endif %}

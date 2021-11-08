@@ -7,11 +7,7 @@
         Supper Club
     </h1>
     <div class="row slider-row">
-        <div class="col s12 m6 offset-m6 landing-summary r10 tm-brown-bg opacity-90 white-text">
-            <p>Here at the Sustainable Supper Club we hope to provide information and inspiration to people who
-                are
-                looking to reduced the impact their cooking habits have on the planet.</p>
-        </div>
+
     </div>
     <ul class="slides">
         <li>
@@ -48,74 +44,55 @@
 
 </div>
 
+
 <div class="row">
     <div class="col s12 center-align">
         <a href="{{ url_for('recipes') }}" class="waves-effect waves-light btn tm-dark-green-bg">Get Started</a>
     </div>
 </div>
-
 <div class="row">
-    <div class="col s12 m8 offset-m2 l6">
-        <h2 class="center-align">User Favourites</h2>
-
-
-        {% for recipe in top_recipes %}
-
-        {% include "recipe_card.html" %}
-
-        {% endfor %}
-
+    <div class="col s12 l6">
+        <div class="landing-summary r10 tm-brown-bg opacity-90 white-text">
+            <p>Here at the Sustainable Supper Club we hope to provide information and inspiration to people who
+                are
+                looking to reduced the impact their cooking habits have on the planet.</p>
+        </div>
     </div>
-
-    <div class="col s12 m8 offset-m2 l6">
-        <h2 class="center-align">Most Made</h2>
-
-
-        {% for recipe in most_made %}
-
-        {% include "recipe_card.html" %}
-
-        {% endfor %}
-
+    <div class="col s12 l6">
+        <div class="landing-summary r10 tm-brown-bg opacity-90 white-text">
+            <p>Here at the Sustainable Supper Club we hope to provide information and inspiration to people who
+                are
+                looking to reduced the impact their cooking habits have on the planet.</p>
+        </div>
     </div>
 </div>
 
+<div class="row">
+    <div class="col s12 m8 offset-m2 l6">
+        <div class="recipe-column">
+            <h2 class="center-align">User Favourites</h2>
 
-<!-- <div class="carousel carousel-slider center">
-    <div class="carousel-fixed-item center">
-        <a class="btn waves-effect white grey-text darken-text-2">button</a>
-    </div>
-    <div class="carousel-item">
-        <img src="static/images/pexels-daria-shevtsova-704569.jpg">
-    </div>
-    <div class="carousel-item">
-        <img src="static/images/pexels-daria-shevtsova-1070053.jpg">
-    </div>
-    <div class="carousel-item">
-        <img src="static/images/pexels-daria-shevtsova-1580466.jpg">
-    </div>
-    <div class="carousel-item">
-        <img src="static/images/pexels-ella-olsson-1640777.jpg">
-    </div>
-    <div class="carousel-item">
-        <img src="static/images/pexels-ella-olsson-3026808.jpg">
-    </div>
-    <div class="carousel-item">
-        <img src="static/images/pexels-lumn-604969.jpg">
-    </div>
-    <div class="carousel-item">
-        <img src="static/images/pexels-monicore-1391487.jpg">
-    </div>
-    <div class="carousel-item">
-        <img src="static/images/pexels-pixabay-262967.jpg">
-    </div>
-    <div class="carousel-item">
-        <img src="static/images/pexels-ella-olsson-1640777.jpg">
-    </div>
-    <div class="carousel-item">
-        <img src="static/images/pexels-sebastian-coman-photography-3590401.jpg">
+
+            {% for recipe in top_recipes %}
+
+            {% include "recipe_card.html" %}
+
+            {% endfor %}
+        </div>
     </div>
 
-</div> -->
+    <div class="col s12 m8 offset-m2 l6">
+        <div class="recipe-column">
+            <h2 class="center-align">Most Made</h2>
+
+
+            {% for recipe in most_made %}
+
+            {% include "recipe_card.html" %}
+
+            {% endfor %}
+        </div>
+    </div>
+</div>
 
 {% endblock %}

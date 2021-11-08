@@ -82,15 +82,25 @@ body {
 }
 
 .card.horizontal.small {
-    height: 130px;
+    height: 190px;
     border-radius: 10px;
     overflow: hidden;
     padding: 0;
+    /* margin: 10px; */
     /* width: fit-content; */
+    max-width: 100%;
+}
+
+.recipe-card-row {
+    margin-bottom: 10px;
+    border-bottom: 1px solid black;
 }
 
 .card.horizontal .card-image {
     width: 30%;
+    border: 1px solid black;
+    border-radius: 10px 0px 0px 0px;
+    overflow: hidden !important;
 }
 
 .card.horizontal.small .card-image img {
@@ -143,5 +153,53 @@ max-height: 20%;
     padding: 5px;
     text-shadow: 5px 5px 8px black;
     box-shadow: 5px 5px 8px black;
-    margin-left: 5px;
+    margin: 5px;
+}
+
+.flashes h4 {
+    padding: 5px;
+}
+
+.card a{
+    margin: 5px;
+}
+
+.btn {
+    margin: 5px;
+}
+
+.recipe-details-card {
+    padding-top: 10px;
+}
+
+.recipe-details-card .card-content {
+    padding-top: 10px;
+}
+
+.recipe-column {
+    padding: 10px;
+}
+
+/* media queries */
+
+@media only screen and (min-width: 600px){
+    /* .card.horizontal.small {
+        height: 180px;
+    } */
+}
+
+@media only screen and (min-width: 768px){
+    .card.horizontal.small {
+        height: 150px;
+    }
+}
+
+@media only screen and (min-width: 992px){
+    .card.horizontal.small {
+        height: 180px;
+    }
+}
+
+@media only screen and (min-width: 1200x){
+    
 }
