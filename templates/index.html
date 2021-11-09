@@ -69,23 +69,24 @@
 
 <div class="row">
     <div class="col s12 m8 offset-m2 l6">
-        <div class="recipe-column">
-            <h2 class="center-align">User Favourites</h2>
 
+        <h2 class="center-align">User Favourites</h2>
 
+        <div class="recipe-column col s12">
             {% for recipe in top_recipes %}
 
             {% include "recipe_card.html" %}
 
             {% endfor %}
         </div>
+
     </div>
 
     <div class="col s12 m8 offset-m2 l6">
-        <div class="recipe-column">
-            <h2 class="center-align">Most Made</h2>
 
+        <h2 class="center-align">Most Made</h2>
 
+        <div class="recipe-column col s12">
             {% for recipe in most_made %}
 
             {% include "recipe_card.html" %}

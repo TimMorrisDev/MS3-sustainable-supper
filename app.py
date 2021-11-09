@@ -172,7 +172,6 @@ def logout():
 
 @app.route("/delete_user/<username>")
 def delete_user(username):
-
     # find user to delete
     user = mongo.db.users.find_one(
         {"username": username})

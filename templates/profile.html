@@ -9,9 +9,8 @@
         </h2>
         <div class="row">
             <div class="col s12 center-align">
-                <a href="{{ url_for('delete_user', username=session['user']) }}" action="POST"
-                    class="waves-effect waves-light btn red center-align">Delete User Profile <i
-                        class="fas fa-minus-square right"></i></a>
+                <a href="#delete_user_modal" class="modal-trigger waves-effect waves-light btn red center-align">Delete
+                    User Profile <i class="fas fa-minus-square right"></i></a>
             </div>
         </div>
     </div>
@@ -26,39 +25,36 @@
                             class="fas fa-plus-square right"></i></a></h3>
             </div>
         </div>
-        <div class="row">
-            <div class="col s12">
-                <ul class="tabs">
-                    <li class="tab col s6"><a class="active" href="#favourite_recipes_tab">Favourites</a></li>
-                    <li class="tab col s6"><a href="#uploaded_recipes_tab">Uploaded</a></li>
-                </ul>
+        <ul class="tabs">
+            <li class="tab col s6"><a class="active" href="#favourite_recipes_tab">Favourites</a></li>
+            <li class="tab col s6"><a href="#uploaded_recipes_tab">Uploaded</a></li>
+        </ul>
 
-            </div>
-            <div id="favourite_recipes_tab" class="col s12">
-                {% for recipe in recipes %}
-                {% if username|lower in recipe.user_favourite %}
+        <div id="favourite_recipes_tab" class="col s12">
 
-                {% include "recipe_card.html" %}
+            {% for recipe in recipes %}
+            {% if session.user|lower in recipe.user_favourite %}
 
-                {% endif %}
+            {% include "recipe_card.html" %}
 
-                {% endfor %}
+            {% endif %}
 
-            </div>
-
-            <div id="uploaded_recipes_tab" class="col s12">
-
-                {% for recipe in recipes %}
-                {% if recipe.uploaded_by|lower == username|lower %}
-
-                {% include "recipe_card.html" %}
-
-                {% endif %}
-
-                {% endfor %}
-            </div>
-
+            {% endfor %}
         </div>
+
+        <div id="uploaded_recipes_tab" class="col s12">
+
+            {% for recipe in recipes %}
+            {% if recipe.uploaded_by|lower == session.user|lower %}
+
+            {% include "recipe_card.html" %}
+
+            {% endif %}
+
+            {% endfor %}
+        </div>
+
+
 
 
     </div>
@@ -109,7 +105,7 @@
     </div>
 </div>
 
-<!-- Modal Structure -->
+<!-- Ingredients Modal Structure -->
 <div id="user_ingredients_modal" class="modal">
     <div class="modal-content">
         <form class="col s12" method="POST" action="{{ url_for('update_ingredients', username=session['user']) }}">
@@ -173,6 +169,26 @@
     <div class="modal-footer">
         <div class="center-align">
             <button type="submit" class="waves-effect waves-light btn btn-large tm-dark-green-bg">Update</a>
+        </div>
+
+    </div>
+    </form>
+</div>
+
+<!-- Delete user Modal Structure --> -->
+<div id="delete_user_modal" class="modal">
+    <div class="modal-content center-align">
+        <h3>Are you sure you want to delete your profile?</h3> <br>
+        <h4>This cannot be undone!</h4>
+
+    </div>
+    <div class="modal-footer">
+        <div class="center-align">
+            <a href="{{ url_for('delete_user', username=session['user']) }}"
+                class="waves-effect waves-light btn btn-large red">Yes! Delete my
+                profile <i class="fas fa-minus-square right"></i></a>
+            <a href="#!" class="waves-effect waves-light btn btn-large modal-close tm-dark-green-bg">No, I've changed my
+                mind</a>
         </div>
 
     </div>
