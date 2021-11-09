@@ -80,7 +80,6 @@ def register():
         register = {
             "username": request.form.get("username").lower(),
             "password": generate_password_hash(request.form.get("password")),
-            "email": request.form.get("email").lower(),
             "user_recipes": [],
             "favourite_recipes": [],
             "admin": False,
@@ -92,6 +91,10 @@ def register():
 
         # put the new user into 'session' cookie
         session["user"] = request.form.get("username").lower()
+
+        # put admin status into session cookie
+        session["admin"] = False
+
         flash("Registration Successful!")
         return redirect(url_for("profile", username=session["user"]))
 
@@ -164,9 +167,13 @@ def profile(username):
 def logout():
 
     # remove user from session cookies
-    flash("You have been logged out")
     session.pop("user")
-    session.pop("admin")
+
+    # check if user is admin
+    if session["admin"]:
+        session.pop("admin")
+
+    flash("You have been logged out")
     return redirect(url_for("login"))
 
 
@@ -184,27 +191,41 @@ def delete_user(username):
         session.pop("admin")
 
     # remove user from db
-    mongo.db.users.remove(user)
+    mongo.db.users.delete_one(user)
     flash("User profile deleted")
     return redirect(url_for("index"))
 
 
+@app.route("/admin_delete_user/<username>")
+def admin_delete_user(username):
+    # find user to delete
+    user = mongo.db.users.find_one(
+        {"username": username})
+
+    # remove user from db
+    mongo.db.users.delete_one(user)
+    flash("User profile deleted")
+    return redirect(url_for("admin"))
+
 # function to navigate to admin section of site
 @app.route("/admin")
 def admin():
-    return render_template('admin.html')
+    #get all recipes from db
+    recipes = list(mongo.db.recipes.find())
+
+    #get all users from db
+    users = list(mongo.db.users.find())
+    return render_template('admin.html', users = users, recipes=recipes)
 
 
 # function to populate user panty on profile page
-@app.route("/user_ingredients/<username>", methods=["GET", "POST"])
-def user_ingredients(username):
+# @app.route("/user_ingredients/<username>", methods=["GET", "POST"])
+# def user_ingredients(username):
 
-    # find list of ingredients for the user
-    user_ingredients = mongo.db.users.find_one(
-        {"username": session["user"]})["user_ingredients"]
-    return render_template("user_ingredients.html",
-                           username=username, 
-                           user_ingredients=user_ingredients)
+#     # find list of ingredients for the user
+#     user_ingredients = mongo.db.users.find_one(
+#         {"username": session["user"]})["user_ingredients"]
+#     return redirect(url_for("profile", username=username))
 
 
 # function to update user pantry ingredients
@@ -218,8 +239,8 @@ def update_ingredients(username):
         # update the existing db field
         mongo.db.users.update({"username": username}, {
             "$set": {"user_ingredients": ingredients}})
-        return redirect(url_for("user_ingredients", username=username))
-    return redirect(url_for("user_ingredients", username=username))
+        return redirect(url_for("profile", username=username))
+    return redirect(url_for("profile", username=username))
 
 
 # function to add user recipe
