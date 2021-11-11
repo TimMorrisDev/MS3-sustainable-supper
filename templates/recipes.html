@@ -23,7 +23,8 @@
         </div>
         <div class="row center-align">
             <div class="col s12">
-                <a href="{{ url_for('recipes') }}" class="tm-dark-green-bg btn text-shadow">Use Pantry</a>
+                <a href="{{ url_for('pantry_search', username=session['user']) }}"
+                    class="tm-dark-green-bg btn text-shadow">Use Pantry</a>
 
                 <a href="{{ url_for('recipes') }}" class="red btn text-shadow">Reset</a>
             </div>

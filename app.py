@@ -43,8 +43,28 @@ def search():
     query = request.form.get("query")
 
     # return matching recipes from db
-    recipes = list(mongo.db.recipes.find({"$text": {"$search": query}}))
-    return render_template("recipes.html", recipes=recipes)
+    result_recipes = list(mongo.db.recipes.find({"$text": {"$search": query}}))
+    return render_template("recipes.html", recipes=result_recipes)
+
+
+# pantry search funciton
+@app.route("/pantry_search/<username>", methods=["GET", "POST"])
+def pantry_search(username):
+
+    # get search input from db field 'user_ingredients"
+    query = mongo.db.users.find_one(
+        {"username": username})["user_ingredients"]
+    
+    # check if user has items in thier pantry
+    if query:
+        # return matching recipes from db
+        result_recipes = list(mongo.db.recipes.find({"$text": {"$search": str(query)}}))
+        return render_template("recipes.html", recipes=result_recipes)
+    
+    #prompt user to update pantry if list returns empty
+    else:
+        flash("Your pantry is empty! Update it to view matches")
+        return redirect(url_for("profile", username=username))
 
 
 # recipes page
@@ -196,6 +216,17 @@ def delete_user(username):
     return redirect(url_for("index"))
 
 
+# function to navigate to admin section of site
+@app.route("/admin")
+def admin():
+    # get all recipes from db
+    recipes = list(mongo.db.recipes.find())
+
+    # get all users from db
+    users = list(mongo.db.users.find())
+    return render_template('admin.html', users=users, recipes=recipes)
+
+
 @app.route("/admin_delete_user/<username>")
 def admin_delete_user(username):
     # find user to delete
@@ -207,25 +238,31 @@ def admin_delete_user(username):
     flash("User profile deleted")
     return redirect(url_for("admin"))
 
-# function to navigate to admin section of site
-@app.route("/admin")
-def admin():
-    #get all recipes from db
-    recipes = list(mongo.db.recipes.find())
 
-    #get all users from db
-    users = list(mongo.db.users.find())
-    return render_template('admin.html', users = users, recipes=recipes)
+# function for admin to change other user status
+@app.route("/admin_status/<username>")
+def admin_status(username):
 
+    # locate user in db
+    user = mongo.db.users.find_one(
+        {"username": username})
 
-# function to populate user panty on profile page
-# @app.route("/user_ingredients/<username>", methods=["GET", "POST"])
-# def user_ingredients(username):
+    # store admin status in variable
+    admin = mongo.db.users.find_one(
+                    {"username": username})["admin"]
 
-#     # find list of ingredients for the user
-#     user_ingredients = mongo.db.users.find_one(
-#         {"username": session["user"]})["user_ingredients"]
-#     return redirect(url_for("profile", username=username))
+    # check for user admin status
+    if not admin:
+        # set as admin if not
+        mongo.db.users.update(user, {
+            "$set": {"admin": True}})
+        flash("User admin status granted")
+    else:
+        # remove admin status if already admin
+        mongo.db.users.update(user, {
+            "$set": {"admin": False}})
+        flash("User admin status removed")
+    return redirect(url_for("admin"))
 
 
 # function to update user pantry ingredients

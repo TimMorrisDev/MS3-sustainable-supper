@@ -37,7 +37,7 @@
                         {% endif %}
                         <!-- check if user has admin status -->
                         {% if session.admin %}
-                        <li><a href="{{ url_for('admin') }}">Admin Land</a></li>
+                        <li><a href="{{ url_for('admin') }}">Admin Area</a></li>
                         {% endif %}
 
                     </ul>
@@ -61,7 +61,7 @@
             {% endif %}
             <!-- check if user has admin status -->
             {% if session.admin %}
-            <li><a href="{{ url_for('admin') }}">Admin Land</a></li>
+            <li><a href="{{ url_for('admin') }}">Admin Area</a></li>
             {% endif %}
 
         </ul>
