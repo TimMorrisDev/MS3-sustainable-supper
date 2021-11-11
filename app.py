@@ -61,7 +61,7 @@ def pantry_search(username):
         result_recipes = list(mongo.db.recipes.find({"$text": {"$search": str(query)}}))
         return render_template("recipes.html", recipes=result_recipes)
     
-    #prompt user to update pantry if list returns empty
+    # prompt user to update pantry if list returns empty
     else:
         flash("Your pantry is empty! Update it to view matches")
         return redirect(url_for("profile", username=username))
@@ -209,6 +209,17 @@ def delete_user(username):
     # check if user is admin
     if session["admin"]:
         session.pop("admin")
+
+    # remove user from recipe favourite field in db
+    recipes = list(mongo.db.recipes.find())
+    for recipe in recipes:
+        if user["username"] in recipe["user_favourite"]:
+            mongo.db.recipes.update(recipe, {"$pull": {"user_favourite": user["username"]}})
+
+        # re-assign any recipes made by user to admin
+        # to prevent future registrations having edit access
+        if user["username"] == recipe["uploaded_by"]:
+            mongo.db.recipes.update(recipe, {"$set": {"uploaded_by": "admin"}})
 
     # remove user from db
     mongo.db.users.delete_one(user)
@@ -458,6 +469,7 @@ def recipe_made(recipe_id):
         mongo.db.recipes.update({"_id": ObjectId(
                 recipe_id)}, {"$push": {"recipe_made_count": {
                     "user": session["user"], "time": now}}})
+        flash("Enjoy your meal!")
     else:
         flash("Sorry, you already recorded making this today")
         # mongo.db.recipes.update({"_id": ObjectId(
