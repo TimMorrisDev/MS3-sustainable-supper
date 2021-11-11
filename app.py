@@ -54,13 +54,14 @@ def pantry_search(username):
     # get search input from db field 'user_ingredients"
     query = mongo.db.users.find_one(
         {"username": username})["user_ingredients"]
-    
+
     # check if user has items in thier pantry
     if query:
         # return matching recipes from db
-        result_recipes = list(mongo.db.recipes.find({"$text": {"$search": str(query)}}))
+        result_recipes = list(mongo.db.recipes.find({
+            "$text": {"$search": str(query)}}))
         return render_template("recipes.html", recipes=result_recipes)
-    
+
     # prompt user to update pantry if list returns empty
     else:
         flash("Your pantry is empty! Update it to view matches")
@@ -88,7 +89,7 @@ def recipes():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        
+
         # check if username already exists in db
         existing_user = mongo.db.users.find_one(
             {"username": request.form.get("username").lower()})
@@ -135,7 +136,7 @@ def login():
             # ensure hashed password matches user input
             if check_password_hash(
                     existing_user["password"], request.form.get("password")):
-                    
+
                 # add username to session cookie
                 session["user"] = request.form.get("username").lower()
 
@@ -167,7 +168,7 @@ def profile(username):
     # fetch the  user's pantry ingredients from db
     user_ingredients = mongo.db.users.find_one(
         {"username": session["user"]})["user_ingredients"]
-    
+
     # fetch the user's favourite recipes from db
     favourite_recipes = mongo.db.users.find_one(
         {"username": session["user"]})["favourite_recipes"]
@@ -214,7 +215,8 @@ def delete_user(username):
     recipes = list(mongo.db.recipes.find())
     for recipe in recipes:
         if user["username"] in recipe["user_favourite"]:
-            mongo.db.recipes.update(recipe, {"$pull": {"user_favourite": user["username"]}})
+            mongo.db.recipes.update(recipe, {
+                "$pull": {"user_favourite": user["username"]}})
 
         # re-assign any recipes made by user to admin
         # to prevent future registrations having edit access
@@ -381,6 +383,13 @@ def edit_recipe(recipe_id):
 # delete recipe function
 @app.route("/delete_recipe/<recipe_id>")
 def delete_recipe(recipe_id):
+
+    # remove recipe from user favourite recipes field in db
+    users = list(mongo.db.users.find())
+    for user in users:
+        if ObjectId(recipe_id) in user["favourite_recipes"]:
+            mongo.db.users.update(user, {
+                "$pull": {"favourite_recipes": ObjectId(recipe_id)}})
 
     # remove database entry using objectId passed from site
     mongo.db.recipes.remove({"_id": ObjectId(recipe_id)})
