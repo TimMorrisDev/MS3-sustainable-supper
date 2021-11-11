@@ -326,11 +326,22 @@ def add_recipe():
             "vegetarian": request.form.get("vegetarian"),
             "vegan": request.form.get("vegan"),
             "uploaded_by": session["user"],
+            "date_added": datetime.now(),
             "recipe_made_count": [],
             "user_favourite": []
         }
         # append to db
         mongo.db.recipes.insert_one(recipe)
+
+        # get newly added recipe from db
+
+        # new_recipe = mongo.db.recipes.find_one().sort("_id", -1)
+        # print(new_recipe["recipe_name"])
+
+        # add new recipe id to user db entry
+        # mongo.db.users.update({"username": session["user"]}, {
+        #         "$push": {"user_recipes": new_recipe["_id"]}})
+
         flash("Recipe Successfully Added")
         return redirect(url_for("profile", username=session["user"]))
     return render_template("add_recipe.html")
