@@ -4,6 +4,9 @@ from flask import (
     Flask, flash, render_template,
     redirect, request, session, url_for)
 from flask_pymongo import PyMongo, pymongo
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField
+from wtforms.validators import InputRequired
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
 if os.path.exists("env.py"):
@@ -85,6 +88,13 @@ def recipes():
         return redirect(url_for("login"))
 
 
+# USER FUNCTIONS
+
+class EntryForm(FlaskForm):
+    username = StringField('username', validators=[InputRequired()])
+    password = PasswordField('password', validators=[InputRequired()])
+
+
 # register new user function
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -125,37 +135,40 @@ def register():
 # login function
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    form = EntryForm()
     if request.method == "POST":
 
-        # check if username already exists in db
-        existing_user = mongo.db.users.find_one(
-            {"username": request.form.get("username").lower()})
+        if form.validate_on_submit():
+            # check if username already exists in db
+            existing_user = mongo.db.users.find_one(
+                {"username": request.form.get("username").lower()})
 
-        if existing_user:
+            if existing_user:
 
-            # ensure hashed password matches user input
-            if check_password_hash(
-                    existing_user["password"], request.form.get("password")):
+                # ensure hashed password matches user input
+                if check_password_hash(
+                        existing_user["password"], request.form.get("password")):
 
-                # add username to session cookie
-                session["user"] = request.form.get("username").lower()
+                    # add username to session cookie
+                    session["user"] = request.form.get("username").lower()
 
-                # add admin status for user to session cookie
-                session["admin"] = mongo.db.users.find_one(
-                    {"username": session["user"]})["admin"]
-                flash("Welcome, {}".format(request.form.get("username")))
-                return redirect(url_for("profile", username=session["user"]))
+                    # add admin status for user to session cookie
+                    session["admin"] = mongo.db.users.find_one(
+                        {"username": session["user"]})["admin"]
+                    flash("Welcome, {}".format(request.form.get("username")))
+                    return redirect(url_for("profile", username=session["user"]))
+                else:
+                    # invalid password match
+                    flash("Incorrect Username and/or Password")
+                    return redirect(url_for("login"))
+
             else:
-                # invalid password match
+                # username doesn't exist
                 flash("Incorrect Username and/or Password")
                 return redirect(url_for("login"))
-
         else:
-            # username doesn't exist
-            flash("Incorrect Username and/or Password")
-            return redirect(url_for("login"))
-
-    return render_template("login.html")
+            flash(form.errors.items())
+    return render_template("login.html", form=form)
 
 
 @app.route("/profile/<username>", methods=["GET", "POST"])
