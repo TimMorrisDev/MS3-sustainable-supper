@@ -333,14 +333,17 @@ def add_recipe():
         # append to db
         mongo.db.recipes.insert_one(recipe)
 
-        # get newly added recipe from db
+        # get newly added recipe from db by sorting using date_added field
+        new_recipe = mongo.db.recipes.find().sort("date_added", -1).limit(1)
 
-        # new_recipe = mongo.db.recipes.find_one().sort("_id", -1)
-        # print(new_recipe["recipe_name"])
+        # store collection result to list for iteration
+        i = []
+        for recipe in new_recipe:
+            i.append(recipe)
 
         # add new recipe id to user db entry
-        # mongo.db.users.update({"username": session["user"]}, {
-        #         "$push": {"user_recipes": new_recipe["_id"]}})
+        mongo.db.users.update({"username": session["user"]}, {
+                "$push": {"user_recipes": ObjectId(i[0]["_id"])}})
 
         flash("Recipe Successfully Added")
         return redirect(url_for("profile", username=session["user"]))
@@ -496,6 +499,18 @@ def recipe_made(recipe_id):
         #         recipe_id)}, {"$push": {"recipe_made_count": {
         #             "user": session["user"], "time": now}}})
     return redirect(url_for("recipe_ingredients", recipe_id=recipe["_id"]))
+
+
+# def sort_test():
+#     sorted_recipes = mongo.db.recipes.find().sort("date_added", -1).limit(1)
+#     x = []
+#     for recipe in sorted_recipes:
+#         x.append(recipe)
+#     print(x)
+#     print(x[0]["_id"])
+
+
+# sort_test()
 
 
 if __name__ == "__main__":
