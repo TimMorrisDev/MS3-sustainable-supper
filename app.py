@@ -167,7 +167,11 @@ def login():
                 flash("Incorrect Username and/or Password")
                 return redirect(url_for("login"))
         else:
-            flash(form.errors.items())
+            error_keys = form.errors.keys()
+            error_values = form.errors.values()
+            for k, v in zip(error_keys, error_values):
+                flash(f"Error with {str(k)}: {str(v)}")
+            
     return render_template("login.html", form=form)
 
 
