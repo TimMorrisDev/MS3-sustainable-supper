@@ -91,8 +91,8 @@ def recipes():
 # USER FUNCTIONS
 
 class EntryForm(FlaskForm):
-    username = StringField('username', validators=[InputRequired()])
-    password = PasswordField('password', validators=[InputRequired()])
+    username = StringField('username', validators=[InputRequired('Please enter your username')])
+    password = PasswordField('password', validators=[InputRequired('Please enter your password')])
 
 
 # register new user function
@@ -167,10 +167,9 @@ def login():
                 flash("Incorrect Username and/or Password")
                 return redirect(url_for("login"))
         else:
-            error_keys = form.errors.keys()
             error_values = form.errors.values()
-            for k, v in zip(error_keys, error_values):
-                flash(f"Error with {str(k)}: {str(v)}")
+            for v in error_values:
+                flash(v[0])
             
     return render_template("login.html", form=form)
 
