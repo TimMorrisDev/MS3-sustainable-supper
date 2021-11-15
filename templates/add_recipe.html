@@ -9,14 +9,14 @@
         <div class="row">
             <div class="input-field col s12 m6">
                 <i class="fas fa-pencil-alt prefix tm-brown-text"></i>
-                <input id="recipe_name" name="recipe_name" minlength="1" maxlength="200" type="text" class="validate"
+                <input id="recipe_name" name="recipe_name" minlength="4" maxlength="100" type="text" class="validate"
                     required>
                 <label for="recipe_name">Recipe Name</label>
             </div>
             <!-- recipe chef -->
             <div class="input-field col s12 m6">
                 <i class="fas fa-pencil-alt prefix tm-brown-text"></i>
-                <input id="recipe_chef" name="recipe_chef" minlength="1" maxlength="50" type="text" class="validate"
+                <input id="recipe_chef" name="recipe_chef" minlength="2" maxlength="100" type="text" class="validate"
                     required>
                 <label for="recipe_chef">Recipe Chef</label>
             </div>
@@ -25,7 +25,7 @@
         <div class="row">
             <div class="input-field col s12">
                 <i class="fas fa-pencil-alt prefix tm-brown-text"></i>
-                <input id="recipe_image" name="recipe_image" minlength="1" maxlength="200" type="text" class="validate"
+                <input id="recipe_image" name="recipe_image" type="text" class="validate"
                     placeholder="Please provide URL for recipe image" required>
                 <label for="recipe_image">Recipe Image</label>
             </div>
@@ -34,8 +34,8 @@
         <div class="row">
             <div class="input-field col s12">
                 <i class="fas fa-align-left prefix tm-brown-text"></i>
-                <textarea id="recipe_summary" name="recipe_summary" minlength="1" maxlength="100"
-                    class="materialize-textarea validate" placeholder="max 100 characters" required></textarea>
+                <textarea id="recipe_summary" name="recipe_summary" minlength="5" maxlength="200"
+                    class="materialize-textarea validate" placeholder="max 200 characters" required></textarea>
                 <label for="recipe_summary">Recipe Summary</label>
             </div>
         </div>
@@ -44,13 +44,13 @@
         <div class="row">
             <div class="input-field col s12 m6">
                 <i class="far fa-clock prefix tm-brown-text"></i>
-                <input id="prep_time" name="prep_time" minlength="1" maxlength="20" type="text" class="validate"
+                <input id="prep_time" name="prep_time" minlength="1" maxlength="5" type="text" class="validate"
                     pattern="[0-9]{1,5}" placeholder="Input numbers only" required>
                 <label for="prep_time">Prep Time (mins) - Input numbers only</label>
             </div>
             <div class="input-field col s12 m6">
                 <i class="far fa-clock prefix tm-brown-text"></i>
-                <input id="cook_time" name="cook_time" minlength="1" maxlength="20" type="text" class="validate"
+                <input id="cook_time" name="cook_time" minlength="1" maxlength="5" type="text" class="validate"
                     pattern="[0-9]{1,5}" placeholder="Input numbers only" required>
                 <label for="cook_time">Cook Time (mins)</label>
             </div>

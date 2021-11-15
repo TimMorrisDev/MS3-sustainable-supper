@@ -5,8 +5,8 @@ from flask import (
     redirect, request, session, url_for)
 from flask_pymongo import PyMongo, pymongo
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField
-from wtforms.validators import InputRequired
+from wtforms import StringField, PasswordField, IntegerField
+from wtforms.validators import InputRequired, Regexp, Length, URL
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
 if os.path.exists("env.py"):
@@ -160,6 +160,7 @@ def login():
 
         # check user input passes wtf validation
         if form.validate_on_submit():
+
             # check if username already exists in db
             existing_user = mongo.db.users.find_one(
                 {"username": request.form.get("username").lower()})
@@ -271,54 +272,7 @@ def delete_user(username):
     return redirect(url_for("index"))
 
 
-# function to navigate to admin section of site
-@app.route("/admin")
-def admin():
-    # get all recipes from db
-    recipes = list(mongo.db.recipes.find())
-
-    # get all users from db
-    users = list(mongo.db.users.find())
-    return render_template('admin.html', users=users, recipes=recipes)
-
-
-@app.route("/admin_delete_user/<username>")
-def admin_delete_user(username):
-    # find user to delete
-    user = mongo.db.users.find_one(
-        {"username": username})
-
-    # remove user from db
-    mongo.db.users.delete_one(user)
-    flash("User profile deleted")
-    return redirect(url_for("admin"))
-
-
-# function for admin to change other user status
-@app.route("/admin_status/<username>")
-def admin_status(username):
-
-    # locate user in db
-    user = mongo.db.users.find_one(
-        {"username": username})
-
-    # store admin status in variable
-    admin = mongo.db.users.find_one(
-                    {"username": username})["admin"]
-
-    # check for user admin status
-    if not admin:
-        # set as admin if not
-        mongo.db.users.update(user, {
-            "$set": {"admin": True}})
-        flash("User admin status granted")
-    else:
-        # remove admin status if already admin
-        mongo.db.users.update(user, {
-            "$set": {"admin": False}})
-        flash("User admin status removed")
-    return redirect(url_for("admin"))
-
+# USER PROFILE FUNCTIONS
 
 # function to update user pantry ingredients
 @app.route("/update_ingredients/<username>", methods=["GET", "POST"])
@@ -335,61 +289,119 @@ def update_ingredients(username):
     return redirect(url_for("profile", username=username))
 
 
+# wtforms validation for recipe add /edit
+class RecipeForm(FlaskForm):
+    # recipe name
+    recipe_name = StringField('recipe_name', validators=[
+        InputRequired('Please enter recipe name'),
+        Length(min=4, max=100, message='''Recipe name must be
+                between 5 and 100 characters''')
+    ])
+    # recipe chef
+    recipe_chef = StringField('recipe_chef', validators=[
+        InputRequired('Please enter recipe chef'),
+        Length(2, 100, 'Chef name must be between 2 and 100 characters')
+    ])
+    # recipe image
+    recipe_image = StringField('recipe_image', validators=[
+        InputRequired('Please enter an image URL'),
+        URL(require_tld=True, message='Invalid image url')
+    ])
+    # recipe summary
+    recipe_summary = StringField('recipe_summary', validators=[
+        InputRequired('Please enter a recipe summary'),
+        Length(5, 200, 'Summary must be between 5 and 200 characters')
+    ])
+    # prep time
+    prep_time = StringField('prep_time', validators=[
+        InputRequired('Please enter prep time'),
+        Regexp('[0-9]', 0, 'Numbers only for prep time'),
+        Length(1, 5, 'Prep time must be between 1 and 5 characters')
+    ])
+    # cook time
+    cook_time = StringField('cook_time', validators=[
+        InputRequired('Please enter cook time'),
+        Regexp('[0-9]', 0, 'Numbers only for cook time'),
+        Length(1, 5, 'Cook time must be between 1 and 5 characters')
+    ])
+    # ingredients
+    ingredients = StringField('ingredients', validators=[
+        InputRequired('Please enter an ingredient')
+    ])
+    # method
+    method = StringField('ingredients', validators=[
+        InputRequired('Please enter an ingredient')
+    ])
+
+
 # function to add user recipe
 @app.route("/add_recipe", methods=['GET', 'POST'])
 def add_recipe():
+    # store validation parameters
+    form = RecipeForm()
 
-    # collect data to populate new dictionary object
-    if request.method == "POST":
+    # check user input passes wtf validation
+    if form.validate_on_submit():
 
-        # build ingredient dict by iterating through two form lists
-        ingredient_list = request.form.getlist("ingredients")
-        preparation_list = request.form.getlist("ingredient-prep")
-        ingredients = []
-        ingredient = {"item": "", "preparation": ""}
-        for i, p in zip(ingredient_list, preparation_list):
+        if request.method == "POST":
 
-            # loop through two lists and append ingredients variable
-            ingredient["item"] = i
-            ingredient["preparation"] = p
-            ingredient_copy = ingredient.copy()
-            ingredients.append(ingredient_copy)
+            # build ingredient dict by iterating through two form lists
+            ingredient_list = request.form.getlist("ingredients")
+            preparation_list = request.form.getlist("ingredient-prep")
+            ingredients = []
+            ingredient = {"item": "", "preparation": ""}
+            for i, p in zip(ingredient_list, preparation_list):
 
-        # build recipe object to add to database
-        recipe = {
-            "recipe_name": request.form.get("recipe_name"),
-            "recipe_chef": request.form.get("recipe_chef"),
-            "recipe_image": request.form.get("recipe_image"),
-            "recipe_summary": request.form.get("recipe_summary"),
-            "prep_time": request.form.get("prep_time"),
-            "cook_time": request.form.get("cook_time"),
-            "ingredients": ingredients,
-            "method": request.form.getlist("method"),
-            "vegetarian": request.form.get("vegetarian"),
-            "vegan": request.form.get("vegan"),
-            "uploaded_by": session["user"],
-            "date_added": datetime.now(),
-            "recipe_made_count": [],
-            "user_favourite": []
-        }
-        # append to db
-        mongo.db.recipes.insert_one(recipe)
+                # loop through two lists and append ingredients variable
+                ingredient["item"] = i
+                ingredient["preparation"] = p
+                ingredient_copy = ingredient.copy()
+                ingredients.append(ingredient_copy)
 
-        # get newly added recipe from db by sorting using date_added field
-        new_recipe = mongo.db.recipes.find().sort("date_added", -1).limit(1)
+            # build recipe object to add to database
+            recipe = {
+                "recipe_name": request.form.get("recipe_name"),
+                "recipe_chef": request.form.get("recipe_chef"),
+                "recipe_image": request.form.get("recipe_image"),
+                "recipe_summary": request.form.get("recipe_summary"),
+                "prep_time": request.form.get("prep_time"),
+                "cook_time": request.form.get("cook_time"),
+                "ingredients": ingredients,
+                "method": request.form.getlist("method"),
+                "vegetarian": request.form.get("vegetarian"),
+                "vegan": request.form.get("vegan"),
+                "uploaded_by": session["user"],
+                "date_added": datetime.now(),
+                "recipe_made_count": [],
+                "user_favourite": []
+            }
+            # append to db
+            mongo.db.recipes.insert_one(recipe)
 
-        # store collection result to list for iteration
-        i = []
-        for recipe in new_recipe:
-            i.append(recipe)
+            # get newly added recipe from db by sorting using date_added field
+            new_recipe = mongo.db.recipes.find().sort(
+                "date_added", -1).limit(1)
 
-        # add new recipe id to user db entry
-        mongo.db.users.update({"username": session["user"]}, {
-                "$push": {"user_recipes": ObjectId(i[0]["_id"])}})
+            # store collection result to list for iteration
+            i = []
+            for recipe in new_recipe:
+                i.append(recipe)
 
-        flash("Recipe Successfully Added")
-        return redirect(url_for("profile", username=session["user"]))
-    return render_template("add_recipe.html")
+            # add new recipe id to user db entry
+            mongo.db.users.update({"username": session["user"]}, {
+                    "$push": {"user_recipes": ObjectId(i[0]["_id"])}})
+
+            flash("Recipe Successfully Added")
+            return redirect(url_for("profile", username=session["user"]))
+    else:
+        # store any wtf validation errors in variable
+        error_values = form.errors.values()
+
+        # iterate through errors and display to user
+        for v in error_values:
+            flash(v[0])
+        
+    return render_template("add_recipe.html", form=form)
 
 
 # edit user recipe function
@@ -452,6 +464,8 @@ def delete_recipe(recipe_id):
     flash("Recipe Successfully Deleted")
     return redirect(url_for("profile", username=session["user"]))
 
+
+# RECIPE DETAIL FUNCTIONS
 
 # view selected recipe ingredients
 @app.route("/recipe_ingredients/<recipe_id>", methods=["GET", "POST"])
@@ -541,6 +555,57 @@ def recipe_made(recipe_id):
         #         recipe_id)}, {"$push": {"recipe_made_count": {
         #             "user": session["user"], "time": now}}})
     return redirect(url_for("recipe_ingredients", recipe_id=recipe["_id"]))
+
+
+# ADMIN FUNCTIONS
+
+# function to navigate to admin section of site
+@app.route("/admin")
+def admin():
+    # get all recipes from db
+    recipes = list(mongo.db.recipes.find())
+
+    # get all users from db
+    users = list(mongo.db.users.find())
+    return render_template('admin.html', users=users, recipes=recipes)
+
+
+@app.route("/admin_delete_user/<username>")
+def admin_delete_user(username):
+    # find user to delete
+    user = mongo.db.users.find_one(
+        {"username": username})
+
+    # remove user from db
+    mongo.db.users.delete_one(user)
+    flash("User profile deleted")
+    return redirect(url_for("admin"))
+
+
+# function for admin to change other user status
+@app.route("/admin_status/<username>")
+def admin_status(username):
+
+    # locate user in db
+    user = mongo.db.users.find_one(
+        {"username": username})
+
+    # store admin status in variable
+    admin = mongo.db.users.find_one(
+                    {"username": username})["admin"]
+
+    # check for user admin status
+    if not admin:
+        # set as admin if not
+        mongo.db.users.update(user, {
+            "$set": {"admin": True}})
+        flash("User admin status granted")
+    else:
+        # remove admin status if already admin
+        mongo.db.users.update(user, {
+            "$set": {"admin": False}})
+        flash("User admin status removed")
+    return redirect(url_for("admin"))
 
 
 # def sort_test():
