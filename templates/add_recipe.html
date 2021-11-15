@@ -3,13 +3,14 @@
 
 <h3 class="center-align">Add Recipe</h3>
 <form class="col s12" method="POST" action="{{ url_for('add_recipe') }}">
+    {{ form.csrf_token }}
     <div class="row card-panel grey lighten-5">
 
         <!-- recipe name -->
         <div class="row">
             <div class="input-field col s12 m6">
                 <i class="fas fa-pencil-alt prefix tm-brown-text"></i>
-                <input id="recipe_name" name="recipe_name" minlength="4" maxlength="100" type="text" class="validate"
+                <input id="recipe_name" name="recipe_name" minlength="2" maxlength="100" type="text" class="validate"
                     required>
                 <label for="recipe_name">Recipe Name</label>
             </div>
@@ -34,7 +35,7 @@
         <div class="row">
             <div class="input-field col s12">
                 <i class="fas fa-align-left prefix tm-brown-text"></i>
-                <textarea id="recipe_summary" name="recipe_summary" minlength="5" maxlength="200"
+                <textarea id="recipe_summary" name="recipe_summary" minlength="2" maxlength="200"
                     class="materialize-textarea validate" placeholder="max 200 characters" required></textarea>
                 <label for="recipe_summary">Recipe Summary</label>
             </div>

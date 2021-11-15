@@ -5,10 +5,11 @@ from flask import (
     redirect, request, session, url_for)
 from flask_pymongo import PyMongo, pymongo
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, IntegerField
+from wtforms import StringField, PasswordField
 from wtforms.validators import InputRequired, Regexp, Length, URL
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
+import requests
 if os.path.exists("env.py"):
     import env
 
@@ -294,8 +295,8 @@ class RecipeForm(FlaskForm):
     # recipe name
     recipe_name = StringField('recipe_name', validators=[
         InputRequired('Please enter recipe name'),
-        Length(min=4, max=100, message='''Recipe name must be
-                between 5 and 100 characters''')
+        Length(min=2, max=100, message='''Recipe name must be
+                between 2 and 100 characters''')
     ])
     # recipe chef
     recipe_chef = StringField('recipe_chef', validators=[
@@ -310,7 +311,7 @@ class RecipeForm(FlaskForm):
     # recipe summary
     recipe_summary = StringField('recipe_summary', validators=[
         InputRequired('Please enter a recipe summary'),
-        Length(5, 200, 'Summary must be between 5 and 200 characters')
+        Length(2, 200, 'Summary must be between 2 and 200 characters')
     ])
     # prep time
     prep_time = StringField('prep_time', validators=[
@@ -358,11 +359,28 @@ def add_recipe():
                 ingredient_copy = ingredient.copy()
                 ingredients.append(ingredient_copy)
 
+            # check recipe image url for valid image file
+            recipe_image = ""
+            image_formats = ("image/png", "image/jpeg", "image/jpg")
+            image_url = request.form.get("recipe_image")
+            r = requests.head(image_url)
+            
+            # check if image at url is valid format
+            if r.headers["content-type"] in image_formats:
+                recipe_image = image_url
+                print("it's an image")
+            else:
+                # provide default image if no valid image found
+                recipe_image = """https://static.onecms.io/wp-content/
+                                    uploads/sites/44/2021/02/04/watercress-
+                                    salad-honey-Balsamic-tofu-2000.jpg"""
+                flash("Image not valid, default image applied")
+
             # build recipe object to add to database
             recipe = {
                 "recipe_name": request.form.get("recipe_name"),
                 "recipe_chef": request.form.get("recipe_chef"),
-                "recipe_image": request.form.get("recipe_image"),
+                "recipe_image": recipe_image,
                 "recipe_summary": request.form.get("recipe_summary"),
                 "prep_time": request.form.get("prep_time"),
                 "cook_time": request.form.get("cook_time"),
@@ -408,44 +426,80 @@ def add_recipe():
 @app.route("/edit_recipe/<recipe_id>", methods=['GET', 'POST'])
 def edit_recipe(recipe_id):
 
+    # store validation parameters
+    form = RecipeForm()
+
     # retreive recipe from db
     recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
-    if request.method == "POST":
 
-        # build ingredient dict by iterating through two form lists
-        ingredient_list = request.form.getlist("ingredients")
-        preparation_list = request.form.getlist("ingredient-prep")
-        ingredients = []
-        ingredient = {"item": "", "preparation": ""}
-        for i, p in zip(ingredient_list, preparation_list):
+    if recipe["uploaded_by"] == session["user"]:
 
-            # loop through two lists and append ingredients variable
-            ingredient["item"] = i
-            ingredient["preparation"] = p
-            ingredient_copy = ingredient.copy()
-            ingredients.append(ingredient_copy)
+        # check user input passes wtf validation
+        if form.validate_on_submit():
 
-        # build recipe update object to add to database
-        update = {
-            "recipe_name": request.form.get("recipe_name"),
-            "recipe_chef": request.form.get("recipe_chef"),
-            "recipe_image": request.form.get("recipe_image"),
-            "recipe_summary": request.form.get("recipe_summary"),
-            "prep_time": request.form.get("prep_time"),
-            "cook_time": request.form.get("cook_time"),
-            "ingredients": ingredients,
-            "method": request.form.getlist("method"),
-            "vegetarian": request.form.get("vegetarian"),
-            "vegan": request.form.get("vegan"),
-            "uploaded_by": session["user"],
-            "recipe_made_count": recipe["recipe_made_count"],
-            "user_favourite": recipe["user_favourite"]
-        }
-        # update db entry
-        mongo.db.recipes.update({"_id": ObjectId(recipe_id)}, update)
-        flash("Recipe Successfully Updated")
-        return redirect(url_for("profile", username=session["user"]))
-    return render_template("edit_recipe.html", recipe=recipe)
+            if request.method == "POST":
+
+                # build ingredient dict by iterating through two form lists
+                ingredient_list = request.form.getlist("ingredients")
+                preparation_list = request.form.getlist("ingredient-prep")
+                ingredients = []
+                ingredient = {"item": "", "preparation": ""}
+                for i, p in zip(ingredient_list, preparation_list):
+
+                    # loop through two lists and append ingredients variable
+                    ingredient["item"] = i
+                    ingredient["preparation"] = p
+                    ingredient_copy = ingredient.copy()
+                    ingredients.append(ingredient_copy)
+
+                # check recipe image url for valid image file
+                recipe_image = ""
+                image_formats = ("image/png", "image/jpeg", "image/jpg")
+                image_url = request.form.get("recipe_image")
+                r = requests.head(image_url)
+
+                # check if image at url is valid format
+                if r.headers["content-type"] in image_formats:
+                    recipe_image = image_url
+                    print("it's an image")
+                else:
+                    # provide default image if no valid image found
+                    recipe_image = """https://static.onecms.io/wp-content/
+                                        uploads/sites/44/2021/02/04/watercress-
+                                        salad-honey-Balsamic-tofu-2000.jpg"""
+                    flash("Image not valid, default image applied")
+
+                # build recipe update object to add to database
+                update = {
+                    "recipe_name": request.form.get("recipe_name"),
+                    "recipe_chef": request.form.get("recipe_chef"),
+                    "recipe_image": recipe_image,
+                    "recipe_summary": request.form.get("recipe_summary"),
+                    "prep_time": request.form.get("prep_time"),
+                    "cook_time": request.form.get("cook_time"),
+                    "ingredients": ingredients,
+                    "method": request.form.getlist("method"),
+                    "vegetarian": request.form.get("vegetarian"),
+                    "vegan": request.form.get("vegan"),
+                    "uploaded_by": session["user"],
+                    "recipe_made_count": recipe["recipe_made_count"],
+                    "user_favourite": recipe["user_favourite"]
+                }
+                # update db entry
+                mongo.db.recipes.update({"_id": ObjectId(recipe_id)}, update)
+                flash("Recipe Successfully Updated")
+                return redirect(url_for("profile", username=session["user"]))
+        else:
+            # store any wtf validation errors in variable
+            error_values = form.errors.values()
+
+            # iterate through errors and display to user
+            for v in error_values:
+                flash(v[0])
+    else:
+        flash('You do have permission to do this')
+        return redirect(url_for("index"))
+    return render_template("edit_recipe.html", recipe=recipe, form=form)
 
 
 # delete recipe function
@@ -470,6 +524,7 @@ def delete_recipe(recipe_id):
 # view selected recipe ingredients
 @app.route("/recipe_ingredients/<recipe_id>", methods=["GET", "POST"])
 def recipe_ingredients(recipe_id):
+    
     # check if user is logged in
     if "user" in session:
 
