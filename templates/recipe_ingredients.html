@@ -5,42 +5,87 @@
 <div class="row">
     <div class="col s12 m8 offset-m2 l6 offset-l3">
         <div class="card recipe-details-card r10">
-            <div class="center-align">
-                <a href="{{ url_for('recipe_method', recipe_id=recipe._id) }}"
-                    class="waves-effect waves-light btn btn-large tm-dark-green-bg">Method</a>
+
+            <div class="row center-align">
+                <h4>{{ recipe.recipe_name }}</h4>
             </div>
+            <hr class="w-80">
             <div class="card-content">
+                <div class="row">
+                    <div class="col s12 m6">
+                        <span class="text-italic">
+                            '{{ recipe.recipe_summary }}'
+                        </span>
+                    </div>
+                    <div class="col s12 m6">
+                        <div class="card-image recipe_details_image r10 text-shaddow">
+                            <img src="{{ recipe.recipe_image }}">
+                        </div>
+                    </div>
 
-                <span class="card-title"><strong>{{ recipe.recipe_name
-                        }}</strong><br>
-                    <small class="text-italic">'{{ recipe.recipe_summary }}'</small>
-                </span>
+                </div>
+                <hr class="w-80">
+                <div class="row center-align">
 
+                    <div class="col s6">
+                        <!-- <a href="{{ url_for('recipe_method', recipe_id=recipe._id) }}"
+                        class="waves-effect waves-light btn btn-large tm-dark-green-bg">Method</a> -->
+                        {% if session.user in recipe.user_favourite %}
+                        <a href="{{ url_for('recipe_favourite', recipe_id=recipe._id) }}"
+                            class="waves-effect waves-light btn tm-brown-bg">Remove favourite</a>
+                        {% else %}
+                        <a href="{{ url_for('recipe_favourite', recipe_id=recipe._id) }}"
+                            class="waves-effect waves-light btn tm-dark-green-bg">Add favourite</a>
+                        {% endif %}
+                    </div>
+                    <div class="col s6">
+                        <a href="{{ url_for('recipe_made', recipe_id=recipe._id) }}"
+                            class="waves-effect waves-light btn tm-brown-bg">I made this!</a>
+                    </div>
 
-                <h5 class="center-align">Ingredients</h5>
-                <ul class="center-align">
-                    {% for ingredient in recipe.ingredients %}
+                </div>
 
-                    <li><strong>{{ ingredient.item.title() }}</strong>, {{ ingredient.preparation }}</li>
+                <div class="row">
+                    <div class="col s12">
+                        <h5 class="center-align">Ingredients</h5>
+                        <ul class="center-align">
+                            {% for ingredient in recipe.ingredients %}
 
-                    {% endfor %}
-                </ul>
+                            <li><strong>{{ ingredient.item.title() }}</strong>, {{ ingredient.preparation }}</li>
 
-                <!-- <div class="center-align">
-                    <a href="{{ url_for('recipe_method', recipe_id=recipe._id) }}"
-                        class="waves-effect waves-light btn-large tm-dark-green-bg r10 black-border">Method</a>
-                </div> -->
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <hr class="w-80">
+
+                <div class="row">
+                    <div class="col s12">
+
+                        <h5 class="center-align">Method</h5>
+                        <ol class="">
+                            {% for step in recipe.method %}
+
+                            <li>{{ step }}</li><br>
+
+                            {% endfor %}
+                        </ol>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col s12 center-align">
+                        <a href="{{ url_for('recipes') }}"
+                            class="waves-effect waves-light btn btn-large tm-dark-green-bg">All recipes</a>
+                    </div>
+                </div>
             </div>
             <div class="card-action center-align">
-                {% if session.user in recipe.user_favourite %}
-                <a href="{{ url_for('recipe_favourite', recipe_id=recipe._id) }}"
-                    class="waves-effect waves-light btn tm-brown-bg">Remove favourite</a>
-                {% else %}
-                <a href="{{ url_for('recipe_favourite', recipe_id=recipe._id) }}"
-                    class="waves-effect waves-light btn tm-dark-green-bg">Add favourite</a>
-                {% endif %}
-                <a href="{{ url_for('recipe_made', recipe_id=recipe._id) }}"
-                    class="waves-effect waves-light btn tm-brown-bg">I made this!</a>
+                <span> Uploaded by {{ recipe.uploaded_by|title }}, on {{ recipe.date_added.strftime('%d-%m-%Y')
+                    }}</span>
             </div>
 
         </div>

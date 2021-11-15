@@ -5,7 +5,7 @@
 <h1 class="center-align">Recipes</h1>
 
 <div class="row ">
-    <form action="{{ url_for('search') }}" method="post" class="col s12 xl8 offset-xl2 card-panel grey lighten-5">
+    <form action="{{ url_for('search') }}" method="post" class="col s12 xl8 offset-xl2 card-panel grey lighten-5 r-10">
         <div class="row center-align valign-wrapper">
             <div class="input-field col s8">
                 <i class="fas fa-search prefix light-blue-text text-darken-4"></i>
@@ -34,11 +34,18 @@
                 <a href="{{ url_for('recipes') }}" class="red btn text-shadow">Reset</a>
             </div>
         </div>
+        <div class="row">
+            <div class="col s12 center-align">
+                <span><strong>Make sure your profile pantry is up to date! <br>Make the most of what you've got, and
+                        reduce your
+                        waste!</strong></span>
+            </div>
+        </div>
     </form>
 </div>
 
 <div class="row">
-    <div class="col s12 l8 offset-l2 xl6 offset-xl3">
+    <div class="col s12 xl8 offset-xl2">
 
         {% for recipe in recipes %}
 

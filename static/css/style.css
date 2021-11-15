@@ -76,12 +76,18 @@ body {
     border-radius: 10px !important;
 }
 
+.w-80 {
+    width: 80%;
+}
+
 .card a{
     margin: 5px;
 }
 
 .btn {
     margin: 5px;
+    height: fit-content;
+    border-radius: 5px;
 }
 
 .btn:hover,
@@ -154,7 +160,7 @@ body {
 }
 
 .card.horizontal.small {
-    height: 190px;
+    height: 210px;
     border-radius: 10px;
     overflow: hidden;
     padding: 0;
@@ -205,6 +211,11 @@ form i::after{
     color: #499129 !important;
 }
 
+.recipe_details_image {
+    overflow: hidden;
+    max-height: 175px !important;
+}
+
 /* media queries */
 
 @media only screen and (min-width: 600px){
@@ -215,13 +226,13 @@ form i::after{
 
 @media only screen and (min-width: 768px){
     .card.horizontal.small {
-        height: 150px;
+        /* height: 150px; */
     }
 }
 
 @media only screen and (min-width: 992px){
     .card.horizontal.small {
-        height: 180px;
+        /* height: 180px; */
     }
 }
 
