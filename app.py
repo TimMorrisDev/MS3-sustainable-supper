@@ -55,38 +55,37 @@ def search():
 @app.route("/pantry_search/<username>", methods=["GET", "POST"])
 def pantry_search(username):
 
-    # get search input from db field 'user_ingredients"
-    query = mongo.db.users.find_one(
-        {"username": username})["user_ingredients"]
+    # check if user is logged in
+    if "user" in session:
 
-    # check if user has items in thier pantry
-    if query:
-        # return matching recipes from db
-        result_recipes = list(mongo.db.recipes.find({
-            "$text": {"$search": str(query)}}))
-        return render_template("recipes.html", recipes=result_recipes)
+        # get search input from db field 'user_ingredients"
+        query = mongo.db.users.find_one(
+            {"username": username})["user_ingredients"]
 
-    # prompt user to update pantry if list returns empty
+        # check if user has items in thier pantry
+        if query:
+            # return matching recipes from db
+            result_recipes = list(mongo.db.recipes.find({
+                "$text": {"$search": str(query)}}))
+            return render_template("recipes.html", recipes=result_recipes)
+
+        # prompt user to update pantry if list returns empty
+        else:
+            flash("Your pantry is empty! Update it to view matches")
+            return redirect(url_for("profile", username=username))
     else:
-        flash("Your pantry is empty! Update it to view matches")
-        return redirect(url_for("profile", username=username))
+        # redirect if no user logged in
+        flash("Please login or register to access this")
+        return redirect(url_for("login"))
 
 
 # recipes page
 @app.route("/recipes")
 def recipes():
 
-    # check if user is logged in
-    if "user" in session:
-
-        # get all recipes from db
-        recipes = list(mongo.db.recipes.find())
-        return render_template("recipes.html", recipes=recipes)
-    else:
-
-        # prompt login or signup if no user signed in
-        flash("Please login or register to view recipes")
-        return redirect(url_for("login"))
+    # get all recipes from db
+    recipes = list(mongo.db.recipes.find())
+    return render_template("recipes.html", recipes=recipes)
 
 
 # USER FUNCTIONS
@@ -219,12 +218,15 @@ def profile(username):
 
     # grab the recipes from the db
     recipes = list(mongo.db.recipes.find())
+
+    # check if user is logged in
     if session["user"]:
         return render_template(
             "profile.html", username=username, recipes=recipes,
             user_ingredients=user_ingredients,
             favourite_recipes=favourite_recipes)
 
+    # redirect if no user logged in
     return redirect(url_for("login"))
 
 
@@ -278,16 +280,24 @@ def delete_user(username):
 # function to update user pantry ingredients
 @app.route("/update_ingredients/<username>", methods=["GET", "POST"])
 def update_ingredients(username):
-    if request.method == "POST":
 
-        # get list of ingredients from update form
-        ingredients = request.form.getlist("user-ingredients")
+    # check if user is logged in
+    if "user" in session:
 
-        # update the existing db field
-        mongo.db.users.update({"username": username}, {
-            "$set": {"user_ingredients": ingredients}})
+        if request.method == "POST":
+
+            # get list of ingredients from update form
+            ingredients = request.form.getlist("user-ingredients")
+
+            # update the existing db field
+            mongo.db.users.update({"username": username}, {
+                "$set": {"user_ingredients": ingredients}})
+            return redirect(url_for("profile", username=username))
         return redirect(url_for("profile", username=username))
-    return redirect(url_for("profile", username=username))
+    else:
+        # redirect if no user logged in
+        flash("Please login or register to view recipe")
+        return redirect(url_for("login"))
 
 
 # wtforms validation for recipe add /edit
@@ -338,88 +348,97 @@ class RecipeForm(FlaskForm):
 # function to add user recipe
 @app.route("/add_recipe", methods=['GET', 'POST'])
 def add_recipe():
-    # store validation parameters
-    form = RecipeForm()
 
-    # check user input passes wtf validation
-    if form.validate_on_submit():
+    # check if user is logged in
+    if "user" in session:
 
-        if request.method == "POST":
+        # store validation parameters
+        form = RecipeForm()
 
-            # build ingredient dict by iterating through two form lists
-            ingredient_list = request.form.getlist("ingredients")
-            preparation_list = request.form.getlist("ingredient-prep")
-            ingredients = []
-            ingredient = {"item": "", "preparation": ""}
-            for i, p in zip(ingredient_list, preparation_list):
+        # check user input passes wtf validation
+        if form.validate_on_submit():
 
-                # loop through two lists and append ingredients variable
-                ingredient["item"] = i
-                ingredient["preparation"] = p
-                ingredient_copy = ingredient.copy()
-                ingredients.append(ingredient_copy)
+            if request.method == "POST":
 
-            # check recipe image url for valid image file
-            recipe_image = ""
-            image_formats = ("image/png", "image/jpeg", "image/jpg")
-            image_url = request.form.get("recipe_image")
-            r = requests.head(image_url)
-            
-            # check if image at url is valid format
-            if r.headers["content-type"] in image_formats:
-                recipe_image = image_url
-                print("it's an image")
-            else:
-                # provide default image if no valid image found
-                recipe_image = """https://static.onecms.io/wp-content/
-                                    uploads/sites/44/2021/02/04/watercress-
-                                    salad-honey-Balsamic-tofu-2000.jpg"""
-                flash("Image not valid, default image applied")
+                # build ingredient dict by iterating through two form lists
+                ingredient_list = request.form.getlist("ingredients")
+                preparation_list = request.form.getlist("ingredient-prep")
+                ingredients = []
+                ingredient = {"item": "", "preparation": ""}
+                for i, p in zip(ingredient_list, preparation_list):
 
-            # build recipe object to add to database
-            recipe = {
-                "recipe_name": request.form.get("recipe_name"),
-                "recipe_chef": request.form.get("recipe_chef"),
-                "recipe_image": recipe_image,
-                "recipe_summary": request.form.get("recipe_summary"),
-                "prep_time": request.form.get("prep_time"),
-                "cook_time": request.form.get("cook_time"),
-                "ingredients": ingredients,
-                "method": request.form.getlist("method"),
-                "vegetarian": request.form.get("vegetarian"),
-                "vegan": request.form.get("vegan"),
-                "uploaded_by": session["user"],
-                "date_added": datetime.now(),
-                "recipe_made_count": [],
-                "user_favourite": []
-            }
-            # append to db
-            mongo.db.recipes.insert_one(recipe)
+                    # loop through two lists and append ingredients variable
+                    ingredient["item"] = i
+                    ingredient["preparation"] = p
+                    ingredient_copy = ingredient.copy()
+                    ingredients.append(ingredient_copy)
 
-            # get newly added recipe from db by sorting using date_added field
-            new_recipe = mongo.db.recipes.find().sort(
-                "date_added", -1).limit(1)
+                # check recipe image url for valid image file
+                recipe_image = ""
+                image_formats = ("image/png", "image/jpeg", "image/jpg")
+                image_url = request.form.get("recipe_image")
+                r = requests.head(image_url)
 
-            # store collection result to list for iteration
-            i = []
-            for recipe in new_recipe:
-                i.append(recipe)
+                # check if image at url is valid format
+                if r.headers["content-type"] in image_formats:
+                    recipe_image = image_url
+                    print("it's an image")
+                else:
+                    # provide default image if no valid image found
+                    recipe_image = """https://static.onecms.io/wp-content/
+                                        uploads/sites/44/2021/02/04/watercress-
+                                        salad-honey-Balsamic-tofu-2000.jpg"""
+                    flash("Image not valid, default image applied")
 
-            # add new recipe id to user db entry
-            mongo.db.users.update({"username": session["user"]}, {
-                    "$push": {"user_recipes": ObjectId(i[0]["_id"])}})
+                # build recipe object to add to database
+                recipe = {
+                    "recipe_name": request.form.get("recipe_name"),
+                    "recipe_chef": request.form.get("recipe_chef"),
+                    "recipe_image": recipe_image,
+                    "recipe_summary": request.form.get("recipe_summary"),
+                    "prep_time": request.form.get("prep_time"),
+                    "cook_time": request.form.get("cook_time"),
+                    "ingredients": ingredients,
+                    "method": request.form.getlist("method"),
+                    "vegetarian": request.form.get("vegetarian"),
+                    "vegan": request.form.get("vegan"),
+                    "uploaded_by": session["user"],
+                    "date_added": datetime.now(),
+                    "recipe_made_count": [],
+                    "user_favourite": []
+                }
+                # append to db
+                mongo.db.recipes.insert_one(recipe)
 
-            flash("Recipe Successfully Added")
-            return redirect(url_for("profile", username=session["user"]))
+                # get newly added recipe from db by
+                # sorting using date_added field
+                new_recipe = mongo.db.recipes.find().sort(
+                    "date_added", -1).limit(1)
+
+                # store collection result to list for iteration
+                i = []
+                for recipe in new_recipe:
+                    i.append(recipe)
+
+                # add new recipe id to user db entry
+                mongo.db.users.update({"username": session["user"]}, {
+                        "$push": {"user_recipes": ObjectId(i[0]["_id"])}})
+
+                flash("Recipe Successfully Added")
+                return redirect(url_for("profile", username=session["user"]))
+        else:
+            # store any wtf validation errors in variable
+            error_values = form.errors.values()
+
+            # iterate through errors and display to user
+            for v in error_values:
+                flash(v[0])
+
+        return render_template("add_recipe.html", form=form)
     else:
-        # store any wtf validation errors in variable
-        error_values = form.errors.values()
-
-        # iterate through errors and display to user
-        for v in error_values:
-            flash(v[0])
-        
-    return render_template("add_recipe.html", form=form)
+        # redirect if no user logged in
+        flash("Please login or register to view recipe")
+        return redirect(url_for("login"))
 
 
 # edit user recipe function
@@ -432,6 +451,7 @@ def edit_recipe(recipe_id):
     # retreive recipe from db
     recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
 
+    # check that recipe was uploaded by user
     if recipe["uploaded_by"] == session["user"]:
 
         # check user input passes wtf validation
@@ -497,6 +517,7 @@ def edit_recipe(recipe_id):
             for v in error_values:
                 flash(v[0])
     else:
+        # redirect if user did not upload recipe
         flash('You do have permission to do this')
         return redirect(url_for("index"))
     return render_template("edit_recipe.html", recipe=recipe, form=form)
@@ -506,17 +527,27 @@ def edit_recipe(recipe_id):
 @app.route("/delete_recipe/<recipe_id>")
 def delete_recipe(recipe_id):
 
-    # remove recipe from user favourite recipes field in db
-    users = list(mongo.db.users.find())
-    for user in users:
-        if ObjectId(recipe_id) in user["favourite_recipes"]:
-            mongo.db.users.update(user, {
-                "$pull": {"favourite_recipes": ObjectId(recipe_id)}})
+    # retreive recipe from db
+    recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
 
-    # remove database entry using objectId passed from site
-    mongo.db.recipes.remove({"_id": ObjectId(recipe_id)})
-    flash("Recipe Successfully Deleted")
-    return redirect(url_for("profile", username=session["user"]))
+    # check that recipe was uploaded by user
+    if recipe["uploaded_by"] == session["user"]:
+
+        # remove recipe from user favourite recipes field in db
+        users = list(mongo.db.users.find())
+        for user in users:
+            if ObjectId(recipe_id) in user["favourite_recipes"]:
+                mongo.db.users.update(user, {
+                    "$pull": {"favourite_recipes": ObjectId(recipe_id)}})
+
+        # remove database entry using objectId passed from site
+        mongo.db.recipes.remove({"_id": ObjectId(recipe_id)})
+        flash("Recipe Successfully Deleted")
+        return redirect(url_for("profile", username=session["user"]))
+    else:
+        # redirect if user did not upload recipe
+        flash('You do have permission to do this')
+        return redirect(url_for("index"))
 
 
 # RECIPE DETAIL FUNCTIONS
@@ -524,7 +555,7 @@ def delete_recipe(recipe_id):
 # view selected recipe ingredients
 @app.route("/recipe_ingredients/<recipe_id>", methods=["GET", "POST"])
 def recipe_ingredients(recipe_id):
-    
+
     # check if user is logged in
     if "user" in session:
 
@@ -532,6 +563,7 @@ def recipe_ingredients(recipe_id):
         recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
         return render_template("recipe_ingredients.html", recipe=recipe)
     else:
+        # redirect if no user logged in
         flash("Please login or register to view recipe")
         return redirect(url_for("login"))
 
@@ -661,18 +693,6 @@ def admin_status(username):
             "$set": {"admin": False}})
         flash("User admin status removed")
     return redirect(url_for("admin"))
-
-
-# def sort_test():
-#     sorted_recipes = mongo.db.recipes.find().sort("date_added", -1).limit(1)
-#     x = []
-#     for recipe in sorted_recipes:
-#         x.append(recipe)
-#     print(x)
-#     print(x[0]["_id"])
-
-
-# sort_test()
 
 
 if __name__ == "__main__":
