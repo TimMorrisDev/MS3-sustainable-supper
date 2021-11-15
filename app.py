@@ -90,54 +90,75 @@ def recipes():
 
 # USER FUNCTIONS
 
+# wtforms validation
 class EntryForm(FlaskForm):
-    username = StringField('username', validators=[InputRequired('Please enter your username')])
-    password = PasswordField('password', validators=[InputRequired('Please enter your password')])
+    username = StringField('username', validators=[InputRequired(
+        'Please enter valid username')])
+    password = PasswordField('password', validators=[InputRequired(
+        'Please enter valid password')])
 
 
 # register new user function
 @app.route("/register", methods=["GET", "POST"])
 def register():
+
+    # store validation parameters
+    form = EntryForm()
+
     if request.method == "POST":
 
-        # check if username already exists in db
-        existing_user = mongo.db.users.find_one(
-            {"username": request.form.get("username").lower()})
+        # check user input passes wtf validation
+        if form.validate_on_submit():
 
-        if existing_user:
-            flash("Username already exists")
-            return redirect(url_for("register"))
+            # check if username already exists in db
+            existing_user = mongo.db.users.find_one(
+                {"username": request.form.get("username").lower()})
 
-        register = {
-            "username": request.form.get("username").lower(),
-            "password": generate_password_hash(request.form.get("password")),
-            "user_recipes": [],
-            "favourite_recipes": [],
-            "admin": False,
-            "user_ingredients": []
+            if existing_user:
+                flash("Username already exists")
+                return redirect(url_for("register"))
 
-        }
-        # add user to the db
-        mongo.db.users.insert_one(register)
+            register = {
+                "username": request.form.get("username").lower(),
+                "password": generate_password_hash(request.form.get(
+                    "password")),
+                "user_recipes": [],
+                "favourite_recipes": [],
+                "admin": False,
+                "user_ingredients": []
 
-        # put the new user into 'session' cookie
-        session["user"] = request.form.get("username").lower()
+            }
+            # add user to the db
+            mongo.db.users.insert_one(register)
 
-        # put admin status into session cookie
-        session["admin"] = False
+            # put the new user into 'session' cookie
+            session["user"] = request.form.get("username").lower()
 
-        flash("Registration Successful!")
-        return redirect(url_for("profile", username=session["user"]))
+            # put admin status into session cookie
+            session["admin"] = False
 
-    return render_template("register.html")
+            flash("Registration Successful!")
+            return redirect(url_for("profile", username=session["user"]))
+        else:
+            # store any wtf validation errors in variable
+            error_values = form.errors.values()
+
+            # iterate through errors and display to user
+            for v in error_values:
+                flash(v[0])
+
+    return render_template("register.html", form=form)
 
 
 # login function
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    # store validation parameters
     form = EntryForm()
+
     if request.method == "POST":
 
+        # check user input passes wtf validation
         if form.validate_on_submit():
             # check if username already exists in db
             existing_user = mongo.db.users.find_one(
@@ -147,7 +168,8 @@ def login():
 
                 # ensure hashed password matches user input
                 if check_password_hash(
-                        existing_user["password"], request.form.get("password")):
+                        existing_user["password"], request.form.get(
+                            "password")):
 
                     # add username to session cookie
                     session["user"] = request.form.get("username").lower()
@@ -156,7 +178,8 @@ def login():
                     session["admin"] = mongo.db.users.find_one(
                         {"username": session["user"]})["admin"]
                     flash("Welcome, {}".format(request.form.get("username")))
-                    return redirect(url_for("profile", username=session["user"]))
+                    return redirect(url_for(
+                        "profile", username=session["user"]))
                 else:
                     # invalid password match
                     flash("Incorrect Username and/or Password")
@@ -167,10 +190,13 @@ def login():
                 flash("Incorrect Username and/or Password")
                 return redirect(url_for("login"))
         else:
+            # store any wtf validation errors in variable
             error_values = form.errors.values()
+
+            # iterate through errors and display to user
             for v in error_values:
                 flash(v[0])
-            
+
     return render_template("login.html", form=form)
 
 

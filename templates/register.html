@@ -6,13 +6,14 @@
 
 <div class="row">
     <form class="col s12 m8 offset-m2" method="POST" action="{{ url_for('register') }}">
+        {{ form.csrf_token }}
         <div class="card-panel">
             <!-- username -->
             <div class="row">
                 <div class="input-field col s12">
                     <i class="fas fa-user-plus prefix tm-brown-text"></i>
                     <input id="username" name="username" type="text" pattern="^[a-zA-Z0-9]{5,15}$" class="validate"
-                        minlength="5" maxlength="15" required>
+                        minlength="5" maxlength="15">
                     <label for="username">Username</label>
                 </div>
             </div>
@@ -30,7 +31,7 @@
                 <div class="input-field col s12">
                     <i class="fas fa-user-lock prefix tm-brown-text"></i>
                     <input id="password" name="password" type="password" minlength="5" maxlength="15"
-                        pattern="^[a-zA-Z0-9]{5,15}$" class="validate" required>
+                        pattern="^[a-zA-Z0-9]{5,15}$" class="validate">
                     <label for="password">Password</label>
                 </div>
             </div>
