@@ -578,6 +578,7 @@ def recipe_method(recipe_id):
         recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
         return render_template("recipe_method.html", recipe=recipe)
     else:
+        # redirect if no user logged in
         flash("Please login or register to view recipe")
         return redirect(url_for("login"))
 
@@ -649,50 +650,102 @@ def recipe_made(recipe_id):
 # function to navigate to admin section of site
 @app.route("/admin")
 def admin():
-    # get all recipes from db
-    recipes = list(mongo.db.recipes.find())
 
-    # get all users from db
-    users = list(mongo.db.users.find())
-    return render_template('admin.html', users=users, recipes=recipes)
+    # check if user is logged in
+    if "user" in session:
+
+        # get user admin status from db
+        admin = mongo.db.users.find_one(
+            {"username": session["user"]})["admin"]
+
+        if admin:
+
+            # get all recipes from db
+            recipes = list(mongo.db.recipes.find())
+
+            # get all users from db
+            users = list(mongo.db.users.find())
+            return render_template('admin.html', users=users, recipes=recipes)
+        else:
+            # redirect if not admin
+            flash("Please login as admin to view this page")
+            return redirect(url_for("index"))
+    else:
+        # redirect if no user logged in
+        flash("Please login as admin to view this page")
+        return redirect(url_for("index"))
 
 
 @app.route("/admin_delete_user/<username>")
 def admin_delete_user(username):
-    # find user to delete
-    user = mongo.db.users.find_one(
-        {"username": username})
 
-    # remove user from db
-    mongo.db.users.delete_one(user)
-    flash("User profile deleted")
-    return redirect(url_for("admin"))
+    # check if user is logged in
+    if "user" in session:
+
+        # get user admin status from db
+        admin = mongo.db.users.find_one(
+            {"username": session["user"]})["admin"]
+
+        if admin:
+            # find user to delete
+            user = mongo.db.users.find_one(
+                {"username": username})
+
+            # remove user from db
+            mongo.db.users.delete_one(user)
+            flash("User profile deleted")
+            return redirect(url_for("admin"))
+        else:
+            # redirect if not admin
+            flash("Please login as admin")
+            return redirect(url_for("index"))
+    else:
+        # redirect if no user logged in
+        flash("Please login as admin")
+        return redirect(url_for("index"))
 
 
 # function for admin to change other user status
 @app.route("/admin_status/<username>")
 def admin_status(username):
 
-    # locate user in db
-    user = mongo.db.users.find_one(
-        {"username": username})
+    # check if user is logged in
+    if "user" in session:
 
-    # store admin status in variable
-    admin = mongo.db.users.find_one(
-                    {"username": username})["admin"]
+        # get user admin status from db
+        admin = mongo.db.users.find_one(
+            {"username": session["user"]})["admin"]
 
-    # check for user admin status
-    if not admin:
-        # set as admin if not
-        mongo.db.users.update(user, {
-            "$set": {"admin": True}})
-        flash("User admin status granted")
+        if admin:
+
+            # locate user in db
+            user = mongo.db.users.find_one(
+                {"username": username})
+
+            # store admin status in variable
+            admin = mongo.db.users.find_one(
+                            {"username": username})["admin"]
+
+            # check for user admin status
+            if not admin:
+                # set as admin if not
+                mongo.db.users.update(user, {
+                    "$set": {"admin": True}})
+                flash("User admin status granted")
+            else:
+                # remove admin status if already admin
+                mongo.db.users.update(user, {
+                    "$set": {"admin": False}})
+                flash("User admin status removed")
+            return redirect(url_for("admin"))
+        else:
+            # redirect if not admin
+            flash("Please login as admin")
+            return redirect(url_for("index"))
     else:
-        # remove admin status if already admin
-        mongo.db.users.update(user, {
-            "$set": {"admin": False}})
-        flash("User admin status removed")
-    return redirect(url_for("admin"))
+        # redirect if no user logged in
+        flash("Please login as admin")
+        return redirect(url_for("index"))
 
 
 if __name__ == "__main__":
