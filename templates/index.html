@@ -2,6 +2,8 @@
 
 {% block content %}
 
+<!-- landing page slider with food images -->
+<!-- slider template copied from materialize and modified -->
 <div class="slider">
     <h2 class="slider-heading landing-title r10 tm-brown-bg opacity-90 white-text">Sustainable<br>Supper<br>Club
     </h2>
@@ -43,13 +45,15 @@
 
 </div>
 
-
+<!-- button to link to recipes page -->
 <div class="row">
     <div class="col s12 center-align">
         <a href="{{ url_for('recipes') }}" class="waves-effect waves-light btn btn-large r10 tm-dark-green-bg">Get
             Started</a>
     </div>
 </div>
+
+<!-- organisation ethos and about section -->
 <div class="row">
     <div class="col s12 l6">
         <div class="landing-summary r10 tm-brown-bg opacity-90 white-text">
@@ -68,9 +72,11 @@
     </div>
 </div>
 
+<!-- top 3 recipes section -->
 <div class="row">
     <div class="col s12 m10 offset-m1 l6">
 
+        <!-- top 3 recipes added as favourite by registered users -->
         <h2 class="center-align">User Favourites</h2>
 
         <div class="recipe-column col s12">
@@ -85,6 +91,7 @@
 
     <div class="col s12 m10 offset-m1 l6">
 
+        <!-- top 3 recipes logged as being made all time by our users -->
         <h2 class="center-align">Most Made</h2>
 
         <div class="recipe-column col s12">

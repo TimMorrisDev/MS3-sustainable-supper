@@ -4,9 +4,12 @@
 <div class="row">
     <div class="col s12 m8 offset-m2 center-align">
 
-        <h2>
+        <!-- page header -->
+        <h3>
             {{ username|title }}'s Profile
-        </h2>
+        </h3>
+
+        <!-- delete user profile button - triggers modal as defensive measure -->
         <div class="row">
             <div class="col s12 center-align">
                 <a href="#delete_user_modal" class="modal-trigger waves-effect waves-light btn red center-align">Delete
@@ -16,25 +19,38 @@
     </div>
 </div>
 
+<!-- main user section -->
 <div class="row">
     <div class="col s12 xl6">
+
         <div class="row">
+
+            <!-- section displaying user recipe details and features -->
             <div class="col s12">
+
+                <!-- title and button to add user recipe -->
                 <h3 class="center-align">Your Recipes <a href="{{ url_for('add_recipe') }}" action="POST"
                         class="waves-effect waves-light btn tm-dark-green-bg">Add <i
                             class="fas fa-plus-square right"></i></a></h3>
             </div>
         </div>
+
+        <!-- tab display for user favourites and user uploaded recipes -->
         <ul class="tabs">
             <li class="tab col s6"><a class="active" href="#favourite_recipes_tab">Favourites</a></li>
             <li class="tab col s6"><a href="#uploaded_recipes_tab">Uploaded</a></li>
         </ul>
 
+        <!-- user favourite recipes -->
         <div id="favourite_recipes_tab" class="col s12">
 
+            <!-- loop through recipes -->
             {% for recipe in recipes %}
+
+            <!-- determine if recipe is a user favourite -->
             {% if session.user|lower in recipe.user_favourite %}
 
+            <!-- display recipe if criteria met -->
             {% include "recipe_card.html" %}
 
             {% endif %}
@@ -42,11 +58,16 @@
             {% endfor %}
         </div>
 
+        <!-- user uploaded recipes -->
         <div id="uploaded_recipes_tab" class="col s12">
 
+            <!-- loop through recipes -->
             {% for recipe in recipes %}
+
+            <!-- determine if recipe was uploaded by user -->
             {% if recipe.uploaded_by|lower == session.user|lower %}
 
+            <!-- display recipe if criteria met -->
             {% include "recipe_card.html" %}
 
             {% endif %}
@@ -59,8 +80,11 @@
 
     </div>
 
+    <!-- section to display the user pantry details -->
     <div class="col s12 xl6">
         <div class="row">
+
+            <!-- title and button to update ingredients in user pantry - triggers modal -->
             <div class="col s12">
                 <span>
                     <h3 class="center-align">Pantry <a
@@ -70,20 +94,22 @@
             </div>
         </div>
 
+        <!-- pantry card. Copied from materialize and modified -->
         <div class="card user-ingredients-card r10">
-
             <div class="card-content">
 
+                <!-- prompt and information to user to add ingredients to their pantry -->
                 <span class="card-title">
                     <small class="text-italic">Update what you've got in your kitchen to match recipes to use up
                         your
                         leftovers</small>
                 </span>
 
-
+                <!-- user pantry ingredients -->
                 <h5 class="center-align">Your Ingredients</h5>
                 <ul class="center-align">
 
+                    <!-- loop through user ingredients -->
                     {% for ingredient in user_ingredients %}
 
                     <li><strong>{{ ingredient.title() }}</strong></li>
@@ -94,6 +120,8 @@
                 </ul>
 
             </div>
+
+            <!-- button view search results based on user pantry ingredients -->
             <div class="card-action center-align">
 
                 <a class="waves-effect waves-light btn tm-dark-green-bg modal-trigger"

@@ -205,6 +205,9 @@ def login():
 @app.route("/profile/<username>", methods=["GET", "POST"])
 def profile(username):
 
+    # grab the recipes from the db
+    recipes = list(mongo.db.recipes.find())
+
     # fetch the session user's username from db
     username = mongo.db.users.find_one(
         {"username": session["user"]})["username"]
@@ -213,19 +216,11 @@ def profile(username):
     user_ingredients = mongo.db.users.find_one(
         {"username": session["user"]})["user_ingredients"]
 
-    # fetch the user's favourite recipes from db
-    favourite_recipes = mongo.db.users.find_one(
-        {"username": session["user"]})["favourite_recipes"]
-
-    # grab the recipes from the db
-    recipes = list(mongo.db.recipes.find())
-
     # check if user is logged in
     if session["user"]:
         return render_template(
             "profile.html", username=username, recipes=recipes,
-            user_ingredients=user_ingredients,
-            favourite_recipes=favourite_recipes)
+            user_ingredients=user_ingredients)
 
     # redirect if no user logged in
     return redirect(url_for("login"))
@@ -277,7 +272,8 @@ def delete_user(username):
             # re-assign any recipes made by user to admin
             # to prevent future registrations having edit access
             if user["username"] == recipe["uploaded_by"]:
-                mongo.db.recipes.update(recipe, {"$set": {"uploaded_by": "admin"}})
+                # mongo.db.recipes.update(recipe, {"$set": {"uploaded_by": "admin"}})
+                mongo.db.recipes.delete_one(recipe)
 
         # remove user from db
         mongo.db.users.delete_one(user)
@@ -547,11 +543,11 @@ def delete_recipe(recipe_id):
             "user_recipes": ObjectId(recipe_id)}})
 
         # remove recipe from user favourite recipes field in db
-        users = list(mongo.db.users.find())
-        for u in users:
-            if ObjectId(recipe_id) in u["favourite_recipes"]:
-                mongo.db.users.update(u, {
-                    "$pull": {"favourite_recipes": ObjectId(recipe_id)}})
+        # users = list(mongo.db.users.find())
+        # for u in users:
+        #     if ObjectId(recipe_id) in u["favourite_recipes"]:
+        #         mongo.db.users.update(u, {
+        #             "$pull": {"favourite_recipes": ObjectId(recipe_id)}})
 
         # remove database entry using objectId passed from site
         mongo.db.recipes.remove({"_id": ObjectId(recipe_id)})
@@ -615,8 +611,8 @@ def recipe_favourite(recipe_id):
                 })
 
         # update db to remove recipe id from user document
-        mongo.db.users.update({"username": session["user"]}, {
-            "$pull": {"favourite_recipes": recipe["_id"]}})
+        # mongo.db.users.update({"username": session["user"]}, {
+        #     "$pull": {"favourite_recipes": recipe["_id"]}})
     else:
         # update db to add username from recipe document
         # and increace favourite count by 1
@@ -627,8 +623,8 @@ def recipe_favourite(recipe_id):
                 })
 
         # update db to add recipe id from user document
-        mongo.db.users.update({"username": session["user"]}, {
-            "$push": {"favourite_recipes": recipe["_id"]}})
+        # mongo.db.users.update({"username": session["user"]}, {
+        #     "$push": {"favourite_recipes": recipe["_id"]}})
 
     return redirect(url_for("recipe_ingredients", recipe_id=recipe["_id"]))
 
@@ -660,10 +656,9 @@ def recipe_made(recipe_id):
                     "user": session["user"], "time": now}}})
         flash("Enjoy your meal!")
     else:
+        # display error is user already made in the last day
         flash("Sorry, you already recorded making this today")
-        # mongo.db.recipes.update({"_id": ObjectId(
-        #         recipe_id)}, {"$push": {"recipe_made_count": {
-        #             "user": session["user"], "time": now}}})
+
     return redirect(url_for("recipe_ingredients", recipe_id=recipe["_id"]))
 
 

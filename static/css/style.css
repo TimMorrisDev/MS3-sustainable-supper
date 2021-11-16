@@ -4,9 +4,14 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
 }
 
-
+main {
+    flex: 1 0 auto;
+}
 
 /* colour palette generated from landscape photo */
 
@@ -209,6 +214,22 @@ max-height: 20%;
 
 form i::after{
     color: #499129 !important;
+}
+
+.tabs .tab a{
+    color: black;
+}
+
+.tabs .tab a:focus, .tabs .tab a:focus.active,
+.tabs .tab a:hover, .tabs .tab a:hover.active, 
+.tabs .tab a.active{
+    background-color: #254c1c15;
+    outline: none;
+    color: black;
+}
+
+.tabs .indicator {
+    background-color: #254c1c;
 }
 
 .recipe_details_image {
