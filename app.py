@@ -29,8 +29,10 @@ mongo = PyMongo(app)
 def index():
 
     # get top 3 recipes based on amount of user favourites
-    top_recipes = mongo.db.recipes.find().sort(
-        "user_favourite", pymongo.DESCENDING).limit(3)
+    # top_recipes = mongo.db.recipes.find().sort(
+    #     "user_favourite", pymongo.DESCENDING).limit(3)
+
+    top_recipes = mongo.db.recipes.aggregate([{"$sort": {"user_favourite": -1}}, {"$limit": 3}])
 
     # get top 3 recipes based on count of 'I made this' button
     most_made = mongo.db.recipes.find().sort(
@@ -473,9 +475,7 @@ def edit_recipe(recipe_id):
                     print("it's an image")
                 else:
                     # provide default image if no valid image found
-                    recipe_image = """https://static.onecms.io/wp-content/
-                                        uploads/sites/44/2021/02/04/watercress-
-                                        salad-honey-Balsamic-tofu-2000.jpg"""
+                    recipe_image = "https://static.onecms.io/wp-content/uploads/sites/44/2021/02/04/watercress-salad-honey-Balsamic-tofu-2000.jpg"
                     flash("Image not valid, default image applied")
 
                 # build recipe update object to add to database
