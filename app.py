@@ -385,9 +385,7 @@ def add_recipe():
                     print("it's an image")
                 else:
                     # provide default image if no valid image found
-                    recipe_image = """https://static.onecms.io/wp-content/
-                                        uploads/sites/44/2021/02/04/watercress-
-                                        salad-honey-Balsamic-tofu-2000.jpg"""
+                    recipe_image = "https://static.onecms.io/wp-content/uploads/sites/44/2021/02/04/watercress-salad-honey-Balsamic-tofu-2000.jpg"
                     flash("Image not valid, default image applied")
 
                 # build recipe object to add to database
@@ -408,21 +406,12 @@ def add_recipe():
                     "user_favourite": []
                 }
                 # append to db
-                mongo.db.recipes.insert_one(recipe)
+                insert = mongo.db.recipes.insert_one(recipe)
 
-                # get newly added recipe from db by
-                # sorting using date_added field
-                new_recipe = mongo.db.recipes.find().sort(
-                    "date_added", -1).limit(1)
-
-                # store collection result to list for iteration
-                i = []
-                for recipe in new_recipe:
-                    i.append(recipe)
-
-                # add new recipe id to user db entry
-                mongo.db.users.update({"username": session["user"]}, {
-                        "$push": {"user_recipes": ObjectId(i[0]["_id"])}})
+                # add new recipe id to user db entry using returned id value
+                mongo.db.users.update_one({
+                    "username": session["user"]}, {
+                        "$push": {"user_recipes": ObjectId(insert.inserted_id)}})
 
                 flash("Recipe Successfully Added")
                 return redirect(url_for("profile", username=session["user"]))
@@ -506,7 +495,8 @@ def edit_recipe(recipe_id):
                     "user_favourite": recipe["user_favourite"]
                 }
                 # update db entry
-                mongo.db.recipes.update({"_id": ObjectId(recipe_id)}, update)
+                mongo.db.recipes.update_one({
+                    "_id": ObjectId(recipe_id)}, update)
                 flash("Recipe Successfully Updated")
                 return redirect(url_for("profile", username=session["user"]))
         else:
@@ -530,14 +520,21 @@ def delete_recipe(recipe_id):
     # retreive recipe from db
     recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
 
+    # get user from db
+    user = mongo.db.users.find_one({"username": session["user"]})
+
     # check that recipe was uploaded by user
     if recipe["uploaded_by"] == session["user"]:
 
+        # remove recipe from user uploaded recipes field in db
+        mongo.db.users.update_one(user, {"$pull": {
+            "user_recipes": ObjectId(recipe_id)}})
+
         # remove recipe from user favourite recipes field in db
         users = list(mongo.db.users.find())
-        for user in users:
-            if ObjectId(recipe_id) in user["favourite_recipes"]:
-                mongo.db.users.update(user, {
+        for u in users:
+            if ObjectId(recipe_id) in u["favourite_recipes"]:
+                mongo.db.users.update(u, {
                     "$pull": {"favourite_recipes": ObjectId(recipe_id)}})
 
         # remove database entry using objectId passed from site
