@@ -29,14 +29,12 @@ mongo = PyMongo(app)
 def index():
 
     # get top 3 recipes based on amount of user favourites
-    # top_recipes = mongo.db.recipes.find().sort(
-    #     "user_favourite", pymongo.DESCENDING).limit(3)
-
-    top_recipes = mongo.db.recipes.aggregate([{"$sort": {"user_favourite": -1}}, {"$limit": 3}])
+    top_recipes = mongo.db.recipes.find().sort(
+        "favourite_count", pymongo.DESCENDING).limit(3)
 
     # get top 3 recipes based on count of 'I made this' button
     most_made = mongo.db.recipes.find().sort(
-        "recipe_made_count", pymongo.DESCENDING).limit(3)
+        "made_count", pymongo.DESCENDING).limit(3)
     return render_template(
         'index.html', top_recipes=top_recipes, most_made=most_made)
 
@@ -203,6 +201,7 @@ def login():
     return render_template("login.html", form=form)
 
 
+# user profile page
 @app.route("/profile/<username>", methods=["GET", "POST"])
 def profile(username):
 
@@ -232,6 +231,7 @@ def profile(username):
     return redirect(url_for("login"))
 
 
+# user logout function
 @app.route("/logout")
 def logout():
 
@@ -246,8 +246,10 @@ def logout():
     return redirect(url_for("login"))
 
 
+#delete user profile
 @app.route("/delete_user/<username>")
 def delete_user(username):
+
     # find user to delete
     user = mongo.db.users.find_one(
         {"username": username})
@@ -260,11 +262,14 @@ def delete_user(username):
         session.pop("admin")
 
     # remove user from recipe favourite field in db
+    # decrease favourite count of matching recipes by 1
     recipes = list(mongo.db.recipes.find())
     for recipe in recipes:
         if user["username"] in recipe["user_favourite"]:
             mongo.db.recipes.update(recipe, {
-                "$pull": {"user_favourite": user["username"]}})
+                "$pull": {"user_favourite": user["username"]},
+                "$inc": {"favourite_count": -1}
+                })
 
         # re-assign any recipes made by user to admin
         # to prevent future registrations having edit access
@@ -405,7 +410,9 @@ def add_recipe():
                     "uploaded_by": session["user"],
                     "date_added": datetime.now(),
                     "recipe_made_count": [],
-                    "user_favourite": []
+                    "user_favourite": [],
+                    "made_count": 0,
+                    "favourite_count": 0
                 }
                 # append to db
                 insert = mongo.db.recipes.insert_one(recipe)
@@ -492,7 +499,10 @@ def edit_recipe(recipe_id):
                     "vegan": request.form.get("vegan"),
                     "uploaded_by": session["user"],
                     "recipe_made_count": recipe["recipe_made_count"],
-                    "user_favourite": recipe["user_favourite"]
+                    "user_favourite": recipe["user_favourite"],
+                    "made_count": recipe["made_count"],
+                    "favourite_count": recipe["favourite_count"]
+
                 }
                 # update db entry
                 mongo.db.recipes.update_one({
@@ -590,21 +600,30 @@ def recipe_favourite(recipe_id):
     # check if already a user favourite
     if session["user"] in recipe["user_favourite"]:
 
-        # update db to remove username from recipe document
+        # update db to remove username from recipe document 
+        # and decrease favourite count by 1
         mongo.db.recipes.update({"_id": ObjectId(
-            recipe_id)}, {"$pull": {"user_favourite": session["user"]}})
+            recipe_id)}, {
+                "$pull": {"user_favourite": session["user"]},
+                "$inc": {"favourite_count": -1}
+                })
 
         # update db to remove recipe id from user document
         mongo.db.users.update({"username": session["user"]}, {
             "$pull": {"favourite_recipes": recipe["_id"]}})
     else:
         # update db to add username from recipe document
+        # and increace favourite count by 1
         mongo.db.recipes.update({"_id": ObjectId(
-            recipe_id)}, {"$push": {"user_favourite": session["user"]}})
+            recipe_id)}, {
+                "$push": {"user_favourite": session["user"]},
+                "$inc": {"favourite_count": 1}
+                })
 
         # update db to add recipe id from user document
         mongo.db.users.update({"username": session["user"]}, {
             "$push": {"favourite_recipes": recipe["_id"]}})
+
     return redirect(url_for("recipe_ingredients", recipe_id=recipe["_id"]))
 
 
