@@ -250,37 +250,43 @@ def logout():
 @app.route("/delete_user/<username>")
 def delete_user(username):
 
-    # find user to delete
-    user = mongo.db.users.find_one(
-        {"username": username})
+    # check if user is logged in
+    if "user" in session:
 
-    # remove user from session cookies
-    session.pop("user")
+        # find user to delete
+        user = mongo.db.users.find_one(
+            {"username": username})
 
-    # check if user is admin
-    if session["admin"]:
-        session.pop("admin")
+        # remove user from session cookies
+        session.pop("user")
 
-    # remove user from recipe favourite field in db
-    # decrease favourite count of matching recipes by 1
-    recipes = list(mongo.db.recipes.find())
-    for recipe in recipes:
-        if user["username"] in recipe["user_favourite"]:
-            mongo.db.recipes.update(recipe, {
-                "$pull": {"user_favourite": user["username"]},
-                "$inc": {"favourite_count": -1}
-                })
+        # check if user is admin
+        if session["admin"]:
+            session.pop("admin")
 
-        # re-assign any recipes made by user to admin
-        # to prevent future registrations having edit access
-        if user["username"] == recipe["uploaded_by"]:
-            mongo.db.recipes.update(recipe, {"$set": {"uploaded_by": "admin"}})
+        # remove user from recipe favourite field in db
+        # decrease favourite count of matching recipes by 1
+        recipes = list(mongo.db.recipes.find())
+        for recipe in recipes:
+            if user["username"] in recipe["user_favourite"]:
+                mongo.db.recipes.update(recipe, {
+                    "$pull": {"user_favourite": user["username"]},
+                    "$inc": {"favourite_count": -1}
+                    })
 
-    # remove user from db
-    mongo.db.users.delete_one(user)
-    flash("User profile deleted")
-    return redirect(url_for("index"))
+            # re-assign any recipes made by user to admin
+            # to prevent future registrations having edit access
+            if user["username"] == recipe["uploaded_by"]:
+                mongo.db.recipes.update(recipe, {"$set": {"uploaded_by": "admin"}})
 
+        # remove user from db
+        mongo.db.users.delete_one(user)
+        flash("User profile deleted")
+        return redirect(url_for("index"))
+    else:
+        # redirect if user not logged in
+        flash('You do not have permission to do this')
+        return redirect(url_for("index"))
 
 # USER PROFILE FUNCTIONS
 
