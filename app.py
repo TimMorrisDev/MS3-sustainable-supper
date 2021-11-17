@@ -242,7 +242,7 @@ def logout():
     return redirect(url_for("login"))
 
 
-#delete user profile
+# delete user profile
 @app.route("/delete_user/<username>")
 def delete_user(username):
 
@@ -273,7 +273,8 @@ def delete_user(username):
             # re-assign any recipes made by user to admin
             # to prevent future registrations having edit access
             if user["username"] == recipe["uploaded_by"]:
-                # mongo.db.recipes.update(recipe, {"$set": {"uploaded_by": "admin"}})
+                # mongo.db.recipes.update(recipe, {
+                #     "$set": {"uploaded_by": "admin"}})
                 mongo.db.recipes.delete_one(recipe)
 
         # remove user from db
@@ -284,6 +285,7 @@ def delete_user(username):
         # redirect if user not logged in
         flash('You do not have permission to do this')
         return redirect(url_for("index"))
+
 
 # USER PROFILE FUNCTIONS
 
@@ -423,7 +425,8 @@ def add_recipe():
                 # add new recipe id to user db entry using returned id value
                 mongo.db.users.update_one({
                     "username": session["user"]}, {
-                        "$push": {"user_recipes": ObjectId(insert.inserted_id)}})
+                        "$push": {
+                            "user_recipes": ObjectId(insert.inserted_id)}})
 
                 flash("Recipe Successfully Added")
                 return redirect(url_for("profile", username=session["user"]))
@@ -620,7 +623,8 @@ def recipe_made(recipe_id):
         # fetch the selected recipe from db
         recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
 
-        # create datetime variables for use determining when user last made recipe
+        # create datetime variables
+        # for use determining when user last made recipe
         now = datetime.now()
         delta = timedelta(days=1)
         past = now-delta
@@ -628,8 +632,9 @@ def recipe_made(recipe_id):
         # fetch db field to be updated
         recipe_made_count = recipe["recipe_made_count"]
 
-        # iterate through db field to find if user has made the recipe within the
-        # last day and if they have, add to list
+        # iterate through db field
+        # find if user has made the recipe within the last day
+        # if they have, add to list
         recipe_made_users = [u.items() for u in recipe_made_count if u[
             "user"] == session["user"] and u["time"] > past]
 
@@ -648,6 +653,7 @@ def recipe_made(recipe_id):
         # redirect if no user logged in
         flash("Please login or register to log your meal")
         return redirect(url_for("login"))
+
 
 # ADMIN FUNCTIONS
 
