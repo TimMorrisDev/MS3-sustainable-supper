@@ -136,17 +136,21 @@
 <!-- Ingredients Modal Structure -->
 <div id="user_ingredients_modal" class="modal">
     <div class="modal-content">
+        <!-- form to update user panty ingredients -->
         <form class="col s12" method="POST" action="{{ url_for('update_ingredients', username=session['user']) }}">
             <div id="user-ingredient-row-parent">
 
+                <!-- if user ingredients db is not empty, populate form with existing data -->
                 {% if user_ingredients != [] %}
 
+                <!-- add new row for each ingredient -->
                 {% for ingredient in user_ingredients %}
 
                 <div class="row user-ingredient-row valign-wrapper">
 
                     <div class="input-field col s8">
 
+                        <!-- ingredient input -->
                         <i class="fas fa-list-ul prefix tm-brown-text"></i>
                         <input id="user-ingredients" name="user-ingredients" type="text" class="validate"
                             placeholder="Add Ingredient Here" value="{{ ingredient }}" required>
@@ -154,6 +158,7 @@
 
                     </div>
 
+                    <!-- button to trigger javascript function to remove row -->
                     <div class="col s3">
                         <button type="button" id="remove-user-ingredient"
                             class="waves-effect waves-light btn red">Remove</button>
@@ -162,12 +167,14 @@
 
                 {% endfor %}
 
+                <!-- if ingredients field is empty, display blank input row -->
                 {% else %}
 
                 <div class="row user-ingredient-row valign-wrapper">
 
                     <div class="input-field col s8">
 
+                        <!-- ingredient input -->
                         <i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i>
                         <input id="user-ingredients" name="user-ingredients" type="text" class="validate"
                             placeholder="Add Ingredient Here" required>
@@ -175,6 +182,7 @@
 
                     </div>
 
+                    <!-- button to trigger javascript function to remove row -->
                     <div class="col s3">
                         <button type="button" id="remove-user-ingredient"
                             class="waves-effect waves-light btn red">Remove</button>
@@ -183,6 +191,7 @@
 
                 {% endif %}
 
+                <!-- button to trigger javascript function to add another ingredient row -->
                 <div class="row" id="add-user-ingredient-row">
                     <div class="col s12">
                         <button type="button" id="add-user-ingredient"
@@ -194,6 +203,8 @@
             </div>
 
     </div>
+
+    <!-- submit to update db -->
     <div class="modal-footer">
         <div class="center-align">
             <button type="submit" class="waves-effect waves-light btn btn-large tm-dark-green-bg">Update</a>
@@ -206,19 +217,24 @@
 <!-- Delete user Modal Structure -->
 <div id="delete_user_modal" class="modal">
     <div class="modal-content center-align">
+
+        <!-- text to warn user of action -->
         <h3>Are you sure you want to delete your profile?</h3> <br>
         <h4>This cannot be undone!</h4>
 
     </div>
     <div class="modal-footer">
         <div class="center-align">
+
+            <!-- delete user button -->
             <a href="{{ url_for('delete_user', username=session['user']) }}"
                 class="waves-effect waves-light btn btn-large red">Yes! Delete my
                 profile <i class="fas fa-minus-square right"></i></a>
+
+            <!-- exit modal button -->
             <a href="#!" class="waves-effect waves-light btn btn-large modal-close tm-dark-green-bg">No, I've changed my
                 mind</a>
         </div>
-
     </div>
     </form>
 </div>

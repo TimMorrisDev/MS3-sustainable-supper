@@ -125,6 +125,7 @@ def register():
                 "user_recipes": [],
                 "favourite_recipes": [],
                 "admin": False,
+                "super_admin": False,
                 "user_ingredients": []
 
             }
@@ -565,102 +566,88 @@ def delete_recipe(recipe_id):
 @app.route("/recipe_ingredients/<recipe_id>", methods=["GET", "POST"])
 def recipe_ingredients(recipe_id):
 
-    # check if user is logged in
-    if "user" in session:
-
-        # fetch the selected recipe from db to send for jinja templating
-        recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
-        return render_template("recipe_ingredients.html", recipe=recipe)
-    else:
-        # redirect if no user logged in
-        flash("Please login or register to view recipe")
-        return redirect(url_for("login"))
-
-
-# view selected recipe method
-@app.route("/recipe_method/<recipe_id>", methods=["GET", "POST"])
-def recipe_method(recipe_id):
-    # check if user is logged in
-    if "user" in session:
-
-        # fetch the selected recipe from db to send for jinja templating
-        recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
-        return render_template("recipe_method.html", recipe=recipe)
-    else:
-        # redirect if no user logged in
-        flash("Please login or register to view recipe")
-        return redirect(url_for("login"))
+    # fetch the selected recipe from db to send for jinja templating
+    recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
+    return render_template("recipe_ingredients.html", recipe=recipe)
 
 
 # add recipe to user favourite function
 @app.route("/recipe_favourite/<recipe_id>")
 def recipe_favourite(recipe_id):
 
-    # fetch db entry
-    recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
+    # check if a user is logged in
+    if "user" in session:
 
-    # check if already a user favourite
-    if session["user"] in recipe["user_favourite"]:
+        # fetch db entry
+        recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
 
-        # update db to remove username from recipe document 
-        # and decrease favourite count by 1
-        mongo.db.recipes.update({"_id": ObjectId(
-            recipe_id)}, {
-                "$pull": {"user_favourite": session["user"]},
-                "$inc": {"favourite_count": -1}
-                })
+        # check if already a user favourite
+        if session["user"] in recipe["user_favourite"]:
 
-        # update db to remove recipe id from user document
-        # mongo.db.users.update({"username": session["user"]}, {
-        #     "$pull": {"favourite_recipes": recipe["_id"]}})
-    else:
-        # update db to add username from recipe document
-        # and increace favourite count by 1
-        mongo.db.recipes.update({"_id": ObjectId(
-            recipe_id)}, {
-                "$push": {"user_favourite": session["user"]},
-                "$inc": {"favourite_count": 1}
-                })
+            # update db to remove username from recipe document 
+            # and decrease favourite count by 1
+            mongo.db.recipes.update({"_id": ObjectId(
+                recipe_id)}, {
+                    "$pull": {"user_favourite": session["user"]},
+                    "$inc": {"favourite_count": -1}
+                    })
+        else:
+            # update db to add username from recipe document
+            # and increace favourite count by 1
+            mongo.db.recipes.update({"_id": ObjectId(
+                recipe_id)}, {
+                    "$push": {"user_favourite": session["user"]},
+                    "$inc": {"favourite_count": 1}
+                    })
 
         # update db to add recipe id from user document
         # mongo.db.users.update({"username": session["user"]}, {
         #     "$push": {"favourite_recipes": recipe["_id"]}})
-
-    return redirect(url_for("recipe_ingredients", recipe_id=recipe["_id"]))
+        return redirect(url_for("recipe_ingredients", recipe_id=recipe["_id"]))
+    else:
+        # redirect if no user logged in
+        flash("Please login or register to add favourite")
+        return redirect(url_for("login"))
 
 
 # function to log when a user makes a recipe
 @app.route("/recipe_made/<recipe_id>", methods=["GET", "POST"])
 def recipe_made(recipe_id):
 
-    # fetch the selected recipe from db
-    recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
+    # check if a user is logged in
+    if "user" in session:
 
-    # create datetime variables for use determining when user last made recipe
-    now = datetime.now()
-    delta = timedelta(days=1)
-    past = now-delta
+        # fetch the selected recipe from db
+        recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
 
-    # fetch db field to be updated
-    recipe_made_count = recipe["recipe_made_count"]
+        # create datetime variables for use determining when user last made recipe
+        now = datetime.now()
+        delta = timedelta(days=1)
+        past = now-delta
 
-    # iterate through db field to find if user has made the recipe within the
-    # last day and if they have, add to list
-    recipe_made_users = [u.items() for u in recipe_made_count if u[
-        "user"] == session["user"] and u["time"] > past]
+        # fetch db field to be updated
+        recipe_made_count = recipe["recipe_made_count"]
 
-    # add user and current time to db if created list is empty
-    if not recipe_made_users:
-        mongo.db.recipes.update({"_id": ObjectId(
-                recipe_id)}, {"$push": {"recipe_made_count": {
-                    "user": session["user"], "time": now}}})
-        flash("Enjoy your meal!")
+        # iterate through db field to find if user has made the recipe within the
+        # last day and if they have, add to list
+        recipe_made_users = [u.items() for u in recipe_made_count if u[
+            "user"] == session["user"] and u["time"] > past]
+
+        # add user and current time to db if created list is empty
+        if not recipe_made_users:
+            mongo.db.recipes.update({"_id": ObjectId(
+                    recipe_id)}, {"$push": {"recipe_made_count": {
+                        "user": session["user"], "time": now}}})
+            flash("Enjoy your meal!")
+        else:
+            # display error is user already made in the last day
+            flash("Sorry, you already recorded making this today")
+
+        return redirect(url_for("recipe_ingredients", recipe_id=recipe["_id"]))
     else:
-        # display error is user already made in the last day
-        flash("Sorry, you already recorded making this today")
-
-    return redirect(url_for("recipe_ingredients", recipe_id=recipe["_id"]))
-
+        # redirect if no user logged in
+        flash("Please login or register to log your meal")
+        return redirect(url_for("login"))
 
 # ADMIN FUNCTIONS
 
@@ -768,4 +755,4 @@ def admin_status(username):
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
             port=int(os.environ.get("PORT")),
-            debug=True)
+            debug=False)

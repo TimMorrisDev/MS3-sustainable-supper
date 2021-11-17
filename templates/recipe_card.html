@@ -1,51 +1,50 @@
+<!-- template for recipe card to be used across site via jinja 'include'  -->
+
+<!-- card template copied from materialize and modified -->
 <div class="row">
     <div class="card horizontal small col s12">
+
+        <!-- recipe image -->
         <div class="card-image">
             <img src="{{ recipe.recipe_image }}">
         </div>
         <div class="card-stacked">
             <div class="card-content">
                 <div class="row recipe-card-row">
+
+                    <!-- recipe name -->
                     <div class="col s12 l6">
                         <strong>{{ recipe.recipe_name }}</strong><br>
                     </div>
-                    <div class="col s12 l6">
-                        <span>A favourite for {{ recipe.user_favourite|length }} users</span> <br>
-                        <span>Made {{ recipe.recipe_made_count|length }} times</span>
 
+                    <!-- display count info based on db data -->
+                    <div class="col s12 l6">
+                        <span>Saved by {{ recipe.user_favourite|length }} users</span> <br>
+                        <span>Made {{ recipe.recipe_made_count|length }} times</span>
                     </div>
                 </div>
+
+                <!-- prep and cook times -->
                 <div class="row">
                     <div class="col s7 m5">
                         <span><strong>Prep:</strong> {{ recipe.prep_time }}min</span><br>
                         <span><strong>Cook:</strong> {{ recipe.cook_time }}min</span>
                     </div>
 
-
-
+                    <!-- button to view recipe details -->
                     <div class="col s5 m7 center-align">
                         <a href="{{ url_for('recipe_ingredients', recipe_id=recipe._id) }}"
                             class="waves-effect waves-light btn tm-dark-green-bg">View</a>
 
+                        <!-- check if user uploaded recipe and allow edit if true -->
                         {% if (session.user) and (recipe.uploaded_by|lower == session.user|lower) %}
 
                         <a href="{{ url_for('edit_recipe', recipe_id=recipe._id) }}"
                             class="waves-effect waves-light btn tm-brown-bg">Edit</a>
+
                         {% endif %}
                     </div>
                 </div>
-                <!-- <hr class="w-80">
-                <div class="row">
-                    <div class="col s12 l6">
-                        <span>User Favourite: {{ recipe.user_favourite|length }}</span>
-                    </div>
-                    <div class="col s12 l6">
-                        <span>Made {{ recipe.recipe_made_count|length }} times</span>
-                    </div>
-
-                </div> -->
-
-
             </div>
         </div>
     </div>

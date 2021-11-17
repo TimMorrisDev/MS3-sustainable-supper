@@ -2,14 +2,18 @@
 
 {% block content %}
 
+<!-- full recipe details card -->
 <div class="row">
     <div class="col s12 m8 offset-m2 l6 offset-l3">
         <div class="card recipe-details-card r10">
 
+            <!-- recipe name -->
             <div class="row center-align">
                 <h4>{{ recipe.recipe_name }}</h4>
             </div>
             <hr class="w-80">
+
+            <!-- recipe summary and image -->
             <div class="card-content">
                 <div class="row">
                     <div class="col s12 m6">
@@ -22,33 +26,41 @@
                             <img src="{{ recipe.recipe_image }}">
                         </div>
                     </div>
-
                 </div>
                 <hr class="w-80">
-                <div class="row center-align">
 
+                <!-- favourite and 'made it' buttons -->
+                <div class="row center-align">
                     <div class="col s6">
-                        <!-- <a href="{{ url_for('recipe_method', recipe_id=recipe._id) }}"
-                        class="waves-effect waves-light btn btn-large tm-dark-green-bg">Method</a> -->
+
+                        <!-- check if recipe in user favourites -->
                         {% if session.user in recipe.user_favourite %}
+
                         <a href="{{ url_for('recipe_favourite', recipe_id=recipe._id) }}"
                             class="waves-effect waves-light btn tm-brown-bg">Remove favourite</a>
+
                         {% else %}
+
                         <a href="{{ url_for('recipe_favourite', recipe_id=recipe._id) }}"
                             class="waves-effect waves-light btn tm-dark-green-bg">Add favourite</a>
+
                         {% endif %}
                     </div>
+
+                    <!-- Button to log user making recipe -->
                     <div class="col s6">
                         <a href="{{ url_for('recipe_made', recipe_id=recipe._id) }}"
                             class="waves-effect waves-light btn tm-brown-bg">I made this!</a>
                     </div>
-
                 </div>
 
+                <!-- ingredients section -->
                 <div class="row">
                     <div class="col s12">
                         <h5 class="center-align">Ingredients</h5>
                         <ul class="center-align">
+
+                            <!-- loop through recipe ingredients -->
                             {% for ingredient in recipe.ingredients %}
 
                             <li><strong>{{ ingredient.item.title() }}</strong>, {{ ingredient.preparation }}</li>
@@ -57,25 +69,26 @@
                         </ul>
                     </div>
                 </div>
-
                 <hr class="w-80">
 
+                <!-- method section -->
                 <div class="row">
                     <div class="col s12">
-
                         <h5 class="center-align">Method</h5>
                         <ol class="">
+
+                            <!-- loop through recipe method steps -->
                             {% for step in recipe.method %}
 
                             <li>{{ step }}</li><br>
 
                             {% endfor %}
+
                         </ol>
-
                     </div>
-
                 </div>
 
+                <!-- navigate back to all recipes -->
                 <div class="row">
                     <div class="col s12 center-align">
                         <a href="{{ url_for('recipes') }}"
@@ -83,44 +96,14 @@
                     </div>
                 </div>
             </div>
+
+            <!-- recipe uploaded by and uploaded date info -->
             <div class="card-action center-align">
                 <span> Uploaded by {{ recipe.uploaded_by|title }}, on {{ recipe.date_added.strftime('%d-%m-%Y')
                     }}</span>
             </div>
-
         </div>
     </div>
 </div>
-
-
-
-<!-- <div class="row">
-    <div class="card horizontal small col s12 m8 offset-m2 l6 offset-l3">
-        <div class="card-image">
-            <img src="{{ recipe.image }}">
-        </div>
-        <div class="card-stacked">
-            <div class="card-content">
-                <div class="row">
-                    <div class="col">
-                        <strong>{{ recipe.recipe_name }}</strong><br>
-                        <small class="hide">{{ recipe.recipe_summary }}</small>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s6">
-                        <strong>Prep:</strong> {{ recipe.prep_time }}min<br>
-                        <strong>Cook:</strong> {{ recipe.cook_time }}min
-                    </div>
-                    <div class="col s6">
-                        <a href="{{ url_for('recipe_method', recipe_id=recipe._id) }}"
-                            class="waves-effect waves-light btn tm-dark-green-bg">Method</a>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div> -->
 
 {% endblock %}

@@ -4,8 +4,12 @@
 
 <h3 class="center-align">Edit Recipe</h3>
 
+<!-- form for user to edit recipe. Template copied from materialize and modified. Inputs pre-populated from db -->
 <form class="col s12" method="POST" action="{{ url_for('edit_recipe', recipe_id=recipe._id) }}">
+
+    <!-- csrf token for use by wtforms validation in the backend -->
     {{ form.csrf_token }}
+
     <div class="row card-panel grey lighten-5">
 
         <!-- recipe name -->
@@ -16,6 +20,7 @@
                     value="{{ recipe.recipe_name }}" required>
                 <label for="recipe_name">Recipe Name</label>
             </div>
+
             <!-- recipe chef -->
             <div class="input-field col s12 m6">
                 <i class="fas fa-pencil-alt prefix tm-brown-text"></i>
@@ -24,6 +29,7 @@
                 <label for="recipe_chef">Recipe Chef</label>
             </div>
         </div>
+
         <!-- recipe image url -->
         <div class="row">
             <div class="input-field col s12">
@@ -33,6 +39,7 @@
                 <label for="recipe_image">Recipe Image</label>
             </div>
         </div>
+
         <!-- recipe summary -->
         <div class="row">
             <div class="input-field col s12">
@@ -59,14 +66,15 @@
                 <label for="cook_time">Cook Time (mins)</label>
             </div>
         </div>
-        <!-- ingredients -->
-        <!-- <h5>Ingredients</h5> -->
 
+        <!-- ingredients and prep instructions -->
         <div id="ingredient-row-parent">
 
+            <!-- loop through existing ingredients in db -->
             {% for ingredient in recipe.ingredients %}
             <div class="row ingredient-row valign-wrapper">
 
+                <!-- input for ingredient -->
                 <div class="input-field col s4">
                     <i class="fas fa-list-ul prefix tm-brown-text"></i>
                     <input id="ingredients" name="ingredients" type="text" class="validate"
@@ -74,12 +82,14 @@
                     <label for="ingredients">Ingredients</label>
                 </div>
 
+                <!-- preperation instructions - not required in validation -->
                 <div class="input-field col s5">
-
                     <input id="ingredient-prep" name="ingredient-prep" type="text" class="validate"
                         placeholder="Preparation instructions" value="{{ ingredient.preparation }}">
                     <label for="ingredient-prep">Preparation instructions</label>
                 </div>
+
+                <!-- button to trigger javascript function to remove row -->
                 <div class="col s3">
                     <button type="button" id="remove-ingredient"
                         class="waves-effect waves-light btn red">Remove</button>
@@ -88,6 +98,7 @@
 
             {% endfor %}
 
+            <!-- button to trigger javascript function to add another ingredient row -->
             <div class="row" id="add-ingredient-row">
                 <div class="col s12">
                     <button type="button" id="add-ingredient" class="waves-effect waves-light btn tm-dark-green-bg">Add
@@ -97,17 +108,10 @@
             </div>
         </div>
 
-        <!-- <div class="input-field col s6 m5">
-                <textarea id="quantity" name="quantity" minlength="1" maxlength="50" type="text" class="validate"
-                    pattern="[a-zA-Z0-9]" placeholder="eg: 2, finely sliced" required></textarea>
-                <label for="quantity">Quantity</label>
-            </div> -->
-
-
         <!-- method -->
-        <!-- <h5>Method</h5> -->
         <div id="method-row-parent">
 
+            <!-- loop through existing method steps in db -->
             {% for step in recipe.method %}
             <div class="row method-row valign-wrapper">
                 <div class="input-field col s8">
@@ -117,11 +121,15 @@
                         required>{{ step }}</textarea>
                     <label for="method">Method</label>
                 </div>
+
+                <!-- button to trigger javascript function to remove row -->
                 <div class="col s4">
                     <button type="button" id="remove-step" class="waves-effect waves-light btn red">Remove</button>
                 </div>
             </div>
             {% endfor %}
+
+            <!-- button to trigger javascript function to add another method step -->
             <div class="row" id="add-step-row">
                 <div class="col s12">
                     <button type="button" id="add-step" class="waves-effect waves-light btn tm-dark-green-bg">Add
@@ -132,7 +140,6 @@
         </div>
 
         <!-- dietary checkboxes -->
-
         <div class="row">
             <h5>Dietary Info</h5>
             <div class="col s12">
@@ -156,10 +163,8 @@
                 </label>
             </div>
         </div>
-
-
-
     </div>
+
     <!-- submit -->
     <div class="row">
         <div class="col s12 center-align">

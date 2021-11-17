@@ -2,43 +2,68 @@
 
 {% block content %}
 
-<h2 class="center-align">Admin Area</h2>
+<!-- Admin page to allow access to information aboyut all users -->
+
+<h3 class="center-align">Admin Area</h3>
 <p class="center-align">A world of access and wonder for the lucky admins of this site!</p>
 
+<!-- collapsible copied from materialize and modified -->
 <ul class="collapsible">
+
+    <!-- loop through all users from db -->
     {% for user in users %}
+
+    <!-- display all users that are not the currently logged in admin -->
     {% if user.username != session.user %}
+
     <li>
         <div class="collapsible-header valign-wrapper row">
 
+            <!-- username -->
             <div class="col s4">
                 <i class="fas fa-user prefix tm-brown-text"></i><span>{{ user.username }}</span>
             </div>
+
+            <!-- check for admin status to display appropriate button -->
             <div class="col s4">
-                {% if user.username != "admin" %}
+
+                <!-- disregard super_admin to protect from unauthorised changes -->
+                {% if not user.super_admin %}
+
                 {% if user.admin %}
                 <a href="{{ url_for('admin_status', username=user.username) }}"
                     class="waves-effect waves-light btn tm-brown-bg center-align">Remove Admin<i
                         class="fas fa-user-cog right"></i></a>
+
                 {% else %}
                 <a href="{{ url_for('admin_status', username=user.username) }}"
                     class="waves-effect waves-light btn tm-dark-green-bg center-align">Make Admin<i
                         class="fas fa-user-cog right"></i></a>
+
                 {% endif %}
+
                 {% endif %}
             </div>
+
+            <!-- show delete button unless site super admin -->
             <div class="col s4">
-                {% if user.username != "admin" %}
+
+                {% if not user.super_admin %}
                 <a href="#{{ user.username }}_delete_user_modal"
                     class="modal-trigger waves-effect waves-light btn red center-align">Delete
                     User<i class="fas fa-minus-square right"></i></a>
+
                 {% endif %}
             </div>
         </div>
+
+        <!-- collapsible body to display user info -->
         <div class="collapsible-body">
             <div class="row">
                 <div class="col s12 xl6">
                     <div class="row">
+
+                        <!-- user recipes tabs section -->
                         <div class="col s12">
                             <h3 class="center-align">{{ user.username|title }}'s Recipes</h3>
                         </div>
@@ -49,6 +74,7 @@
                         <li class="tab col s6"><a href="#{{ user.username }}_uploaded_recipes_tab">Uploaded</a></li>
                     </ul>
 
+                    <!-- user favourite recipes -->
                     <div id="{{ user.username }}_favourite_recipes_tab" class="col s12">
 
                         {% for recipe in recipes %}
@@ -62,6 +88,7 @@
                         {% endfor %}
                     </div>
 
+                    <!-- user uploaded recipes -->
                     <div id="{{ user.username }}_uploaded_recipes_tab" class="col s12">
 
                         {% for recipe in recipes %}
@@ -78,6 +105,7 @@
 
                 </div>
 
+                <!-- user pantry section -->
                 <div class="col s12 xl6">
                     <div class="row">
                         <div class="col s12">
@@ -88,12 +116,12 @@
                     </div>
 
                     <div class="card user-ingredients-card r10">
-
                         <div class="card-content">
 
                             <h5 class="center-align">Ingredients</h5>
                             <ul class="center-align">
 
+                                <!-- user pantry ingredients -->
                                 {% for ingredient in user.user_ingredients %}
 
                                 <li><strong>{{ ingredient.title() }}</strong></li>
@@ -108,34 +136,37 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
     </li>
 
     <!-- Delete user Modal Structure -->
     <div id="{{ user.username }}_delete_user_modal" class="modal">
         <div class="modal-content center-align">
+
+            <!-- text to warn user of action -->
             <h4>Are you sure you want to delete {{ user.username }}'s profile?</h4> <br>
             <h4>This cannot be undone!</h4>
 
         </div>
         <div class="modal-footer">
             <div class="center-align">
+
+                <!-- delete user button -->
                 <a href="{{ url_for('admin_delete_user', username=user.username) }}"
                     class="waves-effect waves-light btn btn-large red">Yes! Delete this user <i
                         class="fas fa-minus-square right"></i></a>
+
+                <!-- exit modal button -->
                 <a href="#!" class="waves-effect waves-light btn btn-large modal-close tm-dark-green-bg">No, I've
                     changed my
                     mind</a>
             </div>
-
         </div>
         </form>
     </div>
 
-
     {% endif %}
+
     {% endfor %}
 
 </ul>

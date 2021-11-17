@@ -216,6 +216,9 @@ form i::after{
     color: #499129 !important;
 }
 
+
+/* classes to override materialize default focus and active styling on forms */
+
 .tabs .tab a{
     color: black;
 }
@@ -228,8 +231,14 @@ form i::after{
     color: black;
 }
 
-.tabs .indicator {
-    background-color: #254c1c;
+.input-field .prefix.active,
+.input-field label.active {
+    color: #499129 !important;
+}
+
+.input-field input:focus,
+.input-field textarea:focus {
+    border-bottom-color: #499129 !important;
 }
 
 .recipe_details_image {
