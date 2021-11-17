@@ -24,12 +24,12 @@
                 <i class="fas fa-user prefix tm-brown-text"></i><span>{{ user.username }}</span>
             </div>
 
-            <!-- check for admin status to display appropriate button -->
+            <!-- check for super admin status to displays buttons -->
+            {% if super_admin == True %}
+
             <div class="col s4">
 
-                <!-- disregard super_admin to protect from unauthorised changes -->
-                {% if not user.super_admin %}
-
+                <!-- check user admin status to display appropriate button -->
                 {% if user.admin %}
                 <a href="{{ url_for('admin_status', username=user.username) }}"
                     class="waves-effect waves-light btn tm-brown-bg center-align">Remove Admin<i
@@ -42,19 +42,21 @@
 
                 {% endif %}
 
-                {% endif %}
             </div>
 
             <!-- show delete button unless site super admin -->
             <div class="col s4">
 
-                {% if not user.super_admin %}
                 <a href="#{{ user.username }}_delete_user_modal"
                     class="modal-trigger waves-effect waves-light btn red center-align">Delete
                     User<i class="fas fa-minus-square right"></i></a>
 
-                {% endif %}
             </div>
+
+            {% else %}
+            <div class="col s4"></div>
+            <div class="col s4"></div>
+            {% endif %}
         </div>
 
         <!-- collapsible body to display user info -->

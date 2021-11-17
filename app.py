@@ -661,6 +661,9 @@ def admin():
         # get user admin status from db
         admin = mongo.db.users.find_one(
             {"username": session["user"]})["admin"]
+        
+        super_admin = mongo.db.users.find_one(
+            {"username": session["user"]})["super_admin"]
 
         if admin:
 
@@ -669,7 +672,9 @@ def admin():
 
             # get all users from db
             users = list(mongo.db.users.find())
-            return render_template('admin.html', users=users, recipes=recipes)
+            return render_template(
+                'admin.html', users=users, recipes=recipes,
+                super_admin=super_admin)
         else:
             # redirect if not admin
             flash("Please login as admin to view this page")
