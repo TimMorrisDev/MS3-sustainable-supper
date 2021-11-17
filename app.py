@@ -127,7 +127,6 @@ def register():
                 "admin": False,
                 "super_admin": False,
                 "user_ingredients": []
-
             }
             # add user to the db
             mongo.db.users.insert_one(register)

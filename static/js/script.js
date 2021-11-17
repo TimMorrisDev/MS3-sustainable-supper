@@ -18,7 +18,7 @@ $(document).ready(function () {
 
     // add ingredient row to recipe form
     $('#add-ingredient').on('click', function () {
-        $('<div class="row ingredient-row valign-wrapper"><div class="input-field col s4"><i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i><input id="ingredients" name="ingredients" type="text" class="validate"placeholder="Add Ingredient Here" required><label for="ingredients">Ingredients</label></div><div class="input-field col s5"><input id="ingredient-prep" name="ingredient-prep" type="text" class="validate"placeholder="Preparation instructions"><label for="ingredient-prep">Preparation instructions</label></div><div class="col s3"><button type="button" id="remove-ingredient" class="waves-effect waves-light btn red">Remove</button></div></div>').insertBefore('#add-ingredient-row');
+        $('<div class="row ingredient-row valign-wrapper"><div class="input-field col s4"><i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i><input id="ingredients" name="ingredients" type="text" class="validate"placeholder="Add Ingredient Here" required><label for="ingredients"></label></div><div class="input-field col s5"><input id="ingredient-prep" name="ingredient-prep" type="text" class="validate"placeholder="Preparation instructions"><label for="ingredient-prep"></label></div><div class="col s3"><button type="button" id="remove-ingredient" class="waves-effect waves-light btn red">Remove</button></div></div>').insertBefore('#add-ingredient-row');
     });
 
     // remove ingredient row from recipe form
@@ -38,7 +38,7 @@ $(document).ready(function () {
 
     // add ingredient row to user pantry form
     $('#add-user-ingredient').on('click', function () {
-        $('<div class="row user-ingredient-row valign-wrapper"><div class="input-field col s8"><i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i><input id="user-ingredients" name="user-ingredients" type="text" class="validate"placeholder="Add Ingredient Here" required><label for="user-ingredients">Ingredients</label></div><div class="col s3"><button type="button" id="remove-user-ingredient"class="waves-effect waves-light btn red">Remove</button></div></div>').insertBefore('#add-user-ingredient-row');
+        $('<div class="row user-ingredient-row valign-wrapper"><div class="input-field col s8"><i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i><input id="user-ingredients" name="user-ingredients" type="text" class="validate"placeholder="Add Ingredient Here" required><label for="user-ingredients"></label></div><div class="col s3"><button type="button" id="remove-user-ingredient"class="waves-effect waves-light btn red">Remove</button></div></div>').insertBefore('#add-user-ingredient-row');
     });
 
     // remove ingredient row from user pantry form
