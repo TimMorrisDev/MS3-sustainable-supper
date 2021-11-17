@@ -93,12 +93,14 @@ ___
     - I used jQuery in my Javascript code for the song remixer game. I mostly made use of event handlers to integrate user interaction with the site with my Javascript functions controlling the features offered to the user.
     - jQuery was also used as part of Materialize and is used for Javascript plugins such as the modals.
 
+- [WTForms](https://wtforms.readthedocs.io/en/3.0.x/)
+    - WTForms fields and validators were used in the back-end to validate user input forms across the site and add an extra layer of validation and security on top of the front-end HTML validation.
+
 - [Materialize](https://materializecss.com/)
     - Materialize was used for the responsive 'grid'. Components, such as the cards, were copied from the Materialize documentation and then modified for use in various places across the site.
     - Materialize was also used to provide additional front-end form validation.
 
-- [EmailJS](https://www.emailjs.com/)
-    - 
+
 - [Google Fonts](https://fonts.google.com/)
     - Google Fonts was used to import the 'Montserrat', and 'Tourney' fonts, which were used throughout the site.
 - [Font Awesome](https://fontawesome.com/)
@@ -131,33 +133,16 @@ I was also sure to deploy the site to Heroku early in development to allow for r
 I used the W3C Markup, CSS Validator and JSHint Validator Services to check and validate each page throughout the site to check for errors. 
 ### [Markup Validation Service](https://validator.w3.org/)
 The validator found the following issues for me to address.
-- Element hr not allowed as child of element ol in this context.
-    - This was due to my nesting of hr elements within my game-instruction modal unordered list. I modified my code to include 'border-bottom' styling for each list item to rectify the issue.
+
 
 ### [CSS Validation Service](https://jigsaw.w3.org/css-validator/)
 My CSS file style.css passed through the w3 validator with no errors.
 
 ### [JSHint Validation Service](https://jshint.com/)
 The validator found the following warnings for me to address. 
-- 'Function declarations should not be placed in blocks. Use a function expression or move the statement to the top of the outer function.'
-    - This was caused by my addition of a setTimeout function to the buildPads function to allow for the 'cascading' effect while the pads are populating the game area. I had not removed the original function from within the setTimeout, which was now not needed. 
-    - Whilst this issue was fixed there is still a warning stating: 
-    
-        "Functions declared within loops referencing an outer scoped variable may lead to confusing semantics. (currentSongId, i)"
-
-        As I am using the reference outer scoped variables to apply styles and parameters based on the song selected, it is my understanding that this warning can be ignored for the purpose of this site.
-- One undefined variable - Howl.
-    - This is in fact not a variable but a reference to the 'Howl' class constructor used by HowlerJS. It is my understanding that the validator does not recognise the external, HowlerJS library being used and therefore I can ignore this warning for the purpose of this site.
-- One unused variable - stopBtn.
-    - At the top of my code, I have declared variables for various DOM elements I was likely to need to reference throughout the project. I had not needed to reference stopBtn and therefore it needed to be removed to pass validation.
 
 ## Lighthouse Testing
 Lighthouse testing on the main website game page found the following issues.
-- 'Links do not have a discernible name'.
-    - I am using icons in my footer links and therefore had no text to act as description. This was solved by adding the 'aria-label' attribute to each anchor tag with a short description. 
-
-- Heading elements are not in a sequentially-descending order (contact.html).
-    - This is a minor issue that I chose to ignore for the purpose of the site.
 
 Once this issue was resolved, lighthouse testing returned the following results:
 
@@ -175,7 +160,6 @@ Contact page.
 
 More data would need to be collected on an ongoing basis to establish the success of the business goals relating to driving traffic to social media pages or increasing exposure of new song releases. 
 
-My user feedback and peer-review so far at least tells me that I have created a game that is fun and engaging to play, which allows the user to experience the bands music in a new and exciting way.
 
 ## Peer Code Review
 
@@ -196,12 +180,9 @@ I tested the site across multiple devices using different browsers.
 
 ___
 # Deployment
-## GitHub Pages
-The project was deployed to Heroku and can be found [here](https://sustainable-supper-club.herokuapp.com/) 
-1. Log in to [GitHub.com](https://github.com/) and locate the [MS2-song-remixer repository](https://github.com/TimMorrisDev/MS2-song-remixer) in my account.
-2. Select the repo 'settings' menu and navigate to the 'pages' tab on the left hand side.
-3. In the 'source' section, select the master branch as the source for the site deployment. 
-4. Hit 'save' and wait a few minutes for GitHub to process. The 'pages' settings tab will now show a message to confirm the repository is being published to the address https://timmorrisdev.github.io/MS2-song-remixer/.
+
+The project was deployed to Heroku and can be found [here](https://sustainable-supper-club.herokuapp.com/)
+
 
 ## Forking the repository in GitHub
 Forking the repository creates a copy of the original repository in your own account to allow changes to be made without affecting the original repository.
@@ -219,23 +200,116 @@ Details of how to make a local copy of the GutHub repository can be found [here]
 6. Type 'git clone' and then paste the HTTPS url you copied earlier. 
 7. Press enter and your local clone will be created. 
 
+## Create MongoDB database
+My data was stored in a [MongoDB](https://cloud.mongodb.com/) collection set up using the following steps.
+- Sign up / Sign In to mongodb and create a new cluster.
+- Select 'collections' from the cluster dashboard.
+- Click 'create database', and create database name and collection name.
+- Click 'create collection' for any additional data collections needed for the app.
+
+## Create Flask Application and install pymongo
+In the terminal type the following commands to install the required packages:
+    
+- Install Flask
+    ```
+    pip3 install Flask
+    ```
+
+- Install PyMongo
+    ```
+    pip3 install pymongo
+    ```
+- Install flask-pymongo
+    ```
+    pip3 install flask-pymongo
+    ```
+- Install dnspython
+    ```
+    pip3 install dnspython
+
+Setup app
+- Create `app.py` and `env.py` using the terminal
+    ```
+    touch app.py
+    touch env.py
+    ```
+
+- Create gitignore file using the terminal to keep `env.py `from being pushed to github
+    ```python
+    touch env.py
+    ```
+
+- Within the gitignore file add `env.py` and `__pycache__/`.
+    ```python
+    env.py
+    __pycache__/
+    ```
+
+Set up environment vairables and flask instance
+- Within `env.py` add the following environment variables:
+
+    ```python
+    os.environ.setdefault("IP", "0.0.0.0")
+    os.environ.setdefault("PORT", "5000")
+    os.environ.setdefault("SECRET_KEY", "YOUR SECRET KEY")
+    os.environ.setdefault("MONGO_URI", "YOUR MONGO URI")
+    os.environ.setdefault("MONGO_DBNAME", "YOUR DATABASE NAME")
+    ```
+
+    - I used [randomkeygen]() to generate my secret key. 
+    - To get your mongodb URI, go to your cluster dashboard and hit connect. Select your version of python and copy the string to the clipboard.
+
+Within `app.py` import os, Flask and environment variables and create instance of Flask and PyMongo.
+```python
+    import os
+    from flask import Flask
+  
+    if os.path.exists("env.py"):
+        import env
+    
+    app = Flask(__name__)
+
+    app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
+    app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
+    app.secret_key = os.environ.get("SECRET_KEY")
+
+    mongo = PyMongo(app)
+```
+
+## Setting up the heroku app
+In order to deploy the app via [heroku](https://dashboard.heroku.com/apps), the following steps must be taken. 
+
+- In the terminal, create requirements.txt and Procfile for Heroku to run correctly
+    ```
+    pip3 freeze --local > requirements.txt
+    ```
+    ```
+    echo web: python app.py > Procfile
+    ```
+- Push your files to gitHub
+- Navigate to [heroku](https://heroku.com/) and create a new app in your dashboard.
+- Assign an app name and region and hit 'create app'.
+- In your dashboard, click to connect your gitHub and then locate the correct repository to be deployed.
+- Click on the settings tab and then click 'reveal config vars' in order to input the data hidden in `env.py` as follows.
+        
+        IP                  0.0.0.0
+        MONGO.DBNAME        sustainable_supper_club
+        MONGO_URI           MONGO URI copied from env.py
+        PORT                5000
+        SECRET_KEY          SECRET_KEY copied from env.py
+
+- Click 'enable automatic deploy' in the app dashboard.
+- Click view to see the deployed site!
+
 ___
 # Credits
 ## Code
-- Inspiration for player features and layout from [Traversy Media](https://www.youtube.com/watch?v=QTHRWGn_sJw) and [Junior Developer Central](https://www.youtube.com/watch?v=jZL9gVwxO-U) YouTube videos.
-- Responsive grid for pads taken from [Stack Overflow article](https://stackoverflow.com/questions/46548987/a-grid-layout-with-responsive-squares) and modified to suit the site needs.
-- General information about class constructors and class inheritance from [The Net Ninja 'object oriented JavaScript'](https://www.youtube.com/watch?v=4l3bTDlT6ZI&list=PL4cUxeGkcC9i5yvDkJgt60vNVWffpblB7) YouTube series.
-- Information relating to [HowlerJS](https://howlerjs.com/) gathered from [Techlahoma YouTube video](https://www.youtube.com/watch?v=isCQptdu1Kg).
-- Code for audio 'Howls' copied from [HowlerJS](https://howlerjs.com/) documentation ['AudioSprite' demo](https://github.com/goldfire/howler.js#documentation) and then edited to fit the needs of the site. 
-- [Stack Overflow](https://stackoverflow.com/), [w3 Schools](https://www.w3schools.com/) & [CSS tricks](https://css-tricks.com/) were used throughout the project to research solutions to site requirements.
-
 
 ## Content
 - All content written by the developer.
 
 ## Media
-- All music written by, and copyright of the band Volleyball.
+
 
 ## Acknowledgements
-- Thank ypu to my mentor, Can Sucullu for all your guidance and support.
-- Thank you to Volleyball for agreeing to share their music for the purpose of this project.
+- Thank you to my mentor, Can Sucullu for all your guidance and support.
