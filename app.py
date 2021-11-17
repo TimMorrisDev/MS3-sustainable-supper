@@ -512,7 +512,7 @@ def edit_recipe(recipe_id):
                 }
                 # update db entry
                 mongo.db.recipes.update_one({
-                    "_id": ObjectId(recipe_id)}, update)
+                    "_id": ObjectId(recipe_id)}, {"$set": update})
                 flash("Recipe Successfully Updated")
                 return redirect(url_for("profile", username=session["user"]))
         else:
