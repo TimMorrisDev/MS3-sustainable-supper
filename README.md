@@ -45,9 +45,8 @@ I wanted to carry across the themes of sustainability and natural eating / livin
 
 ![landscape_photo_for_colour_palette](static/readme_assets/ux/colour_palette/landscape.jpeg)
 
-The resulting palette generated using the [Coloors.co](https://coolors.co/) 'generate from image' tool and was comprised of natural greens and browns. [The full palette can be found here]()
+The resulting palette generated using the [Coloors.co](https://coolors.co/) 'generate from image' tool and was comprised of natural greens and browns. [The full palette can be found here](https://github.com/timmorrisdev/MS3-sustainable-supper-club/blob/main/static/readme_assets/ux/colour_palette/MS3-Palette.pdf)
 
-![colour_palette](static/readme_assets/ux/colour_palette/MS3-Palette.pdf)
 
 ### Fonts
 - Montserrat / Roboto.
@@ -57,7 +56,7 @@ The resulting palette generated using the [Coloors.co](https://coolors.co/) 'gen
 ### Wireframes
 - [Landing Page](https://github.com/timmorrisdev/MS3-sustainable-supper-club/blob/main/static/readme_assets/ux/wireframes/ms3_home-page.pdf)
 - [Recipes Page](https://github.com/timmorrisdev/MS3-sustainable-supper-club/blob/main/static/readme_assets/ux/wireframes/ms3_recipes.pdf)
-- Login/Register
+- [Login/Register](https://github.com/timmorrisdev/MS3-sustainable-supper-club/blob/main/static/readme_assets/ux/wireframes/ms3_login-register.pdf)
 - [Profile Page](https://github.com/timmorrisdev/MS3-sustainable-supper-club/blob/main/static/readme_assets/ux/wireframes/ms3_profile.pdf)
 - [Recipe Details page](https://github.com/timmorrisdev/MS3-sustainable-supper-club/blob/main/static/readme_assets/ux/wireframes/ms3_recipe-details.pdf)
 - [Add / Edit Recipe and User Pantry](https://github.com/timmorrisdev/MS3-sustainable-supper-club/blob/main/static/readme_assets/ux/wireframes/ms3_add-edit-recipe.pdf)
@@ -65,7 +64,48 @@ The resulting palette generated using the [Coloors.co](https://coolors.co/) 'gen
 
 
 ### Design Decisions Different to Wireframes
-   
+
+
+## Data Schema
+
+I chose to use MongoDB, a non-relational database sevice for this project as I felt if fit the my requirements. 
+
+The data structure for this project was organised into two collections - Recipes and Users. Examples of each along with the data types stored can be found below.
+
+- Recipes
+
+    
+        {
+            "_id": ObjectId
+            "recipe_name": String
+            "recipe_chef": String
+            "recipe_image": URL String
+            "recipe_summary": String
+            "prep_time": String
+            "cook_time": String
+            "ingredients": [{"item": x, "quantity": y}]
+            "method": ["step1", "step2", "step3"]
+            "vegetarian": Boolean
+            "vegan": Boolean
+            "uploaded_by": String
+            "date_added": datetime
+            "recipe_made_count": [{"user": x, "time_made": y}]
+            "user_favourite": ["user1", "user2"],
+            "made_count": Int
+            "favourite_count": Int
+        }
+        
+- Users
+
+        {
+            "username": String
+            "password": String
+            "user_recipes": ["recipe1", "recipe2"],
+            "admin": Boolean
+            "super_admin": Boolean
+            "user_ingredients": ["ingredient1", "ingredient2"]
+        }
+
 ## Features
 
 - Browse all recipes.
@@ -150,17 +190,11 @@ My CSS file style.css passed through the w3 validator with no errors.
 The validator found the following warnings for me to address. 
 
 ## Lighthouse Testing
-Lighthouse testing on the main website game page found the following issues.
+Lighthouse testing on the app found the following issues.
 
 Once this issue was resolved, lighthouse testing returned the following results:
 
-Main game page.
 
-![main page lighthouse](assets/ux/screengrabs/main-page-lighthouse.png)
-
-Contact page.
-
-![contact page lighthouse](assets/ux/screengrabs/contact-lighthouse.png)
 
 ## Testing UX User Stories
 
