@@ -110,6 +110,10 @@ main {
     z-index: 998;
 }
 
+.brand-logo {
+    margin-left: 30px;
+}
+
 .sidenav li a {
     color: white;
 }
@@ -128,6 +132,7 @@ main {
 .slider-heading {
     position: absolute;
     top: 1rem;
+    left: 0;
     z-index: 997;
 }
 
@@ -145,7 +150,7 @@ main {
     padding: 5px;
     text-shadow: 5px 5px 8px black;
     box-shadow: 5px 5px 8px black;
-    margin-left: 5px;
+    margin-left: 15px;
 }
 
 .landing-summary {
@@ -154,6 +159,7 @@ main {
     text-shadow: 5px 5px 8px black;
     box-shadow: 5px 5px 8px black;
     margin: 5px;
+   
 }
 
 /* recipe thumbnail cards */
@@ -268,8 +274,13 @@ form i::after{
     .card.horizontal.small {
         /* height: 180px; */
     }
+    .landing-summary {
+        height: 170px;
+    }
 }
 
-@media only screen and (min-width: 1200x){
-    
+@media only screen and (min-width: 1200px){
+    .landing-summary {
+        height: 150px;
+    }
 }

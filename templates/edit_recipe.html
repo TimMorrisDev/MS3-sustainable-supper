@@ -77,7 +77,7 @@
                 <!-- input for ingredient -->
                 <div class="input-field col s4">
                     <i class="fas fa-list-ul prefix tm-brown-text"></i>
-                    <input id="ingredients" name="ingredients" type="text" class="validate"
+                    <input id="ingredients" name="ingredients" type="text" class="validate ingredient"
                         placeholder="Add Ingredient Here" value="{{ ingredient.item }}" required>
                     <label for="ingredients">Ingredients</label>
                 </div>
@@ -117,8 +117,8 @@
                 <div class="input-field col s8">
                     <i class="fas fa-list-ul prefix tm-brown-text"></i>
 
-                    <textarea id="method" name="method" type="text" class="validate" placeholder="Add Step Here"
-                        required>{{ step }}</textarea>
+                    <textarea id="method" name="method" type="text" class="validate method-step"
+                        placeholder="Add Step Here" required>{{ step }}</textarea>
                     <label for="method">Method</label>
                 </div>
 
