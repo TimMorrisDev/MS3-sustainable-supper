@@ -1,6 +1,6 @@
 # Sustainable Supper Club
 ___
-![Responsive Mockup of site]()
+![Responsive Mockup of site](static/readme_assets/ux/responsive_site.png)
 
 
 # Project Synopsis
@@ -112,94 +112,106 @@ The data structure for this project was organised into two collections - Recipes
 Displays the company description and ethos, along with prompts to the user to continue their journey through the site.
 - User Favourite and Most Made section.
     - User favourites displays the top 3 recipes saved as favourites by users of the site. This is determined using the 'favourite_count' database field.
-    ![user favourite recipes]()
+    ![user favourite recipes](static/readme_assets/ux/site_features/user_favourites.png)
     - Most made displays the top 3 recipes logged by users when they make a meal. This is determined using the 'made_count' database field. There is additional python code to check the last time the recipe was made by the user to prevent multiple counts in the same day, which is done using the 'recipe_made_count' array.
-    ![user most made recipes]()
+    ![user most made recipes](static/readme_assets/ux/site_features/most_made.png)
 
 ### User Login or Register
 - Forms to allow user to create a profile, or login to existing account.
 
-    ![login / register]()
+    ![login](static/readme_assets/ux/site_features/login.png)
+
+    ![register](static/readme_assets/ux/site_features/register.png)
 ### Recipes Page
 Displays all recipes on the site, along with a search function. User is encouraged to sign up to gain access to additional features such as the 'pantry search'.
 - Search section - Offers the ability to search the database of recipes using user input, or by using the user 'pantry' ingredients stored in their profile. If no user logged in, the pantry search button re-directs to login or register.
+    - Search section if user not logged in
+    ![search section](static/readme_assets/ux/site_features/search_section.png)
 
-    ![search section]()
+    - Search section if user logged in
+    ![search section logged in](static/readme_assets/ux/site_features/search_section_loggedin.png)
 - Recipe Overview - Summary cards displayed for each recipe. If the recipe was uploaded by the logged in user, edit button is visible.
     - Recipe not uploaded by current user.
 
-    ![recipe summary card, not uploaded by user]()
+    ![recipe summary card, not uploaded by user](static/readme_assets/ux/site_features/recipe_summary.png)
 
     - Recipe uploaded by current user.
 
-    ![recipe summary card, uploaded by user]()
+    ![recipe summary card, uploaded by user](static/readme_assets/ux/site_features/recipe_summary_user.png)
 
 ### Recipe Details
 Display the full details of the selected recipe to the user. Offers the options to add to user favourites, or log that it was made by the user. Defensive programming in the back end will prevent logging the recipe as made twice in one day.
 - Recipe Details Card
     - Overview
 
-    ![recipe details card]()
+    ![recipe details card](static/readme_assets/ux/site_features/recipe_details_card.png)
 
     - Add Favourite Button
-    ![favourite button]()
+
+    ![favourite button](static/readme_assets/ux/site_features/favourite_button.png)
 
     - I made this! button with flash messages to inform user when trying to make more than once in a day.
 
-    ![I made this button]()
+    ![I made this button](static/readme_assets/ux/site_features/i_made_this.png)
 
-    ![Made it]()
+    ![Made it](static/readme_assets/ux/site_features/made_it.png)
 
-    ![Already made it]()
+    ![Already made it](static/readme_assets/ux/site_features/already_made_it.png)
 
     - Information from database used to give details of when ythe recipe was uploaded, and by whom.
 
-    ![uploaded details]()
+    ![uploaded details](static/readme_assets/ux/site_features/upload_details.png)
 
 ### User Profile Page
 Display to the user any recipes they have added as favourites or uploaded themselves. Also offers the 'pantry' feature to upload the ingredients they have in their kitchen to see matching recipes. Additional action buttons available to add a recipe, update pantry and delete user profile.
 - 'Your recipes' section.
     - Overview of favourite and uploaded recipes in tab layout.
-    ![your recipes seciton]()
+
+    ![your recipes seciton](static/readme_assets/ux/site_features/your_recipes.png)
 
     - Add recipe button. Navigates to add recipe form for user input.
 
-    ![add recipe button]()
+    ![add recipe button](static/readme_assets/ux/site_features/add_recipe_button.png)
 
     - Add user recipe form. Validation occurs in two stages, I used html 'pattern' and 'validate' attirbutes as well as WTForms validation in the back end. There is additional validation to check for valid image type at the provided URL using the python 'requests' module to look for data tags - will return a user error message and set a default image if any stage fails. 
 
-    ![add recipe form]()
+    ![add recipe form](static/readme_assets/ux/site_features/add_recipe.png)
 
     - User is able to edit any recipes they have uploaded. The form is pre-populated using the database fields.
 
-    ![edit recipe form]()
+    ![edit recipe form](static/readme_assets/ux/site_features/edit_recipe.png)
 
 - User Pantry section
 
-    ![user pantry overview]()
+    ![user pantry overview](static/readme_assets/ux/site_features/pantry_overview.png)
     - Update pantry button - triggers modal.
 
-    ![update pantry button]()
+    ![update pantry button](static/readme_assets/ux/site_features/pantry_update.png)
+
+    - Update pantry modal.
+
+    ![pantry update modal](static/readme_assets/ux/site_features/pantry_update_modal.png)
+
 
     - View matching recipes button navigates to search results using the user uploaded ingredients as search parameter.
 
-    ![view matching recipes]()
+    ![view matching recipes](static/readme_assets/ux/site_features/pantry_matches.png)
 
 - Delete user button and defensive 'are you sre?' modal.
-    ![delete user button]()
+    ![delete user button](static/readme_assets/ux/site_features/delete_profile.png)
 
-    ![are you sure modal]()
+    ![are you sure modal](static/readme_assets/ux/site_features/delete_modal.png)
 
 ### Admin Area
 Admin area offers and overview of all site users along with details of their favourite and uploaded recipes and the ingredients they have in their pantry. If user is a site 'super-user', determined by a database Boolean field, they have access to make other users 'read-only' admins or delete their profile all together.
 
 - Admin page - Super-Admin access.
 
-![super admin]()
+![super admin](static/readme_assets/ux/site_features/admin_super.png)
 
 - Admin page - 'read-only' access.
 
-![admin]()
+![admin](static/readme_assets/ux/site_features/admin_read.png)
 
 
 ### Other Features
