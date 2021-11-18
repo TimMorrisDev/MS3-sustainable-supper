@@ -297,10 +297,39 @@ Once this issue was resolved, lighthouse testing returned the following results:
 
 ## Testing UX User Stories
 
-## Testing Business Goals
+### First time user goals
 
-More data would need to be collected on an ongoing basis to establish the success of the business goals relating to driving traffic to social media pages or increasing exposure of new song releases. 
+- I want to find delicious recipes to make.
+    - I was able to browse all recipes easily and the search function was clear and easy to use to narror down what I was looking for.
+- I want to sign up to get more features easily.
+- I want to search for recipes I can make with the ingredients I already have.
+    - I was able to upload the ingredients I already have to my user profile using the 'update pantry' feature. It was then easy to find recipes that matched the ingredients I had. 
+- I'm interested in cooking more vegetarian or vegan food but don't know where to start.
+    - By looking at the home page I could get some inspiration based on what other people were making. It was also really helpful to use my pantry search function to see what kind of recipes I could make with the ingredients I already had!
 
+
+### Returning user goals
+
+- I want to save a list of my favourite recipes.
+    - My profile clear showed the list of any recipes that I had selected as a favourite so it was easy to find them again and again.
+- I want to be able to easily view recipes that match the ingredients I have left in my kitchen.
+    - My pantry was saved in my profile so it was really easy to quickly log on and see what my recipe options were.
+- I want to add my own recipes for the community to enjoy.
+    - Add a recipe was easy using the form. It was great to share my own favourite recipes with the community.
+
+### Frequent user goals
+
+- I want to see what the community is eating by seeing the top recipes being made.
+    - The 'most made' feature on the home page made it really easy to see what had been made the most by the community. It was also helpful that the information was displayed when browsing or search through the full recipe database. 
+
+### Business goals
+
+- To promote more sustainable eating habits.
+    - We have a large database of recipes we feel match our criterea of healthy and sustainable. By offering users the option to search using their existing ingredients, we encourage our users to waste less food and try new way of eating better.
+- To allow users to find delicious and healthy food to cook.
+    - The combined effect of displaying clear information about what the communtiy is enjoying and make, along with an easy-to-use search feature makes it easy for our users to find just the right recipe to make.
+- To track what people are most enjoying cooking to help future development / customer engagement strategies.
+    - The 'most made' and 'user favourite' section provides a quick view of what our community is enjoying. The admin area allows us to view in more detail the kind things people are saving and adding to their profiles. As well as being able to see the kind of ingredients people more commonly have to inform future recipe additions to the site.
 
 ## Peer Code Review
 
