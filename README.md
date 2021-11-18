@@ -134,11 +134,72 @@ Displays all recipes on the site, along with a search function. User is encourag
 
     ![recipe summary card, uploaded by user]()
 
+### Recipe Details
+Display the full details of the selected recipe to the user. Offers the options to add to user favourites, or log that it was made by the user. Defensive programming in the back end will prevent logging the recipe as made twice in one day.
+- Recipe Details Card
+    - Overview
 
-- Sign up to create personal profile.
-- Save favourite recipes to profile.
-- Search recipes by ingredients a user has in their kitchen.
-- Get inspiration for new recipes using the top 3.
+    ![recipe details card]()
+
+    - Add Favourite Button
+    ![favourite button]()
+
+    - I made this! button with flash messages to inform user when trying to make more than once in a day.
+
+    ![I made this button]()
+
+    ![Made it]()
+
+    ![Already made it]()
+
+    - Information from database used to give details of when ythe recipe was uploaded, and by whom.
+
+    ![uploaded details]()
+
+### User Profile Page
+Display to the user any recipes they have added as favourites or uploaded themselves. Also offers the 'pantry' feature to upload the ingredients they have in their kitchen to see matching recipes. Additional action buttons available to add a recipe, update pantry and delete user profile.
+- 'Your recipes' section.
+    - Overview of favourite and uploaded recipes in tab layout.
+    ![your recipes seciton]()
+
+    - Add recipe button. Navigates to add recipe form for user input.
+
+    ![add recipe button]()
+
+    - Add user recipe form. Validation occurs in two stages, I used html 'pattern' and 'validate' attirbutes as well as WTForms validation in the back end. There is additional validation to check for valid image type at the provided URL using the python 'requests' module to look for data tags - will return a user error message and set a default image if any stage fails. 
+
+    ![add recipe form]()
+
+    - User is able to edit any recipes they have uploaded. The form is pre-populated using the database fields.
+
+    ![edit recipe form]()
+
+- User Pantry section
+
+    ![user pantry overview]()
+    - Update pantry button - triggers modal.
+
+    ![update pantry button]()
+
+    - View matching recipes button navigates to search results using the user uploaded ingredients as search parameter.
+
+    ![view matching recipes]()
+
+- Delete user button and defensive 'are you sre?' modal.
+    ![delete user button]()
+
+    ![are you sure modal]()
+
+### Admin Area
+Admin area offers and overview of all site users along with details of their favourite and uploaded recipes and the ingredients they have in their pantry. If user is a site 'super-user', determined by a database Boolean field, they have access to make other users 'read-only' admins or delete their profile all together.
+
+- Admin page - Super-Admin access.
+
+![super admin]()
+
+- Admin page - 'read-only' access.
+
+![admin]()
 
 
 ### Other Features
