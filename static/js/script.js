@@ -31,7 +31,7 @@ $(document).ready(function () {
 
     // add method step row to recipe form
     $('#add-step').on('click', function () {
-        let methodStep = '<div class="row method-row valign-wrapper"><div class="input-field col s8"><i class="fas fa-list-ul prefix"></i><textarea id="method" name="method" type="text" class="validate method-step" required></textarea><label for="method">Add Step Here</label></div><div class="col s4"><button type="button" id="remove-step" class="waves-effect waves-light btn red">Remove</button></div></div>';
+        let methodStep = '<div class="row method-row valign-wrapper"><div class="input-field col s8"><i class="fas fa-list-ul prefix"></i><textarea id="method" name="method" class="validate method-step" required></textarea><label for="method">Add Step Here</label></div><div class="col s4"><button type="button" id="remove-step" class="waves-effect waves-light btn red">Remove</button></div></div>';
         $(methodStep).insertBefore('#add-step-row');
         $('.method-step').last().focus();
     });

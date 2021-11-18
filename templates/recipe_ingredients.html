@@ -25,7 +25,7 @@
                     </div>
                     <div class="col s12 m6">
                         <div class="card-image recipe_details_image r10 text-shaddow">
-                            <img src="{{ recipe.recipe_image }}">
+                            <img src="{{ recipe.recipe_image }}" alt="image of {{ recipe.recipe_name }}">
                         </div>
                     </div>
                 </div>
@@ -39,12 +39,14 @@
                         {% if session.user in recipe.user_favourite %}
 
                         <a href="{{ url_for('recipe_favourite', recipe_id=recipe._id) }}"
-                            class="waves-effect waves-light btn tm-brown-bg">Remove favourite</a>
+                            class="waves-effect waves-light btn tm-brown-bg" aria-label="remove user favourite">Remove
+                            favourite</a>
 
                         {% else %}
 
                         <a href="{{ url_for('recipe_favourite', recipe_id=recipe._id) }}"
-                            class="waves-effect waves-light btn tm-dark-green-bg">Add favourite</a>
+                            class="waves-effect waves-light btn tm-dark-green-bg" aria-label="add user favourite">Add
+                            favourite</a>
 
                         {% endif %}
                     </div>
@@ -52,7 +54,8 @@
                     <!-- Button to log user making recipe -->
                     <div class="col s6">
                         <a href="{{ url_for('recipe_made', recipe_id=recipe._id) }}"
-                            class="waves-effect waves-light btn tm-brown-bg">I made this!</a>
+                            class="waves-effect waves-light btn tm-brown-bg" aria-label="made recipe">I made
+                            this!</a>
                     </div>
                 </div>
 
@@ -94,7 +97,8 @@
                 <div class="row">
                     <div class="col s12 center-align">
                         <a href="{{ url_for('recipes') }}"
-                            class="waves-effect waves-light btn btn-large tm-dark-green-bg">All recipes</a>
+                            class="waves-effect waves-light btn btn-large tm-dark-green-bg" aria-label="all recipes">All
+                            recipes</a>
                     </div>
                 </div>
             </div>

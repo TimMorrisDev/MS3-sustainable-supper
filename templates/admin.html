@@ -32,13 +32,13 @@
                 <!-- check user admin status to display appropriate button -->
                 {% if user.admin %}
                 <a href="{{ url_for('admin_status', username=user.username) }}"
-                    class="waves-effect waves-light btn tm-brown-bg center-align">Remove Admin<i
-                        class="fas fa-user-cog right"></i></a>
+                    class="waves-effect waves-light btn tm-brown-bg center-align"
+                    aria-label="remove admin status">Remove Admin<i class="fas fa-user-cog right"></i></a>
 
                 {% else %}
                 <a href="{{ url_for('admin_status', username=user.username) }}"
-                    class="waves-effect waves-light btn tm-dark-green-bg center-align">Make Admin<i
-                        class="fas fa-user-cog right"></i></a>
+                    class="waves-effect waves-light btn tm-dark-green-bg center-align" aria-label="make admin">Make
+                    Admin<i class="fas fa-user-cog right"></i></a>
 
                 {% endif %}
 
@@ -48,7 +48,7 @@
             <div class="col s4">
 
                 <a href="#{{ user.username }}_delete_user_modal"
-                    class="modal-trigger waves-effect waves-light btn red center-align">Delete
+                    class="modal-trigger waves-effect waves-light btn red center-align" aria-label="delete user">Delete
                     User<i class="fas fa-minus-square right"></i></a>
 
             </div>
@@ -111,9 +111,9 @@
                 <div class="col s12 xl6">
                     <div class="row">
                         <div class="col s12">
-                            <span>
-                                <h3 class="center-align">{{ user.username|title }}'s Pantry</h3>
-                            </span>
+
+                            <h3 class="center-align">{{ user.username|title }}'s Pantry</h3>
+
                         </div>
                     </div>
 
@@ -158,11 +158,12 @@
 
                 <!-- delete user button -->
                 <a href="{{ url_for('admin_delete_user', username=session['user']) }}"
-                    class="waves-effect waves-light btn btn-large red">Yes! Delete this user profile <i
-                        class="fas fa-minus-square right"></i></a>
+                    class="waves-effect waves-light btn btn-large red" aria-label="delete user confirm">Yes! Delete this
+                    user profile <i class="fas fa-minus-square right"></i></a>
 
                 <!-- exit modal button -->
-                <a href="#!" class="waves-effect waves-light btn btn-large modal-close tm-dark-green-bg">No, I've
+                <a href="#!" class="waves-effect waves-light btn btn-large modal-close tm-dark-green-bg"
+                    aria-label="delete user cancel">No, I've
                     changed my
                     mind</a>
             </div>
@@ -175,9 +176,5 @@
     {% endfor %}
 
 </ul>
-
-
-
-
 
 {% endblock %}

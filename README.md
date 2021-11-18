@@ -282,6 +282,8 @@ I used the W3C Markup, CSS Validator and JSHint Validator Services to check and 
 The validator found the following issues for me to address.
 
 
+
+
 ### [CSS Validation Service](https://jigsaw.w3.org/css-validator/)
 My CSS file style.css passed through the w3 validator with no errors.
 

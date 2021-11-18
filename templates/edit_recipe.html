@@ -17,7 +17,7 @@
             <div class="input-field col s12 m6">
                 <i class="fas fa-pencil-alt prefix tm-brown-text"></i>
                 <input id="recipe_name" name="recipe_name" minlength="2" maxlength="100" type="text" class="validate"
-                    value="{{ recipe.recipe_name }}" required>
+                    aria-label="recipe name" value="{{ recipe.recipe_name }}" required>
                 <label for="recipe_name">Recipe Name</label>
             </div>
 
@@ -25,7 +25,7 @@
             <div class="input-field col s12 m6">
                 <i class="fas fa-pencil-alt prefix tm-brown-text"></i>
                 <input id="recipe_chef" name="recipe_chef" minlength="2" maxlength="100" type="text" class="validate"
-                    value="{{ recipe.recipe_chef }}" required>
+                    value="{{ recipe.recipe_chef }}" aria-label="recipe chef" required>
                 <label for="recipe_chef">Recipe Chef</label>
             </div>
         </div>
@@ -35,7 +35,8 @@
             <div class="input-field col s12">
                 <i class="fas fa-pencil-alt prefix tm-brown-text"></i>
                 <input id="recipe_image" name="recipe_image" type="text" class="validate"
-                    placeholder="Please provide URL for recipe image" value="{{ recipe.recipe_image }}" required>
+                    placeholder="Please provide URL for recipe image" value="{{ recipe.recipe_image }}"
+                    aria-label="recipe image url" required>
                 <label for="recipe_image">Recipe Image</label>
             </div>
         </div>
@@ -45,7 +46,7 @@
             <div class="input-field col s12">
                 <i class="fas fa-align-left prefix tm-brown-text"></i>
                 <textarea id="recipe_summary" name="recipe_summary" minlength="2" maxlength="200"
-                    class="materialize-textarea validate" placeholder="max 200 characters"
+                    class="materialize-textarea validate" placeholder="max 200 characters" aria-label="recipe summary"
                     required>{{ recipe.recipe_summary }}</textarea>
                 <label for="recipe_summary">Recipe Summary</label>
             </div>
@@ -56,13 +57,15 @@
             <div class="input-field col s12 m6">
                 <i class="far fa-clock prefix tm-brown-text"></i>
                 <input id="prep_time" name="prep_time" minlength="1" maxlength="5" type="text" class="validate"
-                    pattern="[0-9]{1,5}" placeholder="Input numbers only" value="{{ recipe.prep_time }}" required>
+                    pattern="[0-9]{1,5}" placeholder="Input numbers only" aria-label="prep time"
+                    value="{{ recipe.prep_time }}" required>
                 <label for="prep_time">Prep Time (mins) - Input numbers only</label>
             </div>
             <div class="input-field col s12 m6">
                 <i class="far fa-clock prefix tm-brown-text"></i>
                 <input id="cook_time" name="cook_time" minlength="1" maxlength="5" type="text" class="validate"
-                    pattern="[0-9]{1,5}" placeholder="Input numbers only" value="{{ recipe.cook_time }}" required>
+                    pattern="[0-9]{1,5}" placeholder="Input numbers only" aria-label="cook time"
+                    value="{{ recipe.cook_time }}" required>
                 <label for="cook_time">Cook Time (mins)</label>
             </div>
         </div>
@@ -78,21 +81,23 @@
                 <div class="input-field col s4">
                     <i class="fas fa-list-ul prefix tm-brown-text"></i>
                     <input id="ingredients" name="ingredients" type="text" class="validate ingredient"
-                        placeholder="Add Ingredient Here" value="{{ ingredient.item }}" required>
+                        placeholder="Add Ingredient Here" value="{{ ingredient.item }}" aria-label="ingredient input"
+                        required>
                     <label for="ingredients">Ingredients</label>
                 </div>
 
                 <!-- preperation instructions - not required in validation -->
                 <div class="input-field col s5">
                     <input id="ingredient-prep" name="ingredient-prep" type="text" class="validate"
-                        placeholder="Preparation instructions" value="{{ ingredient.preparation }}">
+                        placeholder="Preparation instructions" value="{{ ingredient.preparation }}"
+                        aria-label="ingredient preparation">
                     <label for="ingredient-prep">Preparation instructions</label>
                 </div>
 
                 <!-- button to trigger javascript function to remove row -->
                 <div class="col s3">
-                    <button type="button" id="remove-ingredient"
-                        class="waves-effect waves-light btn red">Remove</button>
+                    <button type="button" id="remove-ingredient" class="waves-effect waves-light btn red"
+                        aria-label="remove ingredient">Remove</button>
                 </div>
             </div>
 
@@ -101,7 +106,8 @@
             <!-- button to trigger javascript function to add another ingredient row -->
             <div class="row" id="add-ingredient-row">
                 <div class="col s12">
-                    <button type="button" id="add-ingredient" class="waves-effect waves-light btn tm-dark-green-bg">Add
+                    <button type="button" id="add-ingredient" class="waves-effect waves-light btn tm-dark-green-bg"
+                        aria-label="add ingredient">Add
                         Another
                         Ingredient</button>
                 </div>
@@ -117,14 +123,15 @@
                 <div class="input-field col s8">
                     <i class="fas fa-list-ul prefix tm-brown-text"></i>
 
-                    <textarea id="method" name="method" type="text" class="validate method-step"
-                        placeholder="Add Step Here" required>{{ step }}</textarea>
+                    <textarea id="method" name="method" class="validate method-step" placeholder="Add Step Here"
+                        aria-label="method step" required>{{ step }}</textarea>
                     <label for="method">Method</label>
                 </div>
 
                 <!-- button to trigger javascript function to remove row -->
                 <div class="col s4">
-                    <button type="button" id="remove-step" class="waves-effect waves-light btn red">Remove</button>
+                    <button type="button" id="remove-step" class="waves-effect waves-light btn red"
+                        aria-label="remove method step">Remove</button>
                 </div>
             </div>
             {% endfor %}
@@ -132,7 +139,8 @@
             <!-- button to trigger javascript function to add another method step -->
             <div class="row" id="add-step-row">
                 <div class="col s12">
-                    <button type="button" id="add-step" class="waves-effect waves-light btn tm-dark-green-bg">Add
+                    <button type="button" id="add-step" class="waves-effect waves-light btn tm-dark-green-bg"
+                        aria-label="add method step">Add
                         Another
                         Step</button>
                 </div>
@@ -145,7 +153,8 @@
             <div class="col s12">
                 <label for="vegetarian">
                     {% if recipe.vegetarian %}
-                    <input type="checkbox" checked="checked" name="vegetarian" id="vegetarian" />
+                    <input type="checkbox" checked="checked" name="vegetarian" id="vegetarian"
+                        aria-label="vegetarian" />
                     {% else %}
                     <input type="checkbox" name="vegetarian" id="vegetarian" />
                     {% endif %}
@@ -155,7 +164,7 @@
             <div class="col s12">
                 <label for="vegan">
                     {% if recipe.vegan %}
-                    <input type="checkbox" checked="checked" name="vegan" id="vegan" />
+                    <input type="checkbox" checked="checked" name="vegan" id="vegan" aria-label="vegan" />
                     {% else %}
                     <input type="checkbox" name="vegan" id="vegan" />
                     {% endif %}
@@ -168,17 +177,16 @@
     <!-- submit -->
     <div class="row">
         <div class="col s12 center-align">
-            <button type="submit" class="btn btn-large tm-dark-green-bg text-shaddow">Update Recipe <i
-                    class="fas fa-plus-square right"></i></button>
-            <a href="{{ url_for('delete_recipe', recipe_id=recipe._id) }}" action="POST"
-                class="waves-effect waves-light btn btn-large red">Delete Recipe <i
+            <button type="submit" class="btn btn-large tm-dark-green-bg text-shaddow" aria-label="sumbit recipe">Update
+                Recipe <i class="fas fa-plus-square right"></i></button>
+            <a href="{{ url_for('delete_recipe', recipe_id=recipe._id) }}"
+                class="waves-effect waves-light btn btn-large red" aria-label="delete recipe">Delete Recipe <i
                     class="fas fa-minus-square right"></i></a>
             <a href="{{ url_for('profile', username=session['user']) }}"
-                class="waves-effect waves-light btn btn-large tm-dark-green-bg">Profile <i
+                class="waves-effect waves-light btn btn-large tm-dark-green-bg" aria-label="user profile">Profile <i
                     class="fas fa-user right"></i></a>
         </div>
     </div>
 </form>
-
 
 {% endblock %}

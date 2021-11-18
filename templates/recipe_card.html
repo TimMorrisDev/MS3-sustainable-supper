@@ -6,7 +6,7 @@
 
         <!-- recipe image -->
         <div class="card-image">
-            <img src="{{ recipe.recipe_image }}">
+            <img src="{{ recipe.recipe_image }}" alt="image of {{ recipe.recipe_name }}">
         </div>
         <div class="card-stacked">
             <div class="card-content">
@@ -34,13 +34,14 @@
                     <!-- button to view recipe details -->
                     <div class="col s5 m7 center-align">
                         <a href="{{ url_for('recipe_ingredients', recipe_id=recipe._id) }}"
-                            class="waves-effect waves-light btn tm-dark-green-bg">View</a>
+                            class="waves-effect waves-light btn tm-dark-green-bg"
+                            aria-label="view recipe details">View</a>
 
                         <!-- check if user uploaded recipe and allow edit if true -->
                         {% if (session.user) and (recipe.uploaded_by|lower == session.user|lower) %}
 
                         <a href="{{ url_for('edit_recipe', recipe_id=recipe._id) }}"
-                            class="waves-effect waves-light btn tm-brown-bg">Edit</a>
+                            class="waves-effect waves-light btn tm-brown-bg" aria-label="edit recipe">Edit</a>
 
                         {% endif %}
                     </div>

@@ -12,7 +12,8 @@
         <!-- delete user profile button - triggers modal as defensive measure -->
         <div class="row">
             <div class="col s12 center-align">
-                <a href="#delete_user_modal" class="modal-trigger waves-effect waves-light btn red center-align">Delete
+                <a href="#delete_user_modal" class="modal-trigger waves-effect waves-light btn red center-align"
+                    aria-label="delete user button">Delete
                     User Profile <i class="fas fa-minus-square right"></i></a>
             </div>
         </div>
@@ -29,8 +30,8 @@
             <div class="col s12">
 
                 <!-- title and button to add user recipe -->
-                <h3 class="center-align">Your Recipes <a href="{{ url_for('add_recipe') }}" action="POST"
-                        class="waves-effect waves-light btn tm-dark-green-bg">Add <i
+                <h3 class="center-align">Your Recipes <a href="{{ url_for('add_recipe') }}"
+                        class="waves-effect waves-light btn tm-dark-green-bg" aria-label="add recipe button">Add <i
                             class="fas fa-plus-square right"></i></a></h3>
             </div>
         </div>
@@ -86,11 +87,11 @@
 
             <!-- title and button to update ingredients in user pantry - triggers modal -->
             <div class="col s12">
-                <span>
-                    <h3 class="center-align">Pantry <a
-                            class="waves-effect waves-light btn tm-dark-green-bg modal-trigger"
-                            href="#user_ingredients_modal">Update <i class="fas fa-plus-square right"></i></a></h3>
-                </span>
+
+                <h3 class="center-align">Pantry <a class="waves-effect waves-light btn tm-dark-green-bg modal-trigger"
+                        href="#user_ingredients_modal" aria-label="update user pantry">Update <i
+                            class="fas fa-plus-square right"></i></a></h3>
+
             </div>
         </div>
 
@@ -125,7 +126,8 @@
             <div class="card-action center-align">
 
                 <a class="waves-effect waves-light btn tm-dark-green-bg modal-trigger"
-                    href="{{ url_for('pantry_search', username=session['user']) }}">View Matching Recipes</a>
+                    href="{{ url_for('pantry_search', username=session['user']) }}" aria-label="pantry search">View
+                    Matching Recipes</a>
 
             </div>
 
@@ -154,15 +156,15 @@
                         <i class="fas fa-list-ul prefix tm-brown-text"></i>
                         <input id="user-ingredients" name="user-ingredients" type="text"
                             class="validate user-ingredient" placeholder="Add Ingredient Here" value="{{ ingredient }}"
-                            required>
+                            aria-label="user ingredient input" required>
                         <label for="user-ingredients">Ingredients</label>
 
                     </div>
 
                     <!-- button to trigger javascript function to remove row -->
                     <div class="col s3">
-                        <button type="button" id="remove-user-ingredient"
-                            class="waves-effect waves-light btn red">Remove</button>
+                        <button type="button" id="remove-user-ingredient" class="waves-effect waves-light btn red"
+                            aria-label="remove pantry ingredient">Remove</button>
                     </div>
                 </div>
 
@@ -178,15 +180,16 @@
                         <!-- ingredient input -->
                         <i class="fas fa-list-ul prefix light-blue-text text-darken-4"></i>
                         <input id="user-ingredients" name="user-ingredients" type="text"
-                            class="validate user-ingredient" placeholder="Add Ingredient Here" required>
+                            class="validate user-ingredient" placeholder="Add Ingredient Here"
+                            aria-label="user ingredient input" required>
                         <label for="user-ingredients">Ingredients</label>
 
                     </div>
 
                     <!-- button to trigger javascript function to remove row -->
                     <div class="col s3">
-                        <button type="button" id="remove-user-ingredient"
-                            class="waves-effect waves-light btn red">Remove</button>
+                        <button type="button" id="remove-user-ingredient" class="waves-effect waves-light btn red"
+                            aria-label="remove ingredient">Remove</button>
                     </div>
                 </div>
 
@@ -195,8 +198,8 @@
                 <!-- button to trigger javascript function to add another ingredient row -->
                 <div class="row" id="add-user-ingredient-row">
                     <div class="col s12">
-                        <button type="button" id="add-user-ingredient"
-                            class="waves-effect waves-light btn tm-brown-bg">Add
+                        <button type="button" id="add-user-ingredient" class="waves-effect waves-light btn tm-brown-bg"
+                            aria-label="add ingredient">Add
                             Another
                             Ingredient</button>
                     </div>
@@ -205,21 +208,14 @@
             <div class="row">
                 <!-- submit to update db -->
                 <div class="col s12 center-align">
-                    <button type="submit" class="waves-effect waves-light btn btn-large tm-dark-green-bg">Update</a>
+                    <button type="submit" class="waves-effect waves-light btn btn-large tm-dark-green-bg"
+                        aria-label="update user pantry">Update</button>
                 </div>
             </div>
 
-    </div>
 
-    <!-- submit to update db -->
-    <!-- <div class="modal-footer">
-        <div class="row">
-            <div class="col s12 center-align">
-                <button type="submit" class="waves-effect waves-light btn btn-large tm-dark-green-bg">Update</a>
-            </div>
-        </div>
-    </div> -->
-    </form>
+        </form>
+    </div>
 </div>
 
 <!-- Delete user Modal Structure -->
@@ -238,18 +234,18 @@
 
                 <!-- delete user button -->
                 <a href="{{ url_for('delete_user', username=session['user']) }}"
-                    class="waves-effect waves-light btn btn-large red">Yes! Delete my
+                    class="waves-effect waves-light btn btn-large red" aria-label="delete user confirm">Yes! Delete my
                     profile <i class="fas fa-minus-square right"></i></a>
 
                 <!-- exit modal button -->
-                <a href="#!" class="waves-effect waves-light btn btn-large modal-close tm-dark-green-bg">No, I've
+                <a href="#!" class="waves-effect waves-light btn btn-large modal-close tm-dark-green-bg"
+                    aria-label="delete user cancel">No, I've
                     changed my
                     mind</a>
             </div>
         </div>
 
     </div>
-    </form>
 </div>
 
 {% endblock %}
