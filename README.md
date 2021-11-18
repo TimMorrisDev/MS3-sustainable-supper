@@ -286,7 +286,7 @@ The validator found the following issues for me to address.
 My CSS file style.css passed through the w3 validator with no errors.
 
 ### [JSHint Validation Service](https://jshint.com/)
-The validator found the following warnings for me to address. 
+My JavaScript file script.js passed through the validator with no errors. 
 
 ## Lighthouse Testing
 Lighthouse testing on the app found the following issues.
@@ -332,6 +332,15 @@ Once this issue was resolved, lighthouse testing returned the following results:
     - The 'most made' and 'user favourite' section provides a quick view of what our community is enjoying. The admin area allows us to view in more detail the kind things people are saving and adding to their profiles. As well as being able to see the kind of ingredients people more commonly have to inform future recipe additions to the site.
 
 ## Peer Code Review
+I submitted this project to the slack peer-code-review channel and received the following feedback.
+- Desktop navbar very close to edge of screen.
+    - This was fixed using CSS styling.
+- Labels overlapping on 'add-ingredient' area of add/edit recipe forms.
+    - This was caused by the elements being dynamically created using jQuery were duplicating the labels for the section. I was able to edit the code being added in my jQuery function to stop this from happening and make the forms clearer for the user.
+- Modal buttons too close to bottom of modal.
+    - This was fixed using CSS styling.
+- Additional ingredient and method rows hard to select in add/edit recipe form.
+    - This was solved by adding class attributes to each of the required sections. Then using the jQuery focus() method to automatically select the last input field when a new row is created.
 
 ## Cross-Browser/Device Testing
 I tested the site across multiple devices using different browsers.
