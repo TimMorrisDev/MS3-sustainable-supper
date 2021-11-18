@@ -108,7 +108,33 @@ The data structure for this project was organised into two collections - Recipes
 
 ## Features
 
-- Browse all recipes.
+### Landing Page
+Displays the company description and ethos, along with prompts to the user to continue their journey through the site.
+- User Favourite and Most Made section.
+    - User favourites displays the top 3 recipes saved as favourites by users of the site. This is determined using the 'favourite_count' database field.
+    ![user favourite recipes]()
+    - Most made displays the top 3 recipes logged by users when they make a meal. This is determined using the 'made_count' database field. There is additional python code to check the last time the recipe was made by the user to prevent multiple counts in the same day, which is done using the 'recipe_made_count' array.
+    ![user most made recipes]()
+
+### User Login or Register
+- Forms to allow user to create a profile, or login to existing account.
+
+    ![login / register]()
+### Recipes Page
+Displays all recipes on the site, along with a search function. User is encouraged to sign up to gain access to additional features such as the 'pantry search'.
+- Search section - Offers the ability to search the database of recipes using user input, or by using the user 'pantry' ingredients stored in their profile. If no user logged in, the pantry search button re-directs to login or register.
+
+    ![search section]()
+- Recipe Overview - Summary cards displayed for each recipe. If the recipe was uploaded by the logged in user, edit button is visible.
+    - Recipe not uploaded by current user.
+
+    ![recipe summary card, not uploaded by user]()
+
+    - Recipe uploaded by current user.
+
+    ![recipe summary card, uploaded by user]()
+
+
 - Sign up to create personal profile.
 - Save favourite recipes to profile.
 - Search recipes by ingredients a user has in their kitchen.
