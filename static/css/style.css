@@ -222,6 +222,18 @@ form i::after{
     color: #499129 !important;
 }
 
+.pagination {
+    text-align: center;
+}
+
+.pagination li.active {
+    background-color: #254c1c
+}
+
+.material-icons {
+    display: none;
+}
+
 
 /* classes to override materialize default focus and active styling on forms */
 

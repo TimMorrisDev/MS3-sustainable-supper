@@ -1,9 +1,10 @@
 import os
 from datetime import datetime, timedelta
 from flask import (
-    Flask, flash, jsonify, render_template,
+    Flask, flash, render_template,
     redirect, request, session, url_for)
 from flask_pymongo import PyMongo, pymongo
+from flask_paginate import Pagination, get_page_args
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField
 from wtforms.validators import InputRequired, Regexp, Length, URL
@@ -39,30 +40,37 @@ def index():
         'index.html', top_recipes=top_recipes, most_made=most_made)
 
 
+# pagination
+
+def paginated(recipes):
+    PER_PAGE = 5
+    page, per_page, offset = get_page_args(
+        page_parameter='page', per_page_parameter='per_page')
+    offset = page * PER_PAGE - PER_PAGE
+
+    return recipes[offset: offset + PER_PAGE]
+
+
+def pagination_args(recipes):
+    PER_PAGE = 5
+    page, per_page, offset = get_page_args(
+        page_parameter='page', per_page_parameter='per_page')
+    total = len(recipes)
+
+    return Pagination(
+        page=page, per_page=PER_PAGE, total=total, css_framework="materialize")
+
+
 # recipes page
 @app.route("/recipes")
 def recipes():
 
-    # get all recipes from db
-    recipes = list(mongo.db.recipes.find())
-    return render_template("recipes.html", recipes=recipes)
+    recipes = list(mongo.db.recipes.find().sort("_id", 1))
+    recipes_paginated = paginated(recipes)
+    pagination = pagination_args(recipes)
 
-
-# recipes page
-# @app.route("/recipes")
-# def recipes():
-
-#     # get all recipes from db
-#     recipe = mongo.db.recipes.find().sort("_id", pymongo.ASCENDING).limit(3)
-
-#     output = []
-
-#     for i in recipe:
-#         output.append({"recipe": i["recipe"]})
-    
-#     recipes = 
-
-#     return render_template("recipes.html", recipes=recipes)
+    return render_template(
+        'recipes.html', recipes=recipes_paginated, pagination=pagination)
 
 
 # search function
@@ -73,8 +81,13 @@ def search():
     query = request.form.get("query")
 
     # return matching recipes from db
+
     result_recipes = list(mongo.db.recipes.find({"$text": {"$search": query}}))
-    return render_template("recipes.html", recipes=result_recipes)
+    recipes_paginated = paginated(result_recipes)
+    pagination = pagination_args(result_recipes)
+
+    return render_template(
+        "recipes.html", recipes=recipes_paginated, pagination=pagination)
 
 
 # pantry search funciton
@@ -93,7 +106,13 @@ def pantry_search(username):
             # return matching recipes from db
             result_recipes = list(mongo.db.recipes.find({
                 "$text": {"$search": str(query)}}))
-            return render_template("recipes.html", recipes=result_recipes)
+
+            recipes_paginated = paginated(result_recipes)
+            pagination = pagination_args(result_recipes)
+
+            return render_template("recipes.html",
+                                   recipes=recipes_paginated,
+                                   pagination=pagination)
 
         # prompt user to update pantry if list returns empty
         else:
@@ -784,9 +803,15 @@ def page_not_found(e):
     return render_template('404.html'), 404
 
 
+# 400 page not found
+@app.errorhandler(400)
+def bad_request(e):
+    return render_template('400.html'), 400
+
+
 # 500 internal server error
 @app.errorhandler(500)
-def page_not_found(e):
+def internal_server_error(e):
     return render_template('500.html'), 500
 
 

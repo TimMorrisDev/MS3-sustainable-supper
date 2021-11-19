@@ -58,7 +58,12 @@
 
 <!-- recipe cards section -->
 <div class="row">
+
+    {{ pagination.links }}
     <div class="col s12 xl8 offset-xl2">
+
+
+
 
         <!-- display all recipes, or search results -->
         {% for recipe in recipes %}
@@ -67,6 +72,8 @@
         {% include "recipe_card.html" %}
 
         {% endfor %}
+
+
 
     </div>
 </div>
