@@ -466,6 +466,7 @@ def add_recipe():
                 flash("Recipe Successfully Added")
                 return redirect(url_for("profile", username=session["user"]))
         else:
+
             # store any wtf validation errors in variable
             error_values = form.errors.values()
 

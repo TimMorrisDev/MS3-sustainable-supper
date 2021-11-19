@@ -243,6 +243,9 @@ ___
 - [WTForms](https://wtforms.readthedocs.io/en/3.0.x/)
     - WTForms fields and validators were used in the back-end to validate user input forms across the site and add an extra layer of validation and security on top of the front-end HTML validation.
 
+- [flask_paginate](https://pythonhosted.org/Flask-paginate/)
+    - Used to impliment pagination across the site.
+
 - [Materialize](https://materializecss.com/)
     - Materialize was used for the responsive 'grid'. Components, such as the cards, were copied from the Materialize documentation and then modified for use in various places across the site.
     - Materialize was also used to provide additional front-end form validation.

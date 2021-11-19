@@ -179,14 +179,45 @@
         <div class="col s12 center-align">
             <button type="submit" class="btn btn-large tm-dark-green-bg text-shaddow" aria-label="sumbit recipe">Update
                 Recipe <i class="fas fa-plus-square right"></i></button>
-            <a href="{{ url_for('delete_recipe', recipe_id=recipe._id) }}"
-                class="waves-effect waves-light btn btn-large red" aria-label="delete recipe">Delete Recipe <i
-                    class="fas fa-minus-square right"></i></a>
+            <a href="#delete_recipe_modal" class="modal-trigger waves-effect waves-light btn btn-large red"
+                aria-label="delete recipe">Delete Recipe <i class="fas fa-minus-square right"></i></a>
             <a href="{{ url_for('profile', username=session['user']) }}"
                 class="waves-effect waves-light btn btn-large tm-dark-green-bg" aria-label="user profile">Profile <i
                     class="fas fa-user right"></i></a>
         </div>
     </div>
+
 </form>
+
+<!-- Delete user Modal Structure -->
+<div id="delete_recipe_modal" class="modal">
+    <div class="modal-content center-align">
+        <div class="row">
+            <div class="col s12">
+
+                <!-- text to warn user of action -->
+                <h3>Are you sure?</h3> <br>
+                <h4>This cannot be undone!</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 center-align">
+
+                <!-- delete recipe button -->
+
+                <a href="{{ url_for('delete_recipe', recipe_id=recipe._id) }}"
+                    class="waves-effect waves-light btn btn-large red" aria-label="delete recipe confirm">Yes!
+                    Delete Recipe <i class="fas fa-minus-square right"></i></a>
+
+                <!-- exit modal button -->
+                <a href="#!" class="waves-effect waves-light btn btn-large modal-close tm-dark-green-bg"
+                    aria-label="delete user cancel">No, I've
+                    changed my
+                    mind</a>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 {% endblock %}
