@@ -291,10 +291,49 @@ My CSS file style.css passed through the w3 validator with no errors.
 My JavaScript file script.js passed through the validator with no errors. 
 
 ## Lighthouse Testing
-Lighthouse testing on the app found the following issues.
+Initial lighthouse testing on the app found that some of the accessibillity could be improved. I was able to improve this by adding 'alt' tags to my recipes using the jinja templating language to generate more informative descriptions based on the specific recipe title.
+
+I also added the 'aria-label' attirbute to any actionable buttons or link across the site to further improve accesibility. 
 
 Once this issue was resolved, lighthouse testing returned the following results:
 
+- Landing / Home page
+    - The performance score was impacted by the image file types at URLs provided for each recipe. Unfortunately I have no control over the image file type at a given link so felt I could not resolve this issue. I have provided a screen grab of the details below.
+
+    ![lighthouse_landing](static/readme_assets/lighthouse_tests/lighthouse_landing.png)
+
+    ![lighthouse_landing-performance](static/readme_assets/lighthouse_tests/lighthouse_landing-image-issue.png)
+
+- Recipe Page
+![lighhthouse_recipe](static/readme_assets/lighthouse_tests/lighthouse_recipes.png)
+
+- Recipe details
+
+    ![lighthouse_recipe-details](static/readme_assets/lighthouse_tests/lighthouse_recipe-details.png)
+
+- Register page
+
+    ![lighhthouse_register](static/readme_assets/lighthouse_tests/lighthouse_register.png)
+
+- Login page
+
+    ![lighhthouse_login](static/readme_assets/lighthouse_tests/lighthouse_login.png)
+
+- Profile page
+
+    ![lighhthouse_profile](static/readme_assets/lighthouse_tests/lighthouse_profile.png)
+
+- Add recipe page
+
+    ![lighhthouse_add-recipe](static/readme_assets/lighthouse_tests/lighthouse_add-recipe.png)
+
+- Edit recipe page
+
+    ![lighhthouse_edit-recipe](static/readme_assets/lighthouse_tests/lighthouse_edit-recipe.png)
+
+- Admin area
+
+    ![lighhthouse_admin-area](static/readme_assets/lighthouse_tests/lighthouse_admin-area.png)
 
 
 ## Testing UX User Stories

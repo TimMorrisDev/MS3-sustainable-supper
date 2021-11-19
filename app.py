@@ -586,7 +586,7 @@ def recipe_favourite(recipe_id):
         # check if already a user favourite
         if session["user"] in recipe["user_favourite"]:
 
-            # update db to remove username from recipe document 
+            # update db to remove username from recipe document
             # and decrease favourite count by 1
             mongo.db.recipes.update({"_id": ObjectId(
                 recipe_id)}, {
@@ -602,9 +602,6 @@ def recipe_favourite(recipe_id):
                     "$inc": {"favourite_count": 1}
                     })
 
-        # update db to add recipe id from user document
-        # mongo.db.users.update({"username": session["user"]}, {
-        #     "$push": {"favourite_recipes": recipe["_id"]}})
         return redirect(url_for("recipe_ingredients", recipe_id=recipe["_id"]))
     else:
         # redirect if no user logged in
@@ -666,7 +663,7 @@ def admin():
         # get user admin status from db
         admin = mongo.db.users.find_one(
             {"username": session["user"]})["admin"]
-        
+
         super_admin = mongo.db.users.find_one(
             {"username": session["user"]})["super_admin"]
 
