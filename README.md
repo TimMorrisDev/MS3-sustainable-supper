@@ -542,6 +542,8 @@ ___
 
 - [Stack Overflow](https://stackoverflow.com/), [w3 Schools](https://www.w3schools.com/) & [CSS tricks](https://css-tricks.com/) were used throughout the project to research solutions to site requirements.
 
+- [mozillazg github tutorial](https://gist.github.com/mozillazg/69fb40067ae6d80386e10e105e6803c9) used as basis for site pagination and modified to fit site requirements.
+
 ## Content
 - All content relating to the organisation written by the developer.
 - Recipes uplaoded by admin from the following recipe books.
@@ -565,3 +567,4 @@ ___
 
 ## Acknowledgements
 - Thank you to my mentor, Can Sucullu for all your guidance and support.
+- Thank you to the Code Institute tutor support and Slack community for all the help throughout this project.
