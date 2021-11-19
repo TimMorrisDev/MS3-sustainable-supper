@@ -1,7 +1,7 @@
 import os
 from datetime import datetime, timedelta
 from flask import (
-    Flask, flash, render_template,
+    Flask, flash, jsonify, render_template,
     redirect, request, session, url_for)
 from flask_pymongo import PyMongo, pymongo
 from flask_wtf import FlaskForm
@@ -37,6 +37,32 @@ def index():
         "made_count", pymongo.DESCENDING).limit(3)
     return render_template(
         'index.html', top_recipes=top_recipes, most_made=most_made)
+
+
+# recipes page
+@app.route("/recipes")
+def recipes():
+
+    # get all recipes from db
+    recipes = list(mongo.db.recipes.find())
+    return render_template("recipes.html", recipes=recipes)
+
+
+# recipes page
+# @app.route("/recipes")
+# def recipes():
+
+#     # get all recipes from db
+#     recipe = mongo.db.recipes.find().sort("_id", pymongo.ASCENDING).limit(3)
+
+#     output = []
+
+#     for i in recipe:
+#         output.append({"recipe": i["recipe"]})
+    
+#     recipes = 
+
+#     return render_template("recipes.html", recipes=recipes)
 
 
 # search function
@@ -77,15 +103,6 @@ def pantry_search(username):
         # redirect if no user logged in
         flash("Please login or register to access this")
         return redirect(url_for("login"))
-
-
-# recipes page
-@app.route("/recipes")
-def recipes():
-
-    # get all recipes from db
-    recipes = list(mongo.db.recipes.find())
-    return render_template("recipes.html", recipes=recipes)
 
 
 # USER FUNCTIONS
@@ -757,6 +774,20 @@ def admin_status(username):
         # redirect if no user logged in
         flash("Please login as admin")
         return redirect(url_for("index"))
+
+
+# ERROR HANDLERS
+
+# 404 page not found
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
+# 500 internal server error
+@app.errorhandler(500)
+def page_not_found(e):
+    return render_template('500.html'), 500
 
 
 if __name__ == "__main__":
