@@ -290,6 +290,11 @@ My CSS file style.css passed through the w3 validator with no errors.
 ### [JSHint Validation Service](https://jshint.com/)
 My JavaScript file script.js passed through the validator with no errors. 
 
+### [PEP8 check](http://pep8online.com/checkresult)
+The check found two E501 'line too long' errors. These lines contain the URL address for the default recipe image applied if user input fails validation. I was unable to figure out having this URL spread over continuation lines without causing front end rendering errors. 
+
+Other than those issues, my python code was fully PEP8 compliant.
+
 ## Lighthouse Testing
 Initial lighthouse testing on the app found that some of the accessibillity could be improved. I was able to improve this by adding 'alt' tags to my recipes using the jinja templating language to generate more informative descriptions based on the specific recipe title.
 
@@ -524,12 +529,39 @@ In order to deploy the app via [heroku](https://dashboard.heroku.com/apps), the 
 ___
 # Credits
 ## Code
+- Environment variables and initial setup of Flask app copied from Backend 'task manager' mini-project. Edited to suit my needs.
+
+- Video series by [Pretty Printed](https://www.youtube.com/watch?v=jR2aFKuaOBs&list=RDCMUC-QDfvrRIDB6F0bIO4I4HkQ&start_radio=1&rv=jR2aFKuaOBs&t=2) for information about how to use WTForms for back end validation.
+
+- [Stack Overflow article](https://stackoverflow.com/questions/10543940/check-if-a-url-to-an-image-is-up-and-exists-in-python) used for basis of back end image validation and modified to suit my purpose.
+
+- [Stack Overflow ariticle](https://stackoverflow.com/questions/209840/how-do-i-convert-two-lists-into-a-dictionary) used to find a way to combine two dictionaries using python 'zip' method. This was used for when a user is adding a recipe to the databse and modified to suit my specific purposes. 
+- [Stack Overflow article](https://stackoverflow.com/questions/8774710/unable-to-remove-dynamically-added-content-with-jquery) which inspired my solution for adding and remove rows to user input forms across the site.
+
+- [Geeks for Geeks aritcle](https://www.geeksforgeeks.org/python-datetime-timedelta-function/) inspired solution using timeDelta when checking for multiple logs of a user making a recipe. 
+
+- [Stack Overflow](https://stackoverflow.com/), [w3 Schools](https://www.w3schools.com/) & [CSS tricks](https://css-tricks.com/) were used throughout the project to research solutions to site requirements.
 
 ## Content
-- All content written by the developer.
+- All content relating to the organisation written by the developer.
+- Recipes uplaoded by admin from the following recipe books.
+    - [Sabrina Ghayour](https://www.sabrinaghayour.com/) - Bazaar
+    - [Mob Kitchen](https://www.mobkitchen.co.uk/) - Mob Veggie
+    - [Katy Beskow](https://katybeskow.com/) - 15 minute vegan
 
 ## Media
 
+- Home page slider images all sourced from [Pexels.com](https://www.pexels.com/)
+    - [Ella Olsson](https://www.pexels.com/photo/flat-lay-photography-of-vegetable-salad-on-plate-1640777/)
+    - [Ella Olsson](https://www.pexels.com/photo/vegetable-salad-3026808/)
+    - [Daria Shevtsova](https://www.pexels.com/photo/cooked-food-704569/)
+    - [Daria Shevtsova](https://www.pexels.com/photo/cooked-food-with-meats-and-vegetables-inside-white-bowl-1070053/)
+    - [Daria Shevtsova](https://www.pexels.com/photo/vegetable-lot-1580466/)
+    - [Monicore](https://www.pexels.com/photo/photography-of-tomatoes-near-basil-leaves-1391487/)
+    - [Lum3n](https://www.pexels.com/photo/pizza-with-tomatoes-on-black-surface-604969/)
+    - [Sebastian Coman](https://www.pexels.com/photo/bowl-of-cooked-food-3590401/)
+    - [Pixabay](https://www.pexels.com/photo/ceremonial-tea-set-on-wooden-surface-461428/)
+    - [Pixabay](https://www.pexels.com/photo/agriculture-cherry-tomatoes-cooking-delicious-262967/)
 
 ## Acknowledgements
 - Thank you to my mentor, Can Sucullu for all your guidance and support.
