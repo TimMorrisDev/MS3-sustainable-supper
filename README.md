@@ -41,7 +41,7 @@ ___
 
 ### Colour Scheme
 
-I wanted to carry across the themes of sustainability and natural eating / living so I sourced the following image of a lushous landscape extracted my colour palette from that.
+I wanted to carry across the themes of sustainability and natural eating / living so I sourced the following image of a lush landscape extracted my colour palette from that.
 
 ![landscape_photo_for_colour_palette](static/readme_assets/ux/colour_palette/landscape.jpeg)
 
@@ -158,7 +158,7 @@ Display the full details of the selected recipe to the user. Offers the options 
 
     ![Already made it](static/readme_assets/ux/site_features/already_made_it.png)
 
-    - Information from database used to give details of when ythe recipe was uploaded, and by whom.
+    - Information from database used to give details of when the recipe was uploaded, and by whom.
 
     ![uploaded details](static/readme_assets/ux/site_features/upload_details.png)
 
@@ -173,7 +173,7 @@ Display to the user any recipes they have added as favourites or uploaded themse
 
     ![add recipe button](static/readme_assets/ux/site_features/add_recipe_button.png)
 
-    - Add user recipe form. Validation occurs in two stages, I used html 'pattern' and 'validate' attirbutes as well as WTForms validation in the back end. There is additional validation to check for valid image type at the provided URL using the python 'requests' module to look for data tags - will return a user error message and set a default image if any stage fails. 
+    - Add user recipe form. Validation occurs in two stages, I used html 'pattern' and 'validate' attributes as well as WTForms validation in the back end. There is additional validation to check for valid image type at the provided URL using the python 'requests' module to look for data tags - will return a user error message and set a default image if any stage fails. 
 
     ![add recipe form](static/readme_assets/ux/site_features/add_recipe.png)
 
@@ -197,7 +197,7 @@ Display to the user any recipes they have added as favourites or uploaded themse
 
     ![view matching recipes](static/readme_assets/ux/site_features/pantry_matches.png)
 
-- Delete user button and defensive 'are you sre?' modal.
+- Delete user button and defensive 'are you sure?' modal.
     ![delete user button](static/readme_assets/ux/site_features/delete_profile.png)
 
     ![are you sure modal](static/readme_assets/ux/site_features/delete_modal.png)
@@ -244,7 +244,7 @@ ___
     - WTForms fields and validators were used in the back-end to validate user input forms across the site and add an extra layer of validation and security on top of the front-end HTML validation.
 
 - [flask_paginate](https://pythonhosted.org/Flask-paginate/)
-    - Used to impliment pagination across the site.
+    - Used to implement pagination across the site.
 
 - [Materialize](https://materializecss.com/)
     - Materialize was used for the responsive 'grid'. Components, such as the cards, were copied from the Materialize documentation and then modified for use in various places across the site.
@@ -293,8 +293,8 @@ The validator found the following issues for me to address.
 
     ![stray end tag](static/readme_assets/html_validation/admin_stray-form-tag.png)
 
-- Duplicate ID warings.
-    - Validation dfound several of these issues accross the site. It is cause by the way my input forms dynamically create additional fields for ingredient input and method step input. The ID of these fields is used in the back end as a list to add to the database. I was unable to find another way of implimenting this functionality for this project, but it is something I intend to research and develop further in the future.
+- Duplicate ID warnings.
+    - Validation found several of these issues across the site. It is cause by the way my input forms dynamically create additional fields for ingredient input and method step input. The ID of these fields is used in the back end as a list to add to the database. I was unable to find another way of implementing this functionality for this project, but it is something I intend to research and develop further in the future.
     
     ![duplicate ID's](static/readme_assets/html_validation/duplicate_id.png)
 
@@ -316,9 +316,9 @@ The check found two E501 'line too long' errors. These lines contain the URL add
 Other than those issues, my python code was fully PEP8 compliant.
 
 ## Lighthouse Testing
-Initial lighthouse testing on the app found that some of the accessibillity could be improved. I was able to improve this by adding 'alt' tags to my recipes using the jinja templating language to generate more informative descriptions based on the specific recipe title.
+Initial lighthouse testing on the app found that some of the accessibility could be improved. I was able to improve this by adding 'alt' tags to my recipes using the jinja templating language to generate more informative descriptions based on the specific recipe title.
 
-I also added the 'aria-label' attirbute to any actionable buttons or link across the site to further improve accesibility. 
+I also added the 'aria-label' attribute to any actionable buttons or link across the site to further improve accessibility. 
 
 Once this issue was resolved, lighthouse testing returned the following results:
 
@@ -366,7 +366,7 @@ Once this issue was resolved, lighthouse testing returned the following results:
 ### First time user goals
 
 - I want to find delicious recipes to make.
-    - I was able to browse all recipes easily and the search function was clear and easy to use to narror down what I was looking for.
+    - I was able to browse all recipes easily and the search function was clear and easy to use to narrow down what I was looking for.
 - I want to sign up to get more features easily.
 - I want to search for recipes I can make with the ingredients I already have.
     - I was able to upload the ingredients I already have to my user profile using the 'update pantry' feature. It was then easy to find recipes that matched the ingredients I had. 
@@ -391,9 +391,9 @@ Once this issue was resolved, lighthouse testing returned the following results:
 ### Business goals
 
 - To promote more sustainable eating habits.
-    - We have a large database of recipes we feel match our criterea of healthy and sustainable. By offering users the option to search using their existing ingredients, we encourage our users to waste less food and try new way of eating better.
+    - We have a large database of recipes we feel match our criteria of healthy and sustainable. By offering users the option to search using their existing ingredients, we encourage our users to waste less food and try new way of eating better.
 - To allow users to find delicious and healthy food to cook.
-    - The combined effect of displaying clear information about what the communtiy is enjoying and make, along with an easy-to-use search feature makes it easy for our users to find just the right recipe to make.
+    - The combined effect of displaying clear information about what the community is enjoying and make, along with an easy-to-use search feature makes it easy for our users to find just the right recipe to make.
 - To track what people are most enjoying cooking to help future development / customer engagement strategies.
     - The 'most made' and 'user favourite' section provides a quick view of what our community is enjoying. The admin area allows us to view in more detail the kind things people are saving and adding to their profiles. As well as being able to see the kind of ingredients people more commonly have to inform future recipe additions to the site.
 
@@ -422,7 +422,8 @@ I tested the site across multiple devices using different browsers.
     - iPad air 2
 
 ## Known Bugs / Issues
-
+- HTML validation issues.
+    - As described in my HTML validation section, I was unable to find a solution to all validation errors found in my HTML code.
 ___
 # Deployment
 
@@ -490,7 +491,7 @@ Setup app
     __pycache__/
     ```
 
-Set up environment vairables and flask instance
+Set up environment variables and flask instance
 - Within `env.py` add the following environment variables:
 
     ```python
@@ -555,10 +556,11 @@ ___
 
 - [Stack Overflow article](https://stackoverflow.com/questions/10543940/check-if-a-url-to-an-image-is-up-and-exists-in-python) used for basis of back end image validation and modified to suit my purpose.
 
-- [Stack Overflow ariticle](https://stackoverflow.com/questions/209840/how-do-i-convert-two-lists-into-a-dictionary) used to find a way to combine two dictionaries using python 'zip' method. This was used for when a user is adding a recipe to the databse and modified to suit my specific purposes. 
+- [Stack Overflow ariticle](https://stackoverflow.com/questions/209840/how-do-i-convert-two-lists-into-a-dictionary) used to find a way to combine two dictionaries using python 'zip' method. This was used for when a user is adding a recipe to the database and modified to suit my specific purposes.
+
 - [Stack Overflow article](https://stackoverflow.com/questions/8774710/unable-to-remove-dynamically-added-content-with-jquery) which inspired my solution for adding and remove rows to user input forms across the site.
 
-- [Geeks for Geeks aritcle](https://www.geeksforgeeks.org/python-datetime-timedelta-function/) inspired solution using timeDelta when checking for multiple logs of a user making a recipe. 
+- [Geeks for Geeks article](https://www.geeksforgeeks.org/python-datetime-timedelta-function/) inspired solution using timeDelta when checking for multiple logs of a user making a recipe. 
 
 - [Stack Overflow](https://stackoverflow.com/), [w3 Schools](https://www.w3schools.com/) & [CSS tricks](https://css-tricks.com/) were used throughout the project to research solutions to site requirements.
 
@@ -566,7 +568,7 @@ ___
 
 ## Content
 - All content relating to the organisation written by the developer.
-- Recipes uplaoded by admin from the following recipe books.
+- Recipes uploaded by admin from the following recipe books.
     - [Sabrina Ghayour](https://www.sabrinaghayour.com/) - Bazaar
     - [Mob Kitchen](https://www.mobkitchen.co.uk/) - Mob Veggie
     - [Katy Beskow](https://katybeskow.com/) - 15 minute vegan
