@@ -65,7 +65,10 @@ def pagination_args(recipes):
 @app.route("/recipes")
 def recipes():
 
+    # get all recipes and sort by _id
     recipes = list(mongo.db.recipes.find().sort("_id", 1))
+
+    # call pagination functions and pass recipe results
     recipes_paginated = paginated(recipes)
     pagination = pagination_args(recipes)
 
@@ -81,8 +84,9 @@ def search():
     query = request.form.get("query")
 
     # return matching recipes from db
-
     result_recipes = list(mongo.db.recipes.find({"$text": {"$search": query}}))
+
+    # call pagination functions and pass recipe results
     recipes_paginated = paginated(result_recipes)
     pagination = pagination_args(result_recipes)
 
@@ -107,6 +111,7 @@ def pantry_search(username):
             result_recipes = list(mongo.db.recipes.find({
                 "$text": {"$search": str(query)}}))
 
+            # call pagination functions and pass recipe results
             recipes_paginated = paginated(result_recipes)
             pagination = pagination_args(result_recipes)
 
@@ -819,4 +824,4 @@ def internal_server_error(e):
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
             port=int(os.environ.get("PORT")),
-            debug=True)
+            debug=False)

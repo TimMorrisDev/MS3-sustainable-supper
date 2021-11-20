@@ -283,8 +283,25 @@ I was also sure to deploy the site to Heroku early in development to allow for r
 I used the W3C Markup, CSS Validator and JSHint Validator Services to check and validate each page throughout the site to check for errors. 
 ### [Markup Validation Service](https://validator.w3.org/)
 The validator found the following issues for me to address.
+ - Element `<br>` not allowed as child of element ol.
+    - This error was found in the recipe details page and I was able to fix it by removing the element and adding css styling to the list instead.
+    
+    ![br_recipe details](static/readme_assets/html_validation/br_recipe_details.png)
 
+- Stray end tag `form`.
+    - Error found in admin page and was most likely caused when copying my modal template across from another page.
 
+    ![stray end tag](static/readme_assets/html_validation/admin_stray-form-tag.png)
+
+- Duplicate ID warings.
+    - Validation dfound several of these issues accross the site. It is cause by the way my input forms dynamically create additional fields for ingredient input and method step input. The ID of these fields is used in the back end as a list to add to the database. I was unable to find another way of implimenting this functionality for this project, but it is something I intend to research and develop further in the future.
+    
+    ![duplicate ID's](static/readme_assets/html_validation/duplicate_id.png)
+
+- Bad value errors.
+    - These we found throughout the site and were being thrown because of the presence of the jinja templating language.
+
+    ![jinja error](static/readme_assets/html_validation/jinja-error-example.png)
 
 
 ### [CSS Validation Service](https://jigsaw.w3.org/css-validator/)

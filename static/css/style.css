@@ -109,6 +109,7 @@ main {
     height: -moz-fit-content;
     height: fit-content;
     border-radius: 5px;
+    border: 1px solid rgb(0 0 0 / 26%);
 }
 
 .btn:hover,
@@ -188,7 +189,7 @@ main {
 }
 
 .card.horizontal.small {
-    height: 210px;
+    height: 220px;
     border-radius: 10px;
     overflow: hidden;
     padding: 0;
@@ -234,6 +235,10 @@ max-height: 20%;
 
 form i::after{
     color: #499129 !important;
+}
+
+.method-list li {
+    margin-bottom: 20px;
 }
 
 /* pagination items */
