@@ -20,6 +20,7 @@
 
 <body class="tm-sage-bg">
     <header>
+
         <!-- Top Navbar -->
         <div class="navbar-fixed">
             <nav class="nav-extended text-shadow tm-dark-green-bg">
@@ -30,13 +31,17 @@
                         <li><a href="{{ url_for('index') }}">Home</a></li>
                         <li><a href="{{ url_for('recipes') }}">Recipes</a></li>
                         <!-- check if user is logged in -->
+
                         {% if session.user %}
                         <li><a href="{{ url_for('profile', username=session['user']) }}">Profile</a></li>
                         <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+
                         {% else %}
                         <li><a href="{{ url_for('login') }}">Log In</a></li>
                         <li><a href="{{ url_for('register') }}">Register</a></li>
+
                         {% endif %}
+
                         <!-- check if user has admin status -->
                         {% if session.admin %}
                         <li><a href="{{ url_for('admin') }}">Admin Area</a></li>
@@ -53,14 +58,18 @@
             </li>
             <li><a href="{{ url_for('index') }}">Home</a></li>
             <li><a href="{{ url_for('recipes') }}">Recipes</a></li>
+
             <!-- check if user is logged in -->
             {% if session.user %}
             <li><a href="{{ url_for('profile', username=session['user']) }}">Profile</a></li>
             <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+
             {% else %}
             <li><a href="{{ url_for('login') }}">Log In</a></li>
             <li><a href="{{ url_for('register') }}">Register</a></li>
+
             {% endif %}
+
             <!-- check if user has admin status -->
             {% if session.admin %}
             <li><a href="{{ url_for('admin') }}">Admin Area</a></li>
@@ -71,15 +80,21 @@
     </header>
 
     <section>
+
         <!-- flash messages -->
         {% with messages = get_flashed_messages() %}
+
         {% if messages %}
+
         {% for message in messages %}
+
         <div class="row flashes">
             <h4 class="tm-brown-bg white-text center-align text-shadow">{{ message }}</h4>
         </div>
         {% endfor %}
+
         {% endif %}
+
         {% endwith%}
 
     </section>
@@ -89,16 +104,10 @@
         {% endblock %}
     </main>
 
+    <!-- page footer -->
     <footer class="page-footer tm-dark-green-bg">
         <div class="container">
             <div class="row center-align">
-                <!-- <div class="col l6 s12">
-                    <h5 class="white-text">Footer Content</h5>
-                    <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer
-                        content.</p>
-                </div> -->
-
-                <!-- <h5 class="white-text">Links</h5> -->
 
                 <div class="col s3">
                     <a class="grey-text text-lighten-3" href="https://www.facebook.com/"><i

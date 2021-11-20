@@ -310,11 +310,8 @@ def delete_user(username):
                     "$inc": {"favourite_count": -1}
                     })
 
-            # re-assign any recipes made by user to admin
-            # to prevent future registrations having edit access
+            # delete recipe
             if user["username"] == recipe["uploaded_by"]:
-                # mongo.db.recipes.update(recipe, {
-                #     "$set": {"uploaded_by": "admin"}})
                 mongo.db.recipes.delete_one(recipe)
 
         # remove user from db
@@ -586,13 +583,6 @@ def delete_recipe(recipe_id):
         # remove recipe from user uploaded recipes field in db
         mongo.db.users.update_one(user, {"$pull": {
             "user_recipes": ObjectId(recipe_id)}})
-
-        # remove recipe from user favourite recipes field in db
-        # users = list(mongo.db.users.find())
-        # for u in users:
-        #     if ObjectId(recipe_id) in u["favourite_recipes"]:
-        #         mongo.db.users.update(u, {
-        #             "$pull": {"favourite_recipes": ObjectId(recipe_id)}})
 
         # remove database entry using objectId passed from site
         mongo.db.recipes.remove({"_id": ObjectId(recipe_id)})
