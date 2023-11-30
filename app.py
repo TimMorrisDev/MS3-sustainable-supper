@@ -11,8 +11,12 @@ from wtforms.validators import InputRequired, Regexp, Length, URL
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
 import requests
-if os.path.exists("env.py"):
-    import env
+# if os.path.exists("env.py"):
+#     import env
+from dotenv import load_dotenv, find_dotenv
+
+
+load_dotenv(find_dotenv())
 
 
 app = Flask(__name__)
