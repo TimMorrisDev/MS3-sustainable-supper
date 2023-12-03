@@ -8,7 +8,7 @@ ___
 'The Sustainable Supper Club'. A website dedicated to providing users with great vegetarian and vegan recipes based on what they have left over in their pantry. The goal is to open the door for people to live more sustainably and get inspiration for ways to eat less meat and waste less food.
 
 
-[See the live site here!](https://sustainable-supper-club.herokuapp.com/)
+SITE NOT DEPLOYED SINCE STUDENT HEROKU ACCOUNT LAPSE - LOCAL DEMO ON REQUEST
 
 ___
 # User Experience (UX)
