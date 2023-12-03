@@ -1,4 +1,5 @@
 import os
+import ssl
 from datetime import datetime, timedelta
 from flask import (
     Flask, flash, render_template,
@@ -11,17 +12,20 @@ from wtforms.validators import InputRequired, Regexp, Length, URL
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
 import requests
-if os.path.exists("env.py"):
-    import env
+from dotenv import load_dotenv, find_dotenv
+
+
+load_dotenv(find_dotenv())
 
 
 app = Flask(__name__)
 
 app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
+app.config["MONGO_PORT"] = os.environ.get("PORT")
 app.secret_key = os.environ.get("SECRET_KEY")
 
-mongo = PyMongo(app)
+mongo = PyMongo(app, ssl_cert_reqs=ssl.CERT_NONE)
 
 
 # landing page and top 3 recipes
